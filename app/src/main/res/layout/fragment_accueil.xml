@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AccueilFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="participer à une séance"
+            android:background="@drawable/round_corner"
+            android:layout_margin="8dp"
+            android:drawableRight="@drawable/ic_menu_search"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="programmer une seance"
+            android:background="@drawable/round_corner"
+            android:layout_margin="8dp"
+            android:drawableRight="@drawable/ic_menu_add"/>
+    </LinearLayout>
+
+</FrameLayout>
