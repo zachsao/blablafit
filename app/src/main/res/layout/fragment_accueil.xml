@@ -13,20 +13,25 @@
         android:layout_gravity="center">
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="252dp"
             android:layout_height="wrap_content"
-            android:text="participer à une séance"
-            android:background="@drawable/round_corner"
             android:layout_margin="8dp"
-            android:drawableRight="@drawable/ic_menu_search"/>
+            android:background="@drawable/round_corner"
+            android:drawableRight="@drawable/ic_menu_search"
+            android:text="trouver une séance"
+            android:onClick="TrouverSeance"
+            android:textColor="@color/white" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:id="@+id/programmer_button"
+            android:layout_width="252dp"
             android:layout_height="wrap_content"
-            android:text="programmer une seance"
-            android:background="@drawable/round_corner"
             android:layout_margin="8dp"
-            android:drawableRight="@drawable/ic_menu_add"/>
+            android:background="@drawable/round_corner"
+            android:drawableRight="@drawable/ic_menu_add"
+            android:onClick="programmerSeance"
+            android:text="programmer une séance"
+            android:textColor="@color/white" />
     </LinearLayout>
 
 </FrameLayout>

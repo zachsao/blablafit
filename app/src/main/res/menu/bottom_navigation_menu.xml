@@ -6,11 +6,11 @@
         android:icon="@drawable/ic_home"
         />
     <item android:id="@+id/navigation_seances"
-        android:title="séances"
+        android:title="Mes séances"
         android:icon="@drawable/ic_seances"
         />
     <item android:id="@+id/navigation_profil"
-        android:title="profil"
+        android:title="Mon profil"
         android:icon="@drawable/ic_profile"
         />
 

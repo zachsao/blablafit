@@ -6,11 +6,96 @@
     tools:context=".MyProfileFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <Button
-        android:id="@+id/deco_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="déconnexion"
-        android:layout_gravity="center"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/userphoto" />
+
+        <TextView
+            android:id="@+id/pseudo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16sp"
+            android:text="PSEUDO"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:text="Mes informations personnelles: "
+            android:textColor="#000000"
+            android:textSize="21sp" />
+
+        <TextView
+            android:id="@+id/nom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nom: "
+            android:textColor="#000000"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/prénom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prénom: "
+            android:textColor="#000000"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email: "
+            android:textColor="#000000"
+            android:textStyle="bold" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ma note moyenne: "
+                android:textColor="#000000"
+                android:textStyle="bold" />
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true" />
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/deco_button"
+            android:layout_width="138dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/round_corner"
+            android:text="déconnexion"
+            android:textColor="@color/white" />
+
+
+    </LinearLayout>
+
 
 </FrameLayout>

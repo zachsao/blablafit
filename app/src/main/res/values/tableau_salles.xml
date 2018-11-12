@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="tableau_salles">
+        <item>Basic Fit</item>
+        <item>Fitness Park</item>
+        <item>Keep Cool</item>
+        <item>Neoness</item>
+        <item>Orange Bleue Fitness</item>
+        <item>Pro gym</item>
+    </string-array>
+</resources>

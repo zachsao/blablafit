@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:background="#5ec639">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="26/08"
+                android:id="@+id/tv_date"
+                android:textColor="@color/white"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="15h30"
+                android:id="@+id/tv_heure"
+                android:textColor="@color/white"
+                android:layout_gravity="center_horizontal"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Full Body"
+                android:id="@+id/tv_titre"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="durée: 2h"
+                android:id="@+id/tv_durée"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lieu : "
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_lieu"
+                    android:hint="Basic fit, 121 pl. Grand Théatre, 33800 Bordeaux"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Description : "
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_description"
+                    android:hint="DC - Tractions - Squats - Soulevé de terre - Presse Militaire"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_nb_participants"
+                android:text="3 participants"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_créateur"
+                android:text="Créée par : Vous"/>
+        </LinearLayout>
+
+
+
+
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

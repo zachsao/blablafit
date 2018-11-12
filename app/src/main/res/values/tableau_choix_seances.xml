@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="tableau_seances">
+        <item>Full body</item>
+        <item>Half body</item>
+        <item>Pecs</item>
+        <item>Epaules</item>
+        <item>Bras</item>
+        <item>Jambes</item>
+        <item>Abdos</item>
+        <item>Cardio</item>
+        <item>Custom</item>
+    </string-array>
+</resources>
