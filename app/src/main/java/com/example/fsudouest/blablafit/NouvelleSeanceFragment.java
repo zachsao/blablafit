@@ -140,7 +140,7 @@ public class NouvelleSeanceFragment extends Fragment {
                     case R.id.exterieur:
                         autocompleteFragment.setHint("Entrez une adresse");
                         AutocompleteFilter adresseFilter = new AutocompleteFilter.Builder()
-                                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ESTABLISHMENT)
+                                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
                                 .build();
                         autocompleteFragment.setFilter(adresseFilter);
                         break;
