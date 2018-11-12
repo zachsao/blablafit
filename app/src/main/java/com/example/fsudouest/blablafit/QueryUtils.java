@@ -3,6 +3,7 @@ package com.example.fsudouest.blablafit;
 import android.text.TextUtils;
 import android.util.Log;
 
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,7 +16,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class QueryUtils {
@@ -50,24 +54,7 @@ public class QueryUtils {
         return user;
     }
 
-    public static ArrayList<Seance> fetchSeances(String requestUrl) {
-        // Create URL object
-        URL url = createUrl(requestUrl);
 
-        // Perform HTTP request to the URL and receive a JSON response back
-        String jsonResponse = null;
-        try {
-            jsonResponse = makeHttpRequest(url);
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "Problem making the HTTP request.", e);
-        }
-
-        // Extract relevant fields from the JSON response and create a list of {@link Earthquake}s
-        ArrayList<Seance> seances = extractSeancesFromJson(jsonResponse);
-
-        // Return the list of {@link Earthquake}s
-        return seances;
-    }
 
 
     public static String sendRegistrationData(String requestUrl) {
@@ -235,8 +222,10 @@ public class QueryUtils {
                 String date = currentSeance.getString("date");
                 String heure = currentSeance.getString("heure");
                 int participants = currentSeance.getInt("participants");
-                int duree = currentSeance.getInt("duree");
+                String duree = currentSeance.getString("duree");
 
+                date = date.substring(8)+"/"+date.substring(5,7)+"/"+date.substring(2,4);
+                heure = heure.substring(0,5);
                 // Create a new {@link Seance} object from the JSON response.
                 seances.add(new Seance(titre,lieu,description,date,heure,participants,createur,duree)) ;
             }

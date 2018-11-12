@@ -9,12 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SeanceAdapter extends RecyclerView.Adapter<SeanceAdapter.SeanceViewHolder>{
 
     private int mNumberItems;
-    List<Seance> mData;
+    ArrayList<Seance> mData;
     Context mContext;
 
 
@@ -23,7 +24,7 @@ public class SeanceAdapter extends RecyclerView.Adapter<SeanceAdapter.SeanceView
         mNumberItems = numberOfItems;
     }
 
-    public SeanceAdapter(Context context, List<Seance> data){
+    public SeanceAdapter(Context context, ArrayList<Seance> data){
         mContext = context;
         mData = data;
     }
@@ -85,9 +86,9 @@ public class SeanceAdapter extends RecyclerView.Adapter<SeanceAdapter.SeanceView
             date.setText(mData.get(position).getDate());
             heure.setText(mData.get(position).getHeure());
             description.setText(mData.get(position).getDescription());
-            duree.setText(mData.get(position).getDuree()+"h");
+            duree.setText(mData.get(position).getDuree());
             participants.setText(mData.get(position).getNb_participants()+" participants");
-            createur.setText("Créée par "+mData.get(position).getCreateur());
+            createur.setText("Créée par : "+mData.get(position).getCreateur());
             lieu.setText(mData.get(position).getLieu());
         }
     }

@@ -63,8 +63,6 @@ public class NouvelleSeanceFragment extends Fragment {
 
     private NewSeanceTask mAuthTask = null;
 
-    private Seance nouvelleSeance;
-
     public String titre;
     private String lieu;
     private String description;
@@ -244,7 +242,6 @@ public class NouvelleSeanceFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 duree = adapterView.getItemAtPosition(i).toString();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
@@ -258,10 +255,8 @@ public class NouvelleSeanceFragment extends Fragment {
         spinner_places.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
                 nb_participants = adapterView.getItemAtPosition(i).toString();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });

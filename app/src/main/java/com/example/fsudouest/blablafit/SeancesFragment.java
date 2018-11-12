@@ -6,12 +6,20 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 /**
@@ -27,6 +35,9 @@ public class SeancesFragment extends Fragment {
     private RecyclerView mList;
 
     private List<Seance> seances = new ArrayList<>();
+    private static ArrayList<Seance> mySeances = new ArrayList<>();
+
+    private String BASE_URL = "https://zakariasao.000webhostapp.com/blablafit/seances.php?";
 
     public SeancesFragment() {
         // Required empty public constructor
@@ -46,15 +57,40 @@ public class SeancesFragment extends Fragment {
 
         mList.setHasFixedSize(true);
 
-        for(int i = 0; i<=10; i++){
-            seances.add(new Seance("Jambes","FitnessPark","rien de spé t'a vu","21/10","15h00",3,"Vous",2));
-        }
-        mAdapter = new SeanceAdapter(getActivity(),seances);
+
+        OkHttpClient client = new OkHttpClient();
+
+        mAdapter = new SeanceAdapter(getActivity(),fetchSeances(BASE_URL,client));
 
         mList.setAdapter(mAdapter);
 
 
         return rootView;
+    }
+
+    public static ArrayList<Seance> fetchSeances(String requestUrl, OkHttpClient client) {
+
+        Request myGetRequest = new Request.Builder()
+                .url(requestUrl)
+                .build();
+
+        client.newCall(myGetRequest).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i("SeancesFragment", e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String jsonResponse = response.body().string();
+                Log.i("SeancesFragment", jsonResponse);
+                mySeances = QueryUtils.extractSeancesFromJson(jsonResponse);
+            }
+
+        });
+
+
+        return mySeances;
     }
 
 }

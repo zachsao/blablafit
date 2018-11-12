@@ -32,8 +32,8 @@ public class TrouverUneSeanceFragment extends Fragment {
     private RecyclerView mList;
     LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
 
-    private List<Seance> seances = new ArrayList<>();
-    private List<Seance> filteredSeances = new ArrayList<>();
+    private ArrayList<Seance> seances = new ArrayList<>();
+    private ArrayList<Seance> filteredSeances = new ArrayList<>();
     SearchView searchView;
 
     public TrouverUneSeanceFragment() {
@@ -53,17 +53,17 @@ public class TrouverUneSeanceFragment extends Fragment {
         //mList.setHasFixedSize(true);
 
 
-        seances.add(new Seance("FullBody","BasicFit","","21/10","15h00",3,"Vous",2));
-        seances.add(new Seance("Jambes","BasicFit","","21/10","15h00",3,"Vous",2));
-        seances.add(new Seance("Abdos","BasicFit","","21/10","15h00",3,"Vous",2));
-        seances.add(new Seance("HalfBody","BasicFit","","21/10","15h00",3,"Vous",2));
-        seances.add(new Seance("FullBody","BasicFit","","21/10","15h00",3,"Vous",2));
-        seances.add(new Seance("Pecs","BasicFit","","21/10","15h00",3,"Vous",2));
-        seances.add(new Seance("FullBody","BasicFit","","21/10","15h00",3,"Vous",2));
-        seances.add(new Seance("Dos-Bi","BasicFit","","21/10","15h00",3,"Vous",2));
-        seances.add(new Seance("FullBody","BasicFit","","21/10","15h00",3,"Vous",2));
-        seances.add(new Seance("Bras","BasicFit","","21/10","15h00",3,"Vous",2));
-        seances.add(new Seance("FullBody","BasicFit","","21/10","15h00",3,"Vous",2));
+        seances.add(new Seance("FullBody","BasicFit","","21/10","15h00",3,"Vous","2"));
+        seances.add(new Seance("Jambes","BasicFit","","21/10","15h00",3,"Vous","2"));
+        seances.add(new Seance("Abdos","BasicFit","","21/10","15h00",3,"Vous","2"));
+        seances.add(new Seance("HalfBody","BasicFit","","21/10","15h00",3,"Vous","2"));
+        seances.add(new Seance("FullBody","BasicFit","","21/10","15h00",3,"Vous","2"));
+        seances.add(new Seance("Pecs","BasicFit","","21/10","15h00",3,"Vous","2"));
+        seances.add(new Seance("FullBody","BasicFit","","21/10","15h00",3,"Vous","2"));
+        seances.add(new Seance("Dos-Bi","BasicFit","","21/10","15h00",3,"Vous","2"));
+        seances.add(new Seance("FullBody","BasicFit","","21/10","15h00",3,"Vous","2"));
+        seances.add(new Seance("Bras","BasicFit","","21/10","15h00",3,"Vous","2"));
+        seances.add(new Seance("FullBody","BasicFit","","21/10","15h00",3,"Vous","2"));
 
         mAdapter = new SeanceAdapter(getActivity(),seances);
 
