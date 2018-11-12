@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,8 +18,15 @@ import android.view.ViewGroup;
 import android.support.v7.widget.SearchView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 public class TrouverUneSeanceFragment extends Fragment {
@@ -32,7 +40,9 @@ public class TrouverUneSeanceFragment extends Fragment {
     private RecyclerView mList;
     LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
 
-    private ArrayList<Seance> seances = new ArrayList<>();
+    private static ArrayList<Seance> mySeances = new ArrayList<>();
+
+    private String BASE_URL = "https://zakariasao.000webhostapp.com/blablafit/seances.php?";
     private ArrayList<Seance> filteredSeances = new ArrayList<>();
     SearchView searchView;
 
@@ -53,19 +63,9 @@ public class TrouverUneSeanceFragment extends Fragment {
         //mList.setHasFixedSize(true);
 
 
-        seances.add(new Seance("FullBody","BasicFit","","21/10","15h00",3,"Vous","2"));
-        seances.add(new Seance("Jambes","BasicFit","","21/10","15h00",3,"Vous","2"));
-        seances.add(new Seance("Abdos","BasicFit","","21/10","15h00",3,"Vous","2"));
-        seances.add(new Seance("HalfBody","BasicFit","","21/10","15h00",3,"Vous","2"));
-        seances.add(new Seance("FullBody","BasicFit","","21/10","15h00",3,"Vous","2"));
-        seances.add(new Seance("Pecs","BasicFit","","21/10","15h00",3,"Vous","2"));
-        seances.add(new Seance("FullBody","BasicFit","","21/10","15h00",3,"Vous","2"));
-        seances.add(new Seance("Dos-Bi","BasicFit","","21/10","15h00",3,"Vous","2"));
-        seances.add(new Seance("FullBody","BasicFit","","21/10","15h00",3,"Vous","2"));
-        seances.add(new Seance("Bras","BasicFit","","21/10","15h00",3,"Vous","2"));
-        seances.add(new Seance("FullBody","BasicFit","","21/10","15h00",3,"Vous","2"));
+        OkHttpClient client = new OkHttpClient();
+        mAdapter = new SeanceAdapter(getActivity(),fetchSeances(BASE_URL,client));
 
-        mAdapter = new SeanceAdapter(getActivity(),seances);
 
         mList.setAdapter(mAdapter);
 
@@ -75,7 +75,7 @@ public class TrouverUneSeanceFragment extends Fragment {
     }
 
     public void search(String query){
-        for(Seance seance : seances){
+        for(Seance seance : mySeances){
             if(seance.getTitre().toLowerCase().contains(query)){
                 filteredSeances.add(seance);
             }
@@ -124,7 +124,7 @@ public class TrouverUneSeanceFragment extends Fragment {
                 else{
                     filteredSeances.clear();
                     mList.setLayoutManager(layoutManager);
-                    mAdapter = new SeanceAdapter(getActivity(),seances);
+                    mAdapter = new SeanceAdapter(getActivity(),mySeances);
 
                     mList.setAdapter(mAdapter);
                 }
@@ -148,5 +148,26 @@ public class TrouverUneSeanceFragment extends Fragment {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    public static ArrayList<Seance> fetchSeances(String requestUrl, OkHttpClient client) {
+
+        Request myGetRequest = new Request.Builder()
+                .url(requestUrl)
+                .build();
+
+        client.newCall(myGetRequest).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i("SeancesFragment", e.getMessage());
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String jsonResponse = response.body().string();
+                Log.i("SeancesFragment", jsonResponse);
+                mySeances = QueryUtils.extractSeancesFromJson(jsonResponse);
+            }
+        });
+        return mySeances;
     }
 }

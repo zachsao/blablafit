@@ -59,7 +59,8 @@ public class SeancesFragment extends Fragment {
 
 
         OkHttpClient client = new OkHttpClient();
-
+        String createur = getActivity().getSharedPreferences("My prefs",0).getString("pseudo",null);
+        BASE_URL+="createur="+createur;
         mAdapter = new SeanceAdapter(getActivity(),fetchSeances(BASE_URL,client));
 
         mList.setAdapter(mAdapter);
@@ -79,17 +80,13 @@ public class SeancesFragment extends Fragment {
             public void onFailure(Call call, IOException e) {
                 Log.i("SeancesFragment", e.getMessage());
             }
-
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String jsonResponse = response.body().string();
                 Log.i("SeancesFragment", jsonResponse);
                 mySeances = QueryUtils.extractSeancesFromJson(jsonResponse);
             }
-
         });
-
-
         return mySeances;
     }
 
