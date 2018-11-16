@@ -3,6 +3,7 @@ package com.example.fsudouest.blablafit;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -34,13 +35,12 @@ public class TrouverUneSeanceFragment extends Fragment {
 
     private View rootView;
 
-    private final int NUMBER_OF_ITEMS = 6;
 
     private SeanceAdapter mAdapter;
     private RecyclerView mList;
     LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
 
-    private static ArrayList<Seance> mySeances = new ArrayList<>();
+    private ArrayList<Seance> mySeances;
 
     private String BASE_URL = "https://zakariasao.000webhostapp.com/blablafit/seances.php?";
     private ArrayList<Seance> filteredSeances = new ArrayList<>();
@@ -58,18 +58,9 @@ public class TrouverUneSeanceFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_trouver_une_seance, container, false);
 
         mList = rootView.findViewById(R.id.rv_search_seances);
-        mList.setLayoutManager(layoutManager);
-
-        //mList.setHasFixedSize(true);
-
 
         OkHttpClient client = new OkHttpClient();
-        mAdapter = new SeanceAdapter(getActivity(),fetchSeances(BASE_URL,client));
-
-
-        mList.setAdapter(mAdapter);
-
-
+        fetchSeances(BASE_URL,client);
 
         return rootView;
     }
@@ -150,8 +141,8 @@ public class TrouverUneSeanceFragment extends Fragment {
         }
     }
 
-    public static ArrayList<Seance> fetchSeances(String requestUrl, OkHttpClient client) {
 
+    public void fetchSeances(String requestUrl, OkHttpClient client) {
         Request myGetRequest = new Request.Builder()
                 .url(requestUrl)
                 .build();
@@ -163,11 +154,21 @@ public class TrouverUneSeanceFragment extends Fragment {
             }
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String jsonResponse = response.body().string();
-                Log.i("SeancesFragment", jsonResponse);
-                mySeances = QueryUtils.extractSeancesFromJson(jsonResponse);
+                final String jsonResponse = response.body().string();
+                //Log.i("SeancesFragment", jsonResponse);
+                // Run view-related code back on the main thread
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mySeances = QueryUtils.extractSeancesFromJson(jsonResponse);
+                        mAdapter = new SeanceAdapter(getActivity(), mySeances);
+                        mList.setAdapter(mAdapter);
+                        mList.setLayoutManager(layoutManager);
+                    }
+                });
+
             }
         });
-        return mySeances;
+
     }
 }

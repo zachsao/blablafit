@@ -29,13 +29,9 @@ public class SeancesFragment extends Fragment {
 
     private View rootView;
 
-    private final int NUMBER_OF_ITEMS = 6;
-
     private SeanceAdapter mAdapter;
     private RecyclerView mList;
-
-    private List<Seance> seances = new ArrayList<>();
-    private static ArrayList<Seance> mySeances = new ArrayList<>();
+    LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
 
     private String BASE_URL = "https://zakariasao.000webhostapp.com/blablafit/seances.php?";
 
@@ -52,25 +48,18 @@ public class SeancesFragment extends Fragment {
 
 
         mList = rootView.findViewById(R.id.rv_seances);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mList.setLayoutManager(layoutManager);
+
 
         mList.setHasFixedSize(true);
-
 
         OkHttpClient client = new OkHttpClient();
         String createur = getActivity().getSharedPreferences("My prefs",0).getString("pseudo",null);
         BASE_URL+="createur="+createur;
-        mAdapter = new SeanceAdapter(getActivity(),fetchSeances(BASE_URL,client));
-
-        mList.setAdapter(mAdapter);
-
-
+        fetchSeances(BASE_URL,client);
         return rootView;
     }
 
-    public static ArrayList<Seance> fetchSeances(String requestUrl, OkHttpClient client) {
-
+    public void fetchSeances(String requestUrl, OkHttpClient client) {
         Request myGetRequest = new Request.Builder()
                 .url(requestUrl)
                 .build();
@@ -82,12 +71,24 @@ public class SeancesFragment extends Fragment {
             }
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String jsonResponse = response.body().string();
-                Log.i("SeancesFragment", jsonResponse);
-                mySeances = QueryUtils.extractSeancesFromJson(jsonResponse);
+                final String jsonResponse = response.body().string();
+                //Log.i("SeancesFragment", jsonResponse);
+                // Run view-related code back on the main thread
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ArrayList<Seance> seances = QueryUtils.extractSeancesFromJson(jsonResponse);
+                        mAdapter = new SeanceAdapter(getActivity(), seances);
+
+                        mList.setLayoutManager(layoutManager);
+                        mList.setAdapter(mAdapter);
+                        mList.setLayoutManager(layoutManager);
+                    }
+                });
+
             }
         });
-        return mySeances;
+
     }
 
 }
