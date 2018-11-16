@@ -177,17 +177,11 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
         return email.contains("@");
     }
 
     private boolean passwordsMatch(String pwd, String confirmation){
         return confirmation.equals(pwd);
-    }
-
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() >= 6;
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
@@ -251,14 +245,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void run() {
                         showProgress(false);
                         if (success) {
-                            SharedPreferences preferences=getSharedPreferences("My prefs",0);
-                            SharedPreferences.Editor editor = preferences.edit();
-                            editor.putBoolean("logged_in", true);
-                            editor.putString("nom",nom);
-                            editor.putString("prénom",prenom);
-                            editor.putString("email",email);
-                            editor.putString("pseudo",pseudo);
-                            editor.apply();
+                            saveUserData();
                             startActivity(new Intent(RegisterActivity.this,MainActivity.class));
                             finish();
                         } else {
@@ -271,5 +258,16 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void saveUserData(){
+        SharedPreferences preferences=getSharedPreferences("My prefs",0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("logged_in", true);
+        editor.putString("nom",nom);
+        editor.putString("prénom",prenom);
+        editor.putString("email",email);
+        editor.putString("pseudo",pseudo);
+        editor.apply();
     }
 }
