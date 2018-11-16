@@ -13,15 +13,23 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class RegisterActivity extends AppCompatActivity {
+import java.io.IOException;
 
-    private UserRegisterTask mAuthTask = null;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+public class RegisterActivity extends AppCompatActivity {
 
     // UI references.
     private EditText mEmailView;
@@ -44,6 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView mEmptyStateTextView;
 
     private String BASE_URL = "https://zakariasao.000webhostapp.com/blablafit/register.php?";
+    private OkHttpClient client = new OkHttpClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +81,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void attemptRegistration() {
-        if (mAuthTask != null) {
-            return;
-        }
 
         // Reset errors.
         mEmailView.setError(null);
@@ -159,8 +165,7 @@ public class RegisterActivity extends AppCompatActivity {
                 // Show a progress spinner, and kick off a background task to
                 // perform the user login attempt.
                 showProgress(true);
-                mAuthTask = new UserRegisterTask();
-                mAuthTask.execute((Void) null);
+                sendRegistrationData(BASE_URL,client);
             } else {
                 mRegisterFormView.setVisibility(View.GONE);
                 mEmptyStateTextView.setVisibility(View.VISIBLE);
@@ -218,54 +223,53 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
+    public void sendRegistrationData(String requestUrl, OkHttpClient client) {
 
-        //private final String mEmail;
-        //private final String mPassword;
-        private String mUrl;
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(requestUrl).newBuilder();
+        urlBuilder.addQueryParameter("nom", nom);
+        urlBuilder.addQueryParameter("prenom", prenom);
+        urlBuilder.addQueryParameter("pseudo", pseudo);
+        urlBuilder.addQueryParameter("pwd", password);
+        urlBuilder.addQueryParameter("email", email);
+        String url = urlBuilder.build().toString();
 
-        UserRegisterTask() {
-            //mEmail = email;
-            //mPassword = password;
-            mUrl = BASE_URL + "nom=" + nom + "&prenom="+prenom+"&pseudo="+pseudo+"&pwd="+password+"&email="+email;
-
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            String request = QueryUtils.sendRegistrationData(mUrl);
-            Boolean register = true;
-            if(request.contains("Duplicate entry")) register = false;
-            // TODO: register the new account here.
-            return register;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                SharedPreferences preferences=getSharedPreferences("My prefs",0);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putBoolean("logged_in", true);
-                editor.putString("nom",nom);
-                editor.putString("prénom",prenom);
-                editor.putString("email",email);
-                editor.putString("pseudo",pseudo);
-                editor.apply();
-                startActivity(new Intent(RegisterActivity.this,MainActivity.class));
-                finish();
-            } else {
-                mPseudoView.setError("Ce pseudo existe déjà, veuillez en choisir un autre");
-                mPseudoView.requestFocus();
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i("Login Activity", e.getMessage());
             }
-        }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String request = response.body().string();
+                final Boolean success = !request.contains("Duplicate entry");
+                Log.i("Login Activity", request);
+                RegisterActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showProgress(false);
+                        if (success) {
+                            SharedPreferences preferences=getSharedPreferences("My prefs",0);
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putBoolean("logged_in", true);
+                            editor.putString("nom",nom);
+                            editor.putString("prénom",prenom);
+                            editor.putString("email",email);
+                            editor.putString("pseudo",pseudo);
+                            editor.apply();
+                            startActivity(new Intent(RegisterActivity.this,MainActivity.class));
+                            finish();
+                        } else {
+                            mPseudoView.setError("Ce pseudo existe déjà, veuillez en choisir un autre");
+                            mPseudoView.requestFocus();
+                        }
 
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
+                    }
+                });
+
+            }
+        });
     }
 }

@@ -16,11 +16,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+
 
 public class QueryUtils {
 
@@ -35,41 +32,6 @@ public class QueryUtils {
     private QueryUtils() {
     }
 
-    public static User fetchUserData(String requestUrl) {
-        // Create URL object
-        URL url = createUrl(requestUrl);
-
-        // Perform HTTP request to the URL and receive a JSON response back
-        String jsonResponse = null;
-        try {
-            jsonResponse = makeHttpRequest(url);
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "Problem making the HTTP request.", e);
-        }
-
-        // Extract relevant fields from the JSON response and create a list of {@link Earthquake}s
-        User user = extractUserFromJson(jsonResponse);
-
-        // Return the list of {@link Earthquake}s
-        return user;
-    }
-
-
-
-
-    public static String sendRegistrationData(String requestUrl) {
-        // Create URL object
-        URL url = createUrl(requestUrl);
-
-        // Perform HTTP request to the URL
-        String response = null;
-        try {
-            response = makeHttpRequest(url);
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "Problem sending registration data", e);
-        }
-        return response;
-    }
 
     public static String createNewSeance(String requestUrl) {
         // Create URL object
