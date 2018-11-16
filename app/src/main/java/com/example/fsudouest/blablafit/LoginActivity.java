@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,8 +32,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -46,10 +54,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -58,6 +62,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mLoginFormView;
 
     private SharedPreferences preferences;
+
+    private OkHttpClient client = new OkHttpClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,9 +153,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
 
         // Reset errors.
         mEmailView.setError(null);
@@ -169,7 +172,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             cancel = true;
         }
 
-        // Check for a valid email address.
+        // Check for a non empty email address.
         if (TextUtils.isEmpty(email)) {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
@@ -184,20 +187,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            String BASE_URL = "https://zakariasao.000webhostapp.com/blablafit/login.php?pseudo="+email;
+            fetchUserData(BASE_URL,client,email, password);
         }
     }
 
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
-    }
-
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 5;
-    }
+    private boolean isPasswordValid(String password) { return password.length() > 6; }
 
     /**
      * Shows the progress UI and hides the login form.
@@ -290,64 +285,55 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     /**
-     * Represents an asynchronous login/registration task used to authenticate
+     * Represents an asynchronous login task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, User> {
+    public void fetchUserData(String requestUrl, OkHttpClient client,final String mEmail,final String mPassword) {
+        Request myGetRequest = new Request.Builder()
+                .url(requestUrl)
+                .build();
 
-        private final String mEmail;
-        private final String mPassword;
-
-        private String BASE_URL;
-
-        //private User user;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-            BASE_URL = "https://zakariasao.000webhostapp.com/blablafit/login.php?pseudo="+mEmail;
-        }
-
-        @Override
-        protected User doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            User user = QueryUtils.fetchUserData(BASE_URL);
-
-            if (user!=null){
-                if((user.getLogin().equals(mEmail) || user.getEmail().equals(mEmail)) && user.getMdp().equals(mPassword))
-                    return user;
+        client.newCall(myGetRequest).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i("Login Activity", e.getMessage());
             }
-            return null;
-        }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String jsonResponse = response.body().string();
+                Log.i("Login Activity", jsonResponse);
+                LoginActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showProgress(false);
+                        User user = QueryUtils.extractUserFromJson(jsonResponse);
+                        if (user!=null){
+                            if((user.getLogin().equals(mEmail) || user.getEmail().equals(mEmail)) && user.getMdp().equals(mPassword)){
+                                preferences=getSharedPreferences("My prefs",0);
+                                SharedPreferences.Editor editor = preferences.edit();
+                                editor.putBoolean("logged_in", true);
+                                editor.putString("nom",user.getNom());
+                                editor.putString("prénom",user.getPrenom());
+                                editor.putString("email",user.getEmail());
+                                editor.putString("pseudo",user.getLogin());
+                                editor.apply();
+                                startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                                finish();
+                            }else{
+                                mEmailView.setError(getString(R.string.error_incorrect_credentials));
+                                mEmailView.requestFocus();
+                            }
 
-        @Override
-        protected void onPostExecute(final User user) {
-            mAuthTask = null;
-            showProgress(false);
+                        }else{
+                            mEmailView.setError(getString(R.string.error_incorrect_credentials));
+                            mEmailView.requestFocus();
+                        }
 
-            if (user!=null) {
-                preferences=getSharedPreferences("My prefs",0);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putBoolean("logged_in", true);
-                editor.putString("nom",user.getNom());
-                editor.putString("prénom",user.getPrenom());
-                editor.putString("email",user.getEmail());
-                editor.putString("pseudo",user.getLogin());
-                editor.apply();
-                startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                finish();
-            } else {
-                mEmailView.setError(getString(R.string.error_incorrect_credentials));
-                mEmailView.requestFocus();
+                    }
+                });
+
             }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
+        });
     }
 }
 
