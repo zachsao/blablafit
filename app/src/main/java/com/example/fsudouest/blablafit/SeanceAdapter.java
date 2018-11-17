@@ -14,15 +14,9 @@ import java.util.List;
 
 public class SeanceAdapter extends RecyclerView.Adapter<SeanceAdapter.SeanceViewHolder>{
 
-    private int mNumberItems;
     ArrayList<Seance> mData;
     Context mContext;
 
-
-
-    public SeanceAdapter(int numberOfItems){
-        mNumberItems = numberOfItems;
-    }
 
     public SeanceAdapter(Context context, ArrayList<Seance> data){
         mContext = context;

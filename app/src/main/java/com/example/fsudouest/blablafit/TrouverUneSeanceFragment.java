@@ -3,10 +3,13 @@ package com.example.fsudouest.blablafit;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -41,7 +45,7 @@ public class TrouverUneSeanceFragment extends Fragment {
     LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
 
     private ArrayList<Seance> mySeances;
-
+    private TextView mEmptyStateTextView;
     private String BASE_URL = "https://zakariasao.000webhostapp.com/blablafit/seances.php?";
     private ArrayList<Seance> filteredSeances = new ArrayList<>();
     SearchView searchView;
@@ -56,11 +60,29 @@ public class TrouverUneSeanceFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_trouver_une_seance, container, false);
-
+        mEmptyStateTextView  = rootView.findViewById(R.id.empty_state_textView);
         mList = rootView.findViewById(R.id.rv_search_seances);
 
         OkHttpClient client = new OkHttpClient();
-        fetchSeances(BASE_URL,client);
+
+        // Get a reference to the ConnectivityManager to check state of network connectivity
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        // Get details on the currently active default data network
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        // If there is a network connection, fetch data
+        if (networkInfo != null && networkInfo.isConnected()) {
+            // Show a progress spinner, and kick off a background task
+            fetchSeances(BASE_URL,client);
+
+        } else {
+            mList.setVisibility(View.GONE);
+            mEmptyStateTextView.setVisibility(View.VISIBLE);
+            // Update empty state with no connection error message
+            mEmptyStateTextView.setText(getString(R.string.no_internet_connection));
+        }
 
         return rootView;
     }
@@ -75,7 +97,6 @@ public class TrouverUneSeanceFragment extends Fragment {
         mAdapter = new SeanceAdapter(getActivity(),filteredSeances);
 
         mList.setAdapter(mAdapter);
-
     }
 
     @Override
@@ -132,7 +153,6 @@ public class TrouverUneSeanceFragment extends Fragment {
                 // User chose the "Settings" item, show the app settings UI...
                 Toast.makeText(getActivity(),"déployer les filtres",Toast.LENGTH_SHORT).show();
                 return true;
-
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
@@ -151,6 +171,15 @@ public class TrouverUneSeanceFragment extends Fragment {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.i("SeancesFragment", e.getMessage());
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mList.setVisibility(View.GONE);
+                        mEmptyStateTextView.setVisibility(View.VISIBLE);
+                        // Update empty state with no connection error message
+                        mEmptyStateTextView.setText(getString(R.string.server_error));
+                    }
+                });
             }
             @Override
             public void onResponse(Call call, Response response) throws IOException {
@@ -160,10 +189,18 @@ public class TrouverUneSeanceFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mySeances = QueryUtils.extractSeancesFromJson(jsonResponse);
-                        mAdapter = new SeanceAdapter(getActivity(), mySeances);
-                        mList.setAdapter(mAdapter);
-                        mList.setLayoutManager(layoutManager);
+                        if (jsonResponse.length() == 0) {
+                            mList.setVisibility(View.GONE);
+                            mEmptyStateTextView.setVisibility(View.VISIBLE);
+                            // Update empty state with no connection error message
+                            mEmptyStateTextView.setText(getString(R.string.no_seance_available));
+                        } else {
+                            ArrayList<Seance> seances = QueryUtils.extractSeancesFromJson(jsonResponse);
+                            mySeances = seances;
+                            mAdapter = new SeanceAdapter(getActivity(), seances);
+                            mList.setAdapter(mAdapter);
+                            mList.setLayoutManager(layoutManager);
+                        }
                     }
                 });
 

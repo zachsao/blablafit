@@ -309,14 +309,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         User user = QueryUtils.extractUserFromJson(jsonResponse);
                         if (user!=null){
                             if((user.getLogin().equals(mEmail) || user.getEmail().equals(mEmail)) && user.getMdp().equals(mPassword)){
-                                preferences=getSharedPreferences("My prefs",0);
-                                SharedPreferences.Editor editor = preferences.edit();
-                                editor.putBoolean("logged_in", true);
-                                editor.putString("nom",user.getNom());
-                                editor.putString("prénom",user.getPrenom());
-                                editor.putString("email",user.getEmail());
-                                editor.putString("pseudo",user.getLogin());
-                                editor.apply();
+                                saveUserData(user);
                                 startActivity(new Intent(LoginActivity.this,MainActivity.class));
                                 finish();
                             }else{
@@ -334,6 +327,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             }
         });
+    }
+
+    private void saveUserData(User user) {
+        preferences=getSharedPreferences("My prefs",0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("logged_in", true);
+        editor.putString("nom",user.getNom());
+        editor.putString("prénom",user.getPrenom());
+        editor.putString("email",user.getEmail());
+        editor.putString("pseudo",user.getLogin());
+        editor.apply();
     }
 }
 

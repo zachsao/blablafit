@@ -17,6 +17,7 @@
     <string name="error_incorrect_password">Mot de passe incorrect</string>
     <string name="error_incorrect_credentials">L\'identifiant ou le mot de passe est incorrect</string>
     <string name="error_field_required">Ce champ est requis</string>
+    <string name="server_error">Une erreur s\'est produite sur le serveur. </string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
@@ -30,5 +31,6 @@
 
     <!-- was "Signing up..." -->
     <string name="fui_progress_dialog_signing_up">Creating your shiny new account...</string>
+    <string name="no_seance_available">Aucune séance disponible</string>
 
 </resources>
