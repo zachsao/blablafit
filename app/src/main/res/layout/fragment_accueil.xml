@@ -13,13 +13,13 @@
         android:layout_gravity="center">
 
         <Button
+            android:id="@+id/button_trouver"
             android:layout_width="252dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="@drawable/round_corner"
             android:drawableRight="@drawable/ic_menu_search"
             android:text="trouver une séance"
-            android:onClick="TrouverSeance"
             android:textColor="@color/white" />
 
         <Button
@@ -29,9 +29,10 @@
             android:layout_margin="8dp"
             android:background="@drawable/round_corner"
             android:drawableRight="@drawable/ic_menu_add"
-            android:onClick="programmerSeance"
             android:text="programmer une séance"
             android:textColor="@color/white" />
-    </LinearLayout>
 
+
+    </LinearLayout>
+    
 </FrameLayout>

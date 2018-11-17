@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/accueilFragment">
+
+    <fragment
+        android:id="@+id/accueilFragment"
+        android:name="com.example.fsudouest.blablafit.AccueilFragment"
+        android:label="Accueil"
+        tools:layout="@layout/fragment_accueil" >
+        <action
+            android:id="@+id/action_accueilFragment_to_nouvelleSeanceFragment"
+            app:destination="@id/nouvelleSeanceFragment" />
+        <action
+            android:id="@+id/action_accueilFragment_to_trouverUneSeanceFragment"
+            app:destination="@id/trouverUneSeanceFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myProfileFragment"
+        android:name="com.example.fsudouest.blablafit.MyProfileFragment"
+        android:label="Mon profil"
+        tools:layout="@layout/fragment_my_profile" />
+    <fragment
+        android:id="@+id/trouverUneSeanceFragment"
+        android:name="com.example.fsudouest.blablafit.TrouverUneSeanceFragment"
+        android:label="Trouver une séance"
+        tools:layout="@layout/fragment_trouver_une_seance" />
+    <fragment
+        android:id="@+id/nouvelleSeanceFragment"
+        android:name="com.example.fsudouest.blablafit.NouvelleSeanceFragment"
+        android:label="fragment_nouvelle_seance"
+        tools:layout="@layout/fragment_nouvelle_seance" />
+    <fragment
+        android:id="@+id/seancesFragment"
+        android:name="com.example.fsudouest.blablafit.SeancesFragment"
+        android:label="fragment_seances"
+        tools:layout="@layout/fragment_seances" />
+    <fragment
+        android:id="@+id/messagesFragment"
+        android:name="com.example.fsudouest.blablafit.MessagesFragment"
+        android:label="fragment_messages"
+        tools:layout="@layout/fragment_messages" />
+</navigation>

@@ -11,10 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
-            android:id="@+id/container"
+
+        <fragment
+            android:id="@+id/myNavHostFragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:navGraph="@navigation/navigation"
+            app:defaultNavHost="true"
+            />
 
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/bottom_navigation"
@@ -25,8 +30,7 @@
             android:background="@color/colorPrimary"
             app:itemIconTint="@color/bnv_tab_item_foreground"
             app:itemTextColor="@color/bnv_tab_item_foreground"
-            app:menu="@menu/bottom_navigation_menu"
-            />
+            app:menu="@menu/bottom_navigation_menu"/>
 
     </android.support.design.widget.CoordinatorLayout>
 
