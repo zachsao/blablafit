@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity{
                 .commit();
 
         final BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        BottomNavigationViewHelper.removeShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -72,7 +73,6 @@ public class MainActivity extends AppCompatActivity{
 
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationViewBehavior());
-
 
 
     }
