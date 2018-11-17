@@ -58,6 +58,11 @@ public class MainActivity extends AppCompatActivity{
                         openFragment(seances);
                         toolbar.setTitle(item.getTitle());
                         break;
+                    case R.id.navigation_messages:
+                        MessagesFragment messages = new MessagesFragment();
+                        openFragment(messages);
+                        toolbar.setTitle(item.getTitle());
+                        break;
                     case R.id.navigation_profil:
                         MyProfileFragment profil = new MyProfileFragment();
                         openFragment(profil);
