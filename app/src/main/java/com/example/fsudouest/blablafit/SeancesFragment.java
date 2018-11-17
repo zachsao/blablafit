@@ -1,10 +1,13 @@
 package com.example.fsudouest.blablafit;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,6 +40,7 @@ public class SeancesFragment extends Fragment {
     private RecyclerView mList;
     private LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
     private TextView mEmptyStateTextView;
+    private View mProgressView;
     private String BASE_URL = "https://zakariasao.000webhostapp.com/blablafit/seances.php?";
 
     public SeancesFragment() {
@@ -51,6 +55,7 @@ public class SeancesFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_seances, container, false);
 
         mEmptyStateTextView  = rootView.findViewById(R.id.empty_state_textView);
+        mProgressView = rootView.findViewById(R.id.seances_progress);
         mList = rootView.findViewById(R.id.rv_seances);
 
         OkHttpClient client = new OkHttpClient();
@@ -67,7 +72,7 @@ public class SeancesFragment extends Fragment {
         // If there is a network connection, fetch data
         if (networkInfo != null && networkInfo.isConnected()) {
             // Show a progress spinner, and kick off a background task
-
+            showProgress(true);
             fetchSeances(BASE_URL,client);
 
         } else {
@@ -78,6 +83,38 @@ public class SeancesFragment extends Fragment {
         }
 
         return rootView;
+    }
+
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            mList.setVisibility(show ? View.GONE : View.VISIBLE);
+            mList.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mList.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mList.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
     }
 
     public void fetchSeances(String requestUrl, OkHttpClient client) {
@@ -92,6 +129,7 @@ public class SeancesFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        showProgress(false);
                         mList.setVisibility(View.GONE);
                         mEmptyStateTextView.setVisibility(View.VISIBLE);
                         // Update empty state with no connection error message
@@ -107,6 +145,7 @@ public class SeancesFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        showProgress(false);
                         if (jsonResponse.length()==0){
                             mList.setVisibility(View.GONE);
                             mEmptyStateTextView.setVisibility(View.VISIBLE);

@@ -1,11 +1,14 @@
 package com.example.fsudouest.blablafit;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.SearchManager;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -43,7 +46,7 @@ public class TrouverUneSeanceFragment extends Fragment {
     private SeanceAdapter mAdapter;
     private RecyclerView mList;
     LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-
+    private View mProgressView;
     private ArrayList<Seance> mySeances;
     private TextView mEmptyStateTextView;
     private String BASE_URL = "https://zakariasao.000webhostapp.com/blablafit/seances.php?";
@@ -61,6 +64,7 @@ public class TrouverUneSeanceFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_trouver_une_seance, container, false);
         mEmptyStateTextView  = rootView.findViewById(R.id.empty_state_textView);
+        mProgressView = rootView.findViewById(R.id.seances_progress);
         mList = rootView.findViewById(R.id.rv_search_seances);
 
         OkHttpClient client = new OkHttpClient();
@@ -75,6 +79,7 @@ public class TrouverUneSeanceFragment extends Fragment {
         // If there is a network connection, fetch data
         if (networkInfo != null && networkInfo.isConnected()) {
             // Show a progress spinner, and kick off a background task
+            showProgress(true);
             fetchSeances(BASE_URL,client);
 
         } else {
@@ -85,6 +90,38 @@ public class TrouverUneSeanceFragment extends Fragment {
         }
 
         return rootView;
+    }
+
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            mList.setVisibility(show ? View.GONE : View.VISIBLE);
+            mList.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mList.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mList.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
     }
 
     public void search(String query){
@@ -174,6 +211,7 @@ public class TrouverUneSeanceFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        showProgress(false);
                         mList.setVisibility(View.GONE);
                         mEmptyStateTextView.setVisibility(View.VISIBLE);
                         // Update empty state with no connection error message
@@ -189,6 +227,7 @@ public class TrouverUneSeanceFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        showProgress(false);
                         if (jsonResponse.length() == 0) {
                             mList.setVisibility(View.GONE);
                             mEmptyStateTextView.setVisibility(View.VISIBLE);
