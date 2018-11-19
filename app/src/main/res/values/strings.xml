@@ -34,5 +34,6 @@
     <string name="no_seance_available">Aucune séance disponible</string>
     <string name="no_messages">Aucun messages</string>
     <string name="no_messages_detail">Vos messages s\'afficheront ici lorsque des blablafiteurs vous contacteront.</string>
+    <string name="email_sign_in_button">Sign in with Email</string>
 
 </resources>

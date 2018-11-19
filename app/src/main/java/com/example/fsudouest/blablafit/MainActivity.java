@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity{
         SharedPreferences preferences=getSharedPreferences("My prefs",0);
         boolean logged_in = preferences.getBoolean("logged_in",false);
         if(!logged_in) {
-            startActivity(new Intent(this,LoginActivity.class));
+            startActivity(new Intent(this,ChooseLoginActivity.class));
             finish();
         }
 
