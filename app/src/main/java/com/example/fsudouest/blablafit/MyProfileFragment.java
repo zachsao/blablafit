@@ -45,7 +45,6 @@ import static android.app.Activity.RESULT_OK;
 public class MyProfileFragment extends Fragment {
 
     private static final int RC_PHOTO_PICKER = 2;
-    SharedPreferences preferences;
 
     private FirebaseStorage mFirebaseStorage;
     private StorageReference mProfilePhotosStorageReference;
@@ -61,8 +60,6 @@ public class MyProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootview = inflater.inflate(R.layout.fragment_my_profile, container, false);
-
-        preferences = getActivity().getSharedPreferences("My prefs",0);
 
         user =FirebaseAuth.getInstance().getCurrentUser();
         mFirebaseStorage = FirebaseStorage.getInstance();
