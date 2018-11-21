@@ -38,4 +38,9 @@
     <string name="welcome">Bienvenue ! Vous allez bientôt pouvoir trouver des partenaires d\'entraînement et conquérir votre corps</string>
     <string name="start">commencer</string>
 
+    <string name="update_profile_dialog_title">Mise à jour du profil</string>
+    <string name="update_photo_dialog_message">Voulez-vous mettre à jour votre photo de profil ?</string>
+    <string name="cancel">Annuler</string>
+
+
 </resources>
