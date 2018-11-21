@@ -2,25 +2,16 @@ package com.example.fsudouest.blablafit;
 
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.Arrays;
-import java.util.List;
-
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import static androidx.navigation.Navigation.findNavController;
 import static androidx.navigation.ui.NavigationUI.setupWithNavController;

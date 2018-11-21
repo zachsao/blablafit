@@ -14,8 +14,9 @@
 
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/profile_pic_image_view"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/userphoto" />
 
@@ -43,15 +44,7 @@
             android:id="@+id/nom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nom: "
-            android:textColor="#000000"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/prénom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Prénom: "
+            android:text="Prénom Nom: "
             android:textColor="#000000"
             android:textStyle="bold" />
 

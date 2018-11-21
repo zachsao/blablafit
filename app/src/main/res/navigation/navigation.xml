@@ -30,16 +30,16 @@
     <fragment
         android:id="@+id/nouvelleSeanceFragment"
         android:name="com.example.fsudouest.blablafit.NouvelleSeanceFragment"
-        android:label="fragment_nouvelle_seance"
+        android:label="Nouvelle séance"
         tools:layout="@layout/fragment_nouvelle_seance" />
     <fragment
         android:id="@+id/seancesFragment"
         android:name="com.example.fsudouest.blablafit.SeancesFragment"
-        android:label="fragment_seances"
+        android:label="Mes séances"
         tools:layout="@layout/fragment_seances" />
     <fragment
         android:id="@+id/messagesFragment"
         android:name="com.example.fsudouest.blablafit.MessagesFragment"
-        android:label="fragment_messages"
+        android:label="Messages"
         tools:layout="@layout/fragment_messages" />
 </navigation>
