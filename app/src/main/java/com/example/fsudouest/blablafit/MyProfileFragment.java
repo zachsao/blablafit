@@ -56,11 +56,6 @@ public class MyProfileFragment extends Fragment {
         deconnexion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*SharedPreferences.Editor editor = preferences.edit();
-                editor.putBoolean("logged_in", false);
-                editor.apply();
-                startActivity(new Intent(getActivity(),LoginActivity.class));
-                getActivity().finish();*/
                 signOut();
             }
         });
@@ -68,15 +63,7 @@ public class MyProfileFragment extends Fragment {
     }
 
     private void signOut() {
-        AuthUI.getInstance()
-                .signOut(getActivity())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    public void onComplete(@NonNull Task<Void> task) {
-                        //
-                        startActivity(new Intent(getActivity(),LoginActivity.class));
-                        getActivity().finish();
-                    }
-                });
+        AuthUI.getInstance().signOut(getActivity());
     }
 
 }

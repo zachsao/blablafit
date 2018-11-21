@@ -3,6 +3,7 @@ package com.example.fsudouest.blablafit;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.ActionBar;
@@ -29,21 +30,27 @@ import static androidx.navigation.ui.NavigationUI.setupActionBarWithNavControlle
 public class MainActivity extends AppCompatActivity{
 
 
-    private FirebaseUser user;
+
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        user = FirebaseAuth.getInstance().getCurrentUser();
+        mFirebaseAuth = FirebaseAuth.getInstance();
 
-        /*SharedPreferences preferences=getSharedPreferences("My prefs",0);
-        boolean logged_in = preferences.getBoolean("logged_in",false);
-        if(!logged_in) {
-            startActivity(new Intent(this,ChooseLoginActivity.class));
-            finish();
-        }*/
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user == null) {
+                    startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                    finish();
+                }
+            }
+        };
 
         NavController navController = findNavController(this, R.id.myNavHostFragment);
         setupActionBarWithNavController(this,navController);
@@ -64,28 +71,18 @@ public class MainActivity extends AppCompatActivity{
     }
 
     @Override
-    protected void onStart() {
-        if(user==null){
-            //if no one is signed in, start login activity
-            startActivity(new Intent(MainActivity.this,LoginActivity.class));
-            finish();
+    protected void onResume() {
+        super.onResume();
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mAuthStateListener != null) {
+            mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
         }
-        super.onStart();
     }
 
-
-
-
-
-
-
-
-    private void saveUserData(FirebaseUser user) {
-        SharedPreferences preferences = getSharedPreferences("My prefs",0);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean("logged_in", true);
-        editor.putString("nom",user.getDisplayName());
-        editor.putString("email",user.getEmail());
-        editor.apply();
-    }
 }
