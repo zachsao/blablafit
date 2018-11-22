@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,14 +23,19 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
 
@@ -51,10 +57,14 @@ public class NouvelleSeanceActivity extends AppCompatActivity {
     private String createur;
     private String duree;
 
+    FirebaseFirestore mDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nouvelle_seance);
+
+        mDatabase = FirebaseFirestore.getInstance();
 
         final TextView tv_lieu = findViewById(R.id.textView_lieu);
 
@@ -69,7 +79,7 @@ public class NouvelleSeanceActivity extends AppCompatActivity {
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                String lieu = place.getName().toString();
+                lieu = place.getName() +", "+place.getAddress().toString();
                 tv_lieu.setText("Lieu: " +lieu);
                 Log.i(TAG, "Place: " + place.getName());
             }
@@ -216,27 +226,29 @@ public class NouvelleSeanceActivity extends AppCompatActivity {
 
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String createur = user.getEmail();
+        final String createur = user.getEmail();
 
         //CREATION DE LA SEANCE
         Button creer = findViewById(R.id.bouton_creer_seance);
         creer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                nouvelleSeance = new Seance(titre,lieu,description,dateSeance,heure,nb_participants,createur,duree);
+                mDatabase.collection("workouts")
+                        .add(nouvelleSeance)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(NouvelleSeanceActivity.this,"Nouvelle séance programmée",Toast.LENGTH_SHORT).show();
+                    }
 
-                // Get a reference to the ConnectivityManager to check state of network connectivity
-                ConnectivityManager connMgr = (ConnectivityManager)
-                        getSystemService(Context.CONNECTIVITY_SERVICE);
-
-                // Get details on the currently active default data network
-                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-
-                // If there is a network connection, fetch data
-                if (networkInfo != null && networkInfo.isConnected()) {
-                    //TODO : save nouvelleSeance in Cloud Firestore
-                } else {
-                    //TODO : display error message
-                }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(NouvelleSeanceActivity.this,"Une erreur s'est produite",Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
