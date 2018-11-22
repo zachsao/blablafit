@@ -7,7 +7,6 @@ public class User {
     private String email;
     private String login;
     private String mdp;
-    private String telephone;
     private int note;
 
 
@@ -60,13 +59,7 @@ public class User {
         this.mdp = mdp;
     }
 
-    public String getTelephone() {
-        return telephone;
-    }
 
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
-    }
 
     public int getNote() {
         return note;
