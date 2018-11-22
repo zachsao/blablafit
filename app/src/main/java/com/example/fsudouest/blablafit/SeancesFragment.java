@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Source;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,6 +53,9 @@ public class SeancesFragment extends Fragment {
     private View mProgressView;
     private String BASE_URL = "https://zakariasao.000webhostapp.com/blablafit/seances.php?";
 
+    FirebaseFirestore mDatabase;
+
+    ArrayList<Seance> seances = new ArrayList<Seance>();
     public SeancesFragment() {
         // Required empty public constructor
     }
@@ -53,6 +66,8 @@ public class SeancesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_seances, container, false);
+
+        mDatabase = FirebaseFirestore.getInstance();
 
         mEmptyStateTextView  = rootView.findViewById(R.id.empty_state_textView);
         mProgressView = rootView.findViewById(R.id.seances_progress);
@@ -73,8 +88,8 @@ public class SeancesFragment extends Fragment {
         if (networkInfo != null && networkInfo.isConnected()) {
             // Show a progress spinner, and kick off a background task
             showProgress(true);
-            fetchSeances(BASE_URL,client);
-
+            //fetchSeances(BASE_URL,client);
+            getSeances();
         } else {
             mList.setVisibility(View.GONE);
             mEmptyStateTextView.setVisibility(View.VISIBLE);
@@ -162,7 +177,34 @@ public class SeancesFragment extends Fragment {
 
             }
         });
+    }
 
+    public void getSeances(){
+        CollectionReference ref = mDatabase.collection("workouts");
+
+        // Source can be CACHE, SERVER, or DEFAULT.
+        Source source = Source.SERVER;
+
+        // Get the document, forcing the SDK to use the offline cache
+        ref.whereEqualTo("createur", "zakaria.sao@gmail.com")
+                .get(source)
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            showProgress(false);
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("Seances Fragment", document.getId() + " => " + document.getData());
+                                seances.add(document.toObject(Seance.class));
+                            }
+                            mAdapter = new SeanceAdapter(getActivity(), seances);
+                            mList.setAdapter(mAdapter);
+                            mList.setLayoutManager(layoutManager);
+                        } else {
+                            Log.d("Seances Fragment", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 
 }

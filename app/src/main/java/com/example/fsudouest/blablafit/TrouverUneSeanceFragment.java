@@ -10,6 +10,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
@@ -25,6 +26,14 @@ import android.view.ViewGroup;
 import android.support.v7.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Source;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,11 +56,14 @@ public class TrouverUneSeanceFragment extends Fragment {
     private RecyclerView mList;
     LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
     private View mProgressView;
-    private ArrayList<Seance> mySeances;
+    private ArrayList<Seance> mySeances=new ArrayList<>();;
     private TextView mEmptyStateTextView;
     private String BASE_URL = "https://zakariasao.000webhostapp.com/blablafit/seances.php?";
     private ArrayList<Seance> filteredSeances = new ArrayList<>();
     SearchView searchView;
+
+
+    FirebaseFirestore mDatabase;
 
     public TrouverUneSeanceFragment() {
         // Required empty public constructor
@@ -63,6 +75,9 @@ public class TrouverUneSeanceFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_trouver_une_seance, container, false);
+
+        mDatabase = FirebaseFirestore.getInstance();
+
         mEmptyStateTextView  = rootView.findViewById(R.id.empty_state_textView);
         mProgressView = rootView.findViewById(R.id.seances_progress);
         mList = rootView.findViewById(R.id.rv_search_seances);
@@ -80,7 +95,8 @@ public class TrouverUneSeanceFragment extends Fragment {
         if (networkInfo != null && networkInfo.isConnected()) {
             // Show a progress spinner, and kick off a background task
             showProgress(true);
-            fetchSeances(BASE_URL,client);
+            getSeances();
+            //fetchSeances(BASE_URL,client);
 
         } else {
             mList.setVisibility(View.GONE);
@@ -246,5 +262,32 @@ public class TrouverUneSeanceFragment extends Fragment {
             }
         });
 
+    }
+
+    public void getSeances(){
+        CollectionReference ref = mDatabase.collection("workouts");
+
+        // Source can be CACHE, SERVER, or DEFAULT.
+        Source source = Source.SERVER;
+
+        // Get the document, forcing the SDK to use the offline cache
+        ref.get(source)
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            showProgress(false);
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("Seances Fragment", document.getId() + " => " + document.getData());
+                                mySeances.add(document.toObject(Seance.class));
+                            }
+                            mAdapter = new SeanceAdapter(getActivity(), mySeances);
+                            mList.setAdapter(mAdapter);
+                            mList.setLayoutManager(layoutManager);
+                        } else {
+                            Log.d("Seances Fragment", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 }
