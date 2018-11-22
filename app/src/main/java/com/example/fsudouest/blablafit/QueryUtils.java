@@ -183,7 +183,7 @@ public class QueryUtils {
                 String createur = currentSeance.getString("createur");
                 String date = currentSeance.getString("date");
                 String heure = currentSeance.getString("heure");
-                int participants = currentSeance.getInt("participants");
+                String participants = currentSeance.getString("participants");
                 String duree = currentSeance.getString("duree");
 
                 date = date.substring(8)+"/"+date.substring(5,7)+"/"+date.substring(2,4);

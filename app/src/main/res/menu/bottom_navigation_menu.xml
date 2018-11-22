@@ -2,13 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/accueilFragment"
+        android:id="@+id/seancesFragment"
         android:icon="@drawable/ic_home"
         android:title="accueil" />
     <item
-        android:id="@+id/seancesFragment"
-        android:icon="@drawable/ic_seances"
-        android:title="Mes séances" />
+        android:id="@+id/trouverUneSeanceFragment"
+        android:icon="@drawable/ic_menu_search"
+        android:title="Rechercher" />
+    
     <item
         android:id="@+id/messagesFragment"
         android:icon="@drawable/ic_messages"

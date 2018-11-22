@@ -10,12 +10,12 @@ public class Seance {
     private String description;
     private String date;
     private String heure;
-    private int nb_participants;
+    private String nb_participants;
     private String createur;
     private String duree;
 
 
-    public Seance(String titre, String lieu, String description, String date, String heure, int nb_participants, String createur, String duree) {
+    public Seance(String titre, String lieu, String description, String date, String heure, String nb_participants, String createur, String duree) {
         this.titre = titre;
         this.lieu = lieu;
         this.description = description;
@@ -25,6 +25,8 @@ public class Seance {
         this.createur = createur;
         this.duree = duree;
     }
+
+    public Seance(){}
 
     public String getTitre() {
         return titre;
@@ -66,11 +68,11 @@ public class Seance {
         this.heure = heure;
     }
 
-    public int getNb_participants() {
+    public String getNb_participants() {
         return nb_participants;
     }
 
-    public void setNb_participants(int nb_participants) {
+    public void setNb_participants(String nb_participants) {
         this.nb_participants = nb_participants;
     }
 

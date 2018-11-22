@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.fsudouest.blablafit">
 
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -22,7 +21,6 @@
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
@@ -34,6 +32,9 @@
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
         <activity android:name=".SeanceValideeActivity" />
+        <activity android:name=".NouvelleSeanceActivity"
+            android:label="Programmer une séance"
+            android:parentActivityName="com.example.fsudouest.blablafit.MainActivity"></activity>
     </application>
 
 </manifest>
