@@ -145,7 +145,7 @@ public class NouvelleSeanceActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day_of_month) {
                 date.setText(day_of_month+"/"+(month+1)+"/"+year);
-                dateSeance = year+"-"+(month+1)+"-"+day_of_month;
+                dateSeance = day_of_month+"/"+(month+1)+"/"+year;
             }
         }, year, month, day);
 
@@ -167,13 +167,13 @@ public class NouvelleSeanceActivity extends AppCompatActivity {
         picktime_et = findViewById(R.id.et_heure_choisie);
         int hour = c.get(Calendar.HOUR_OF_DAY);
         final int minute = c.get(Calendar.MINUTE);
-        picktime_et.setText(hour+":"+minute);
+        picktime_et.setText(hour+"h"+minute);
         heure = picktime_et.getText().toString();
         final TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hourOfDay, int minutes) {
                 String min = minutes < 10 ? "0"+minutes : ""+minutes;
-                picktime_et.setText(hourOfDay+":"+min);
+                picktime_et.setText(hourOfDay+"h"+min);
                 heure = picktime_et.getText().toString();
             }
         }, hour, minute, DateFormat.is24HourFormat(this));

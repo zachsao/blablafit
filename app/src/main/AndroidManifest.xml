@@ -31,7 +31,6 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".SeanceValideeActivity" />
         <activity android:name=".NouvelleSeanceActivity"
             android:label="Programmer une séance"
             android:parentActivityName="com.example.fsudouest.blablafit.MainActivity"></activity>

@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity{
         };
 
         NavController navController = findNavController(this, R.id.myNavHostFragment);
-        setupActionBarWithNavController(this,navController);
 
         final BottomNavigationView navigation =findViewById(R.id.bottom_navigation);
         BottomNavigationViewHelper.removeShiftMode(navigation);
@@ -62,12 +61,6 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-    }
-
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        return findNavController(this, R.id.myNavHostFragment).navigateUp();
     }
 
     @Override
