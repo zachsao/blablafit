@@ -35,15 +35,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Source;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 
 public class TrouverUneSeanceFragment extends Fragment {
@@ -58,7 +50,6 @@ public class TrouverUneSeanceFragment extends Fragment {
     private View mProgressView;
     private ArrayList<Seance> mySeances=new ArrayList<>();;
     private TextView mEmptyStateTextView;
-    private String BASE_URL = "https://zakariasao.000webhostapp.com/blablafit/seances.php?";
     private ArrayList<Seance> filteredSeances = new ArrayList<>();
     SearchView searchView;
 
@@ -82,7 +73,6 @@ public class TrouverUneSeanceFragment extends Fragment {
         mProgressView = rootView.findViewById(R.id.seances_progress);
         mList = rootView.findViewById(R.id.rv_search_seances);
 
-        OkHttpClient client = new OkHttpClient();
 
         // Get a reference to the ConnectivityManager to check state of network connectivity
         ConnectivityManager connMgr = (ConnectivityManager)
@@ -215,55 +205,6 @@ public class TrouverUneSeanceFragment extends Fragment {
     }
 
 
-    public void fetchSeances(String requestUrl, OkHttpClient client) {
-        Request myGetRequest = new Request.Builder()
-                .url(requestUrl)
-                .build();
-
-        client.newCall(myGetRequest).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.i("SeancesFragment", e.getMessage());
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showProgress(false);
-                        mList.setVisibility(View.GONE);
-                        mEmptyStateTextView.setVisibility(View.VISIBLE);
-                        // Update empty state with no connection error message
-                        mEmptyStateTextView.setText(getString(R.string.server_error));
-                    }
-                });
-            }
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                final String jsonResponse = response.body().string();
-                //Log.i("SeancesFragment", jsonResponse);
-                // Run view-related code back on the main thread
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showProgress(false);
-                        if (jsonResponse.length() == 0) {
-                            mList.setVisibility(View.GONE);
-                            mEmptyStateTextView.setVisibility(View.VISIBLE);
-                            // Update empty state with no connection error message
-                            mEmptyStateTextView.setText(getString(R.string.no_seance_available));
-                        } else {
-                            ArrayList<Seance> seances = QueryUtils.extractSeancesFromJson(jsonResponse);
-                            mySeances = seances;
-                            mAdapter = new SeanceAdapter(getActivity(), seances);
-                            mList.setAdapter(mAdapter);
-                            mList.setLayoutManager(layoutManager);
-                        }
-                    }
-                });
-
-            }
-        });
-
-    }
-
     public void getSeances(){
         CollectionReference ref = mDatabase.collection("workouts");
 
@@ -278,13 +219,24 @@ public class TrouverUneSeanceFragment extends Fragment {
                         if (task.isSuccessful()) {
                             showProgress(false);
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("Seances Fragment", document.getId() + " => " + document.getData());
                                 mySeances.add(document.toObject(Seance.class));
                             }
-                            mAdapter = new SeanceAdapter(getActivity(), mySeances);
-                            mList.setAdapter(mAdapter);
-                            mList.setLayoutManager(layoutManager);
+
+                            if(mySeances.isEmpty()){
+                                mList.setVisibility(View.GONE);
+                                mEmptyStateTextView.setVisibility(View.VISIBLE);
+                                mEmptyStateTextView.setText(getString(R.string.no_seance_available));
+                            }else{
+                                mAdapter = new SeanceAdapter(getActivity(), mySeances);
+                                mList.setAdapter(mAdapter);
+                                mList.setLayoutManager(layoutManager);
+                            }
+
                         } else {
+                            mList.setVisibility(View.GONE);
+                            mEmptyStateTextView.setVisibility(View.VISIBLE);
+                            // Update empty state with no connection error message
+                            mEmptyStateTextView.setText(getString(R.string.server_error));
                             Log.d("Seances Fragment", "Error getting documents: ", task.getException());
                         }
                     }
