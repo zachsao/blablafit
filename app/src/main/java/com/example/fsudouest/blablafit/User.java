@@ -2,38 +2,25 @@ package com.example.fsudouest.blablafit;
 
 public class User {
 
-    private String nom;
-    private String prenom;
+    private String nomComplet;
     private String email;
-    private String login;
-    private String mdp;
-    private int note;
+    private double note;
 
 
-    public User(String nom, String prenom, String email, String login, String mdp, int note) {
-        this.nom = nom;
-        this.prenom = prenom;
+    public User(String nomComplet, String email) {
+        this.nomComplet = nomComplet;
         this.email = email;
-        this.login = login;
-        this.mdp = mdp;
-        this.note = note;
+        this.note = 0.0;
     }
 
     public String getNom() {
-        return nom;
+        return nomComplet;
     }
 
     public void setNom(String nom) {
-        this.nom = nom;
+        this.nomComplet = nom;
     }
 
-    public String getPrenom() {
-        return prenom;
-    }
-
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
-    }
 
     public String getEmail() {
         return email;
@@ -43,29 +30,12 @@ public class User {
         this.email = email;
     }
 
-    public String getLogin() {
-        return login;
-    }
 
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getMdp() {
-        return mdp;
-    }
-
-    public void setMdp(String mdp) {
-        this.mdp = mdp;
-    }
-
-
-
-    public int getNote() {
+    public double getNote() {
         return note;
     }
 
-    public void setNote(int note) {
+    public void setNote(double note) {
         this.note = note;
     }
 }
