@@ -95,6 +95,7 @@ public class TrouverUneSeanceFragment extends Fragment {
             mEmptyStateTextView.setText(getString(R.string.no_internet_connection));
         }
 
+
         return rootView;
     }
 

@@ -34,6 +34,9 @@
         <activity android:name=".NouvelleSeanceActivity"
             android:label="Programmer une séance"
             android:parentActivityName="com.example.fsudouest.blablafit.MainActivity"></activity>
+        <activity android:name=".DetailsSeanceActivity"
+            android:label="Détails de la séance"
+            android:parentActivityName="com.example.fsudouest.blablafit.MainActivity"></activity>
     </application>
 
 </manifest>

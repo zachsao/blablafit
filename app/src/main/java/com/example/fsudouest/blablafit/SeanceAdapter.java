@@ -1,16 +1,24 @@
 package com.example.fsudouest.blablafit;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.api.Distribution;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.navigation.Navigation;
 
 public class SeanceAdapter extends RecyclerView.Adapter<SeanceAdapter.SeanceViewHolder>{
 
@@ -42,6 +50,15 @@ public class SeanceAdapter extends RecyclerView.Adapter<SeanceAdapter.SeanceView
     @Override
     public void onBindViewHolder(@NonNull SeanceViewHolder holder, int position) {
         holder.bind(position);
+
+        holder.parent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext,DetailsSeanceActivity.class);
+                mContext.startActivity(intent);
+            }
+        });
+
     }
 
 
@@ -61,9 +78,12 @@ public class SeanceAdapter extends RecyclerView.Adapter<SeanceAdapter.SeanceView
         TextView lieu;
         TextView createur;
 
+        LinearLayout parent;
+
         public SeanceViewHolder(View itemView){
             super(itemView);
 
+            parent = itemView.findViewById(R.id.parentLayout);
             titre = itemView.findViewById(R.id.tv_titre);
             date = itemView.findViewById(R.id.tv_date);
             lieu = itemView.findViewById(R.id.tv_lieu);

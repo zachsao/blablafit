@@ -41,6 +41,8 @@
     <string name="update_profile_dialog_title">Mise à jour du profil</string>
     <string name="update_photo_dialog_message">Voulez-vous mettre à jour votre photo de profil ?</string>
     <string name="cancel">Annuler</string>
+    <string name="contact">Contacter</string>
+    <string name="participate">je participe</string>
 
 
 </resources>
