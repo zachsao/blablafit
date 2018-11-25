@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.google.api.Distribution;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,9 +97,12 @@ public class SeanceAdapter extends RecyclerView.Adapter<SeanceAdapter.SeanceView
 
 
         public void bind(int position){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
+            SimpleDateFormat hourFormat = new SimpleDateFormat("HH:mm");
+
             titre.setText(mData.get(position).getTitre());
-            date.setText(mData.get(position).getDate());
-            heure.setText(mData.get(position).getHeure());
+            date.setText(dateFormat.format(mData.get(position).getDate()));
+            heure.setText(hourFormat.format(mData.get(position).getDate()));
             description.setText(mData.get(position).getDescription());
             duree.setText(mData.get(position).getDuree());
             participants.setText("Places restantes: "+mData.get(position).getNb_participants());

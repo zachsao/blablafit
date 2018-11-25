@@ -37,7 +37,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -51,12 +53,9 @@ public class NouvelleSeanceActivity extends AppCompatActivity {
     public String titre;
     private String lieu;
     private String description;
-    private String dateSeance;
-    private String heure;
+    private Date dateSeance;
     private String nb_participants;
-    private String createur;
     private String duree;
-
     FirebaseFirestore mDatabase;
 
     @Override
@@ -135,17 +134,21 @@ public class NouvelleSeanceActivity extends AppCompatActivity {
         //CHOIX DE LA DATE
         final EditText date = findViewById(R.id.date_et);
 
-        Calendar c = Calendar.getInstance();
+        final Calendar c = Calendar.getInstance();
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
+
+        dateSeance=c.getTime();
         int day = c.get(Calendar.DAY_OF_MONTH);
         int month = c.get(Calendar.MONTH);
         int year = c.get(Calendar.YEAR);
-        date.setText(day+"/"+(month+1)+"/"+year);
-        dateSeance = year+"-"+(month+1)+"-"+day;
+        date.setText(dateFormat.format(c.getTime()));
+
         final DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener(){
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day_of_month) {
-                date.setText(day_of_month+"/"+(month+1)+"/"+year);
-                dateSeance = day_of_month+"/"+(month+1)+"/"+year;
+                c.set(year,month,day_of_month);
+                dateSeance = c.getTime();
+                date.setText(dateFormat.format(dateSeance));
             }
         }, year, month, day);
 
@@ -165,16 +168,21 @@ public class NouvelleSeanceActivity extends AppCompatActivity {
 
         //CHOIX DE L'HEURE
         picktime_et = findViewById(R.id.et_heure_choisie);
+
+        final SimpleDateFormat hourFormat = new SimpleDateFormat("HH:mm");
+
         int hour = c.get(Calendar.HOUR_OF_DAY);
         final int minute = c.get(Calendar.MINUTE);
-        picktime_et.setText(hour+"h"+minute);
-        heure = picktime_et.getText().toString();
+
+        picktime_et.setText(hourFormat.format(c.getTime()));
+
         final TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hourOfDay, int minutes) {
-                String min = minutes < 10 ? "0"+minutes : ""+minutes;
-                picktime_et.setText(hourOfDay+"h"+min);
-                heure = picktime_et.getText().toString();
+                c.set(Calendar.HOUR_OF_DAY,hourOfDay);
+                c.set(Calendar.MINUTE,minutes);
+                dateSeance=c.getTime();
+                picktime_et.setText(hourFormat.format(dateSeance));
             }
         }, hour, minute, DateFormat.is24HourFormat(this));
 
@@ -226,14 +234,14 @@ public class NouvelleSeanceActivity extends AppCompatActivity {
 
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        final String createur = user.getEmail();
+        final String auteur = user.getEmail();
 
         //CREATION DE LA SEANCE
         Button creer = findViewById(R.id.bouton_creer_seance);
         creer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                nouvelleSeance = new Seance(titre,lieu,description,dateSeance,heure,nb_participants,createur,duree);
+                nouvelleSeance = new Seance(titre,lieu,description,dateSeance,nb_participants,auteur,duree);
                 mDatabase.collection("workouts")
                         .add(nouvelleSeance)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
