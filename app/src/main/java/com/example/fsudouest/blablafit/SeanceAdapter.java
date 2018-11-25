@@ -3,6 +3,7 @@ package com.example.fsudouest.blablafit;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -15,9 +16,11 @@ import android.widget.TextView;
 
 import com.google.api.Distribution;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.navigation.Navigation;
 
@@ -49,13 +52,23 @@ public class SeanceAdapter extends RecyclerView.Adapter<SeanceAdapter.SeanceView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SeanceViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SeanceViewHolder holder, final int position) {
         holder.bind(position);
+
+        SimpleDateFormat format = new SimpleDateFormat("EEE d MMM yy à HH:mm", new Locale("fr","FR"));
+        final String dateChaine = format.format(mData.get(position).getDate());
 
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext,DetailsSeanceActivity.class);
+                intent.putExtra("titre",mData.get(position).getTitre());
+                intent.putExtra("lieu",mData.get(position).getLieu());
+                intent.putExtra("date",dateChaine);
+                intent.putExtra("durée",mData.get(position).getDuree());
+                intent.putExtra("places",mData.get(position).getNb_participants());
+                intent.putExtra("auteur",mData.get(position).getCreateur());
+                intent.putExtra("description",mData.get(position).getDescription());
                 mContext.startActivity(intent);
             }
         });
@@ -89,7 +102,6 @@ public class SeanceAdapter extends RecyclerView.Adapter<SeanceAdapter.SeanceView
             date = itemView.findViewById(R.id.tv_date);
             lieu = itemView.findViewById(R.id.tv_lieu);
             heure = itemView.findViewById(R.id.tv_heure);
-            description = itemView.findViewById(R.id.tv_description);
             duree = itemView.findViewById(R.id.tv_durée);
             participants = itemView.findViewById(R.id.tv_nb_participants);
             createur = itemView.findViewById(R.id.tv_créateur);
@@ -103,7 +115,6 @@ public class SeanceAdapter extends RecyclerView.Adapter<SeanceAdapter.SeanceView
             titre.setText(mData.get(position).getTitre());
             date.setText(dateFormat.format(mData.get(position).getDate()));
             heure.setText(hourFormat.format(mData.get(position).getDate()));
-            description.setText(mData.get(position).getDescription());
             duree.setText(mData.get(position).getDuree());
             participants.setText("Places restantes: "+mData.get(position).getNb_participants());
             createur.setText("Créée par : "+mData.get(position).getCreateur());
