@@ -240,6 +240,8 @@ public class NouvelleSeanceActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Toast.makeText(NouvelleSeanceActivity.this,"Nouvelle séance programmée",Toast.LENGTH_SHORT).show();
+                        NavUtils.navigateUpFromSameTask(NouvelleSeanceActivity.this);
+
                     }
 
                 })

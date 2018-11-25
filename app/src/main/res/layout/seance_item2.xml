@@ -98,6 +98,7 @@
                 android:id="@+id/tv_nb_participants"
                 android:text="3 participants"/>
 
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
