@@ -14,9 +14,10 @@ public class Seance implements Serializable {
     private String nb_participants;
     private String createur;
     private String duree;
+    private String id;
 
 
-    public Seance(String titre, String lieu, String description, Date date, String nb_participants, String createur, String duree) {
+    public Seance(String titre, String lieu, String description, Date date, String nb_participants, String createur, String duree,String id) {
         this.titre = titre;
         this.lieu = lieu;
         this.description = description;
@@ -24,6 +25,7 @@ public class Seance implements Serializable {
         this.nb_participants = nb_participants;
         this.createur = createur;
         this.duree = duree;
+        this.id=id;
     }
 
     public Seance(){}
@@ -78,5 +80,13 @@ public class Seance implements Serializable {
 
     public void setDuree(String duree) {
         this.duree = duree;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

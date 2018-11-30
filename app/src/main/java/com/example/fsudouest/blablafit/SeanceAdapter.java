@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.api.Distribution;
 
@@ -61,6 +62,7 @@ public class SeanceAdapter extends RecyclerView.Adapter<SeanceAdapter.SeanceView
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Toast.makeText(mContext,mData.get(position).getId(),Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(mContext,DetailsSeanceActivity.class);
                 /*intent.putExtra("titre",mData.get(position).getTitre());
                 intent.putExtra("lieu",mData.get(position).getLieu());

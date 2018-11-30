@@ -16,6 +16,8 @@ public class User {
         this.photoUrl = photoUrl;
     }
 
+    public User(){}
+
     public String getNom() {
         return nomComplet;
     }

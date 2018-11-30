@@ -241,8 +241,9 @@ public class NouvelleSeanceActivity extends AppCompatActivity {
         creer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                nouvelleSeance = new Seance(titre,lieu,description,dateSeance,nb_participants,auteur,duree);
+
                 final DocumentReference ref = mDatabase.collection("workouts").document();
+                nouvelleSeance = new Seance(titre,lieu,description,dateSeance,nb_participants,auteur,duree,ref.getId());
 
                 ref.set(nouvelleSeance).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
