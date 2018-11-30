@@ -62,13 +62,14 @@ public class SeanceAdapter extends RecyclerView.Adapter<SeanceAdapter.SeanceView
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext,DetailsSeanceActivity.class);
-                intent.putExtra("titre",mData.get(position).getTitre());
+                /*intent.putExtra("titre",mData.get(position).getTitre());
                 intent.putExtra("lieu",mData.get(position).getLieu());
                 intent.putExtra("date",dateChaine);
                 intent.putExtra("durée",mData.get(position).getDuree());
                 intent.putExtra("places",mData.get(position).getNb_participants());
                 intent.putExtra("auteur",mData.get(position).getCreateur());
-                intent.putExtra("description",mData.get(position).getDescription());
+                intent.putExtra("description",mData.get(position).getDescription());*/
+                intent.putExtra("seance",mData.get(position));
                 mContext.startActivity(intent);
             }
         });

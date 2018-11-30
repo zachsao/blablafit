@@ -17,7 +17,6 @@ import androidx.navigation.NavController;
 
 import static androidx.navigation.Navigation.findNavController;
 import static androidx.navigation.ui.NavigationUI.setupWithNavController;
-import static androidx.navigation.ui.NavigationUI.setupActionBarWithNavController;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity{
 
         NavController navController = findNavController(this, R.id.myNavHostFragment);
 
-        final BottomNavigationView navigation =findViewById(R.id.bottom_navigation);
+        BottomNavigationView navigation = findViewById(R.id.bottom_navigation);
         BottomNavigationViewHelper.removeShiftMode(navigation);
         setupWithNavController(navigation,navController);
 
@@ -67,7 +66,6 @@ public class MainActivity extends AppCompatActivity{
     protected void onResume() {
         super.onResume();
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
-
     }
 
     @Override

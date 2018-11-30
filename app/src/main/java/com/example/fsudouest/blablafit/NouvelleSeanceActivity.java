@@ -226,15 +226,15 @@ public class NouvelleSeanceActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 nb_participants = adapterView.getItemAtPosition(i).toString();
-
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final String auteur = user.getEmail();
+        final User author = new User(user.getDisplayName(),user.getEmail(),user.getPhotoUrl().toString());
 
         //CREATION DE LA SEANCE
         Button creer = findViewById(R.id.bouton_creer_seance);
@@ -242,23 +242,25 @@ public class NouvelleSeanceActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 nouvelleSeance = new Seance(titre,lieu,description,dateSeance,nb_participants,auteur,duree);
-                mDatabase.collection("workouts")
-                        .add(nouvelleSeance)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                final DocumentReference ref = mDatabase.collection("workouts").document();
+
+                ref.set(nouvelleSeance).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
+                    public void onSuccess(Void aVoid) {
+                        //add a subcollection of users
+                        ref.collection("users").document("auteur").set(author);
                         Toast.makeText(NouvelleSeanceActivity.this,"Nouvelle séance programmée",Toast.LENGTH_SHORT).show();
                         NavUtils.navigateUpFromSameTask(NouvelleSeanceActivity.this);
-
                     }
-
-                })
-                .addOnFailureListener(new OnFailureListener() {
+                }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(NouvelleSeanceActivity.this,"Une erreur s'est produite",Toast.LENGTH_SHORT).show();
+
                     }
                 });
+
+
             }
         });
 

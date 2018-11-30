@@ -2,15 +2,18 @@ package com.example.fsudouest.blablafit;
 
 public class User {
 
+    private int id;
     private String nomComplet;
     private String email;
     private double note;
+    private String photoUrl;
 
 
-    public User(String nomComplet, String email) {
+    public User(String nomComplet, String email, String photoUrl) {
         this.nomComplet = nomComplet;
         this.email = email;
         this.note = 0.0;
+        this.photoUrl = photoUrl;
     }
 
     public String getNom() {
@@ -37,5 +40,26 @@ public class User {
 
     public void setNote(double note) {
         this.note = note;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return this.nomComplet;
     }
 }

@@ -73,8 +73,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_lieu"
-                    tools:text="Basic fit, 121 pl. Grand Théatre, 33800 Bordeaux"
-                    android:textSize="14sp"/>
+                    tools:text="Ceci est une très long addresse qui prend trop de place pour être affichée entièrement"
+                    android:textSize="14sp"
+                    android:maxLines="2"
+                    android:ellipsize="end"/>
             </LinearLayout>
 
 
@@ -82,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_nb_participants"
-                android:text="3 participants"/>
+                android:text="3 participants" />
 
 
             <TextView

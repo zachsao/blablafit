@@ -1,10 +1,11 @@
 package com.example.fsudouest.blablafit;
 
+import java.io.Serializable;
 import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Seance {
+public class Seance implements Serializable {
 
     private String titre;
     private String lieu;

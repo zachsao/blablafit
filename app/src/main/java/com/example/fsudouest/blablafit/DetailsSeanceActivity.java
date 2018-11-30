@@ -8,7 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 
 public class DetailsSeanceActivity extends AppCompatActivity {
@@ -30,14 +34,17 @@ public class DetailsSeanceActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Bundle b = intent.getExtras();
+        Seance seance = (Seance) intent.getSerializableExtra("seance");
 
+        SimpleDateFormat format = new SimpleDateFormat("EEE d MMM yy à HH:mm", new Locale("fr","FR"));
+        final String dateChaine = format.format(seance.getDate());
 
-        title.setText("Type de séance : "+b.getString("titre"));
-        location.setText("Lieu : "+b.getString("lieu"));
-        date.setText("Date : "+b.getString("date"));
-        duration.setText("Durée : "+b.getString("durée"));
-        description.setText("Description : "+b.getString("description"));
-        places.setText("Places restantes : "+b.getString("places"));
+        title.setText("Type de séance : "+seance.getTitre());
+        location.setText("Lieu : "+seance.getLieu());
+        date.setText("Date : "+dateChaine);
+        duration.setText("Durée : "+seance.getDuree());
+        description.setText("Description : "+seance.getDescription());
+        places.setText("Places restantes : "+seance.getNb_participants());
         auteur.setText(b.getString("auteur"));
 
 
