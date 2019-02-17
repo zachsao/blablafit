@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit
+package com.example.fsudouest.blablafit.Adapters
 
 import android.content.Context
 import android.content.Intent
@@ -9,6 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.example.fsudouest.blablafit.Ui.Activities.DetailsSeanceActivity
+import com.example.fsudouest.blablafit.Model.Seance
+import com.example.fsudouest.blablafit.R
 
 import java.text.SimpleDateFormat
 import java.util.ArrayList

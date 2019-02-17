@@ -1,6 +1,5 @@
-package com.example.fsudouest.blablafit
+package com.example.fsudouest.blablafit.Ui.Activities
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.core.app.NavUtils
 import androidx.appcompat.app.AppCompatActivity
@@ -8,10 +7,9 @@ import android.view.MenuItem
 import android.widget.TextView
 
 import com.bumptech.glide.Glide
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.DocumentSnapshot
+import com.example.fsudouest.blablafit.Model.Seance
+import com.example.fsudouest.blablafit.Model.User
+import com.example.fsudouest.blablafit.R
 import com.google.firebase.firestore.FirebaseFirestore
 
 import java.text.SimpleDateFormat

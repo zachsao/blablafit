@@ -1,15 +1,14 @@
-package com.example.fsudouest.blablafit
+package com.example.fsudouest.blablafit.Ui.Activities
 
 import android.app.Activity
-import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
 import android.os.Bundle
-import android.view.View
-import android.view.View.OnClickListener
 import android.widget.Button
+import com.example.fsudouest.blablafit.MainActivity
+import com.example.fsudouest.blablafit.R
 
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse

@@ -17,7 +17,7 @@
             android:value="AIzaSyDjAq64iwcNabtOwgQtSTSIlCFXhbdtNmY" />
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.fsudouest.blablafit.MainActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,12 +29,12 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name="com.example.fsudouest.blablafit.Ui.Activities.LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".NouvelleSeanceActivity"
+        <activity android:name="com.example.fsudouest.blablafit.Ui.Activities.NouvelleSeanceActivity"
             android:label="Programmer une séance"
             android:parentActivityName="com.example.fsudouest.blablafit.MainActivity"></activity>
-        <activity android:name=".DetailsSeanceActivity"
+        <activity android:name="com.example.fsudouest.blablafit.Ui.Activities.DetailsSeanceActivity"
             android:label="Détails de la séance"
             android:parentActivityName="com.example.fsudouest.blablafit.MainActivity"></activity>
     </application>

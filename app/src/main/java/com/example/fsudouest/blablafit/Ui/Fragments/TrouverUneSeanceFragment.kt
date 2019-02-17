@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit
+package com.example.fsudouest.blablafit.Ui.Fragments
 
 
 import android.animation.Animator
@@ -6,10 +6,8 @@ import android.animation.AnimatorListenerAdapter
 import android.app.SearchManager
 import android.content.Context
 import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.core.app.NavUtils
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
@@ -22,13 +20,11 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
+import com.example.fsudouest.blablafit.Model.Seance
+import com.example.fsudouest.blablafit.R
+import com.example.fsudouest.blablafit.Adapters.SeanceAdapter
 
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QueryDocumentSnapshot
-import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Source
 
 import java.util.ArrayList

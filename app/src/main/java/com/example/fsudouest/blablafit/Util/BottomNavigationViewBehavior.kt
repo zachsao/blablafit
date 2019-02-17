@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit
+package com.example.fsudouest.blablafit.Util
 
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.coordinatorlayout.widget.CoordinatorLayout

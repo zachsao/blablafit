@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit
+package com.example.fsudouest.blablafit.Ui.Activities
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -12,24 +12,21 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.Spinner
 import android.widget.TextView
-import android.widget.TimePicker
 import android.widget.Toast
+import com.example.fsudouest.blablafit.Model.Seance
+import com.example.fsudouest.blablafit.Model.User
+import com.example.fsudouest.blablafit.R
 
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.places.AutocompleteFilter
 import com.google.android.gms.location.places.Place
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment
 import com.google.android.gms.location.places.ui.PlaceSelectionListener
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 
 import java.text.SimpleDateFormat

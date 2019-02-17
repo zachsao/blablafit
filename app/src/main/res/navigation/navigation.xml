@@ -7,22 +7,22 @@
 
     <fragment
         android:id="@+id/myProfileFragment"
-        android:name="com.example.fsudouest.blablafit.MyProfileFragment"
+        android:name="com.example.fsudouest.blablafit.Ui.Fragments.MyProfileFragment"
         android:label="Mon profil"
         tools:layout="@layout/fragment_my_profile" />
     <fragment
         android:id="@+id/trouverUneSeanceFragment"
-        android:name="com.example.fsudouest.blablafit.TrouverUneSeanceFragment"
+        android:name="com.example.fsudouest.blablafit.Ui.Fragments.TrouverUneSeanceFragment"
         android:label="Trouver une séance"
         tools:layout="@layout/fragment_trouver_une_seance" />
     <fragment
         android:id="@+id/seancesFragment"
-        android:name="com.example.fsudouest.blablafit.SeancesFragment"
+        android:name="com.example.fsudouest.blablafit.Ui.Fragments.SeancesFragment"
         android:label="Mes séances"
         tools:layout="@layout/fragment_seances" />
     <fragment
         android:id="@+id/messagesFragment"
-        android:name="com.example.fsudouest.blablafit.MessagesFragment"
+        android:name="com.example.fsudouest.blablafit.Ui.Fragments.MessagesFragment"
         android:label="Messages"
         tools:layout="@layout/fragment_messages" />
 </navigation>

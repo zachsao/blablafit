@@ -7,15 +7,15 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-
-import androidx.navigation.NavController
 
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
+import com.example.fsudouest.blablafit.Ui.Activities.LoginActivity
+import com.example.fsudouest.blablafit.Ui.Activities.NouvelleSeanceActivity
+import com.example.fsudouest.blablafit.Util.BottomNavigationViewBehavior
+import com.example.fsudouest.blablafit.Util.BottomNavigationViewHelper
 
 
 class MainActivity : AppCompatActivity() {
