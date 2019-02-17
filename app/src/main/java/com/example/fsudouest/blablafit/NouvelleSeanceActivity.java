@@ -2,13 +2,10 @@ package com.example.fsudouest.blablafit;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.NavUtils;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -41,9 +38,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import static android.support.constraint.Constraints.TAG;
+
 
 public class NouvelleSeanceActivity extends AppCompatActivity {
+
+    private String TAG = "NouvelleSeanceActivity";
 
     private Seance nouvelleSeance;
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 25;
