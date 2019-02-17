@@ -7,6 +7,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.databinding.DataBindingUtil
 
 import com.google.firebase.auth.FirebaseAuth
 
@@ -16,6 +17,7 @@ import com.example.fsudouest.blablafit.Ui.Activities.LoginActivity
 import com.example.fsudouest.blablafit.Ui.Activities.NouvelleSeanceActivity
 import com.example.fsudouest.blablafit.Util.BottomNavigationViewBehavior
 import com.example.fsudouest.blablafit.Util.BottomNavigationViewHelper
+import com.example.fsudouest.blablafit.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
@@ -24,9 +26,10 @@ class MainActivity : AppCompatActivity() {
     private var mFirebaseAuth: FirebaseAuth? = null
     private var mAuthStateListener: FirebaseAuth.AuthStateListener? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        val binding: ActivityMainBinding = DataBindingUtil.setContentView(this,R.layout.activity_main)
 
         mFirebaseAuth = FirebaseAuth.getInstance()
         mAuthStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
@@ -39,14 +42,14 @@ class MainActivity : AppCompatActivity() {
 
         val navController = findNavController(this, R.id.myNavHostFragment)
 
-        val navigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        val navigation = binding.bottomNavigation
         BottomNavigationViewHelper.removeShiftMode(navigation)
         setupWithNavController(navigation, navController)
 
         val layoutParams = navigation.layoutParams as CoordinatorLayout.LayoutParams
         layoutParams.behavior = BottomNavigationViewBehavior()
 
-        val floatingActionButton = findViewById<FloatingActionButton>(R.id.add_workout_button)
+        val floatingActionButton = binding.addWorkoutButton
         floatingActionButton.setOnClickListener { startActivity(Intent(this, NouvelleSeanceActivity::class.java)) }
 
     }
