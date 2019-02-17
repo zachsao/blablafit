@@ -233,7 +233,7 @@ public class NouvelleSeanceActivity extends AppCompatActivity {
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         final String auteur = user.getEmail();
-        final User author = new User(user.getDisplayName(),user.getEmail(),user.getPhotoUrl().toString());
+        final User author = new User(user.getDisplayName(),user.getEmail(),user.getPhotoUrl()!=null?user.getPhotoUrl().toString():"");
 
         //CREATION DE LA SEANCE
         Button creer = findViewById(R.id.bouton_creer_seance);
