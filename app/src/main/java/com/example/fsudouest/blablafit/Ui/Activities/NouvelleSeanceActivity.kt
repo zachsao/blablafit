@@ -11,15 +11,14 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioGroup
-import android.widget.Spinner
-import android.widget.TextView
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import com.example.fsudouest.blablafit.Model.Seance
 import com.example.fsudouest.blablafit.Model.User
 import com.example.fsudouest.blablafit.R
+import com.example.fsudouest.blablafit.databinding.ActivityNouvelleSeanceBinding
 
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.places.AutocompleteFilter
@@ -50,16 +49,20 @@ class NouvelleSeanceActivity : AppCompatActivity() {
     private var duree: String? = null
     lateinit var mDatabase: FirebaseFirestore
 
+    lateinit var binding: ActivityNouvelleSeanceBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_nouvelle_seance)
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_nouvelle_seance)
 
         mDatabase = FirebaseFirestore.getInstance()
 
-        val tv_lieu = findViewById<TextView>(R.id.textView_lieu)
+        val tv_lieu = binding.textViewLieu
+
+
 
         //CHOIX SEANCE EN SALLE OU EN EXTERIEUR
-        val radioGroup = findViewById<RadioGroup>(R.id.radio_group)
+        val radioGroup = binding.radioGroup
         checkByDefault(radioGroup, R.id.salle)
 
         autocompleteFragment = fragmentManager.findFragmentById(R.id.place_autocomplete_fragment) as PlaceAutocompleteFragment
@@ -99,7 +102,7 @@ class NouvelleSeanceActivity : AppCompatActivity() {
         }
 
         //CHOIX DU TYPE DE SEANCE
-        val spinner_choix_seance = findViewById<Spinner>(R.id.choix_seance_spinner)
+        val spinner_choix_seance = binding.choixSeanceSpinner
         // Create an ArrayAdapter using the string array and a default spinner layout
         val adapter_choix_seance = ArrayAdapter.createFromResource(this,
                 R.array.tableau_seances, android.R.layout.simple_spinner_item)
@@ -117,7 +120,7 @@ class NouvelleSeanceActivity : AppCompatActivity() {
         }
 
         //CHOIX DE LA DATE
-        val date = findViewById<EditText>(R.id.date_et)
+        val date = binding.dateEt
 
         val c = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("dd/MM/yy")
@@ -139,7 +142,7 @@ class NouvelleSeanceActivity : AppCompatActivity() {
         date.setOnClickListener { datePickerDialog.show() }
 
         //CHOIX DE L'HEURE
-        picktime_et = findViewById(R.id.et_heure_choisie)
+        picktime_et = binding.etHeureChoisie
 
         val hourFormat = SimpleDateFormat("HH:mm")
 
@@ -161,7 +164,7 @@ class NouvelleSeanceActivity : AppCompatActivity() {
 
 
         //CHOIX DE LA DUREE
-        val spinner_duree = findViewById<View>(R.id.duree_spinner) as Spinner
+        val spinner_duree = binding.dureeSpinner
         val adapter_duree = ArrayAdapter.createFromResource(this,
                 R.array.tableau_durees, android.R.layout.simple_spinner_item)
         adapter_duree.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -175,7 +178,7 @@ class NouvelleSeanceActivity : AppCompatActivity() {
         }
 
         //CHOIX DU NOMBRE MAXIMUM DE PARTICIPANTS
-        val spinner_places = findViewById<View>(R.id.nbr_places_spinner) as Spinner
+        val spinner_places = binding.nbrPlacesSpinner
         val adapter_places = ArrayAdapter.createFromResource(this,
                 R.array.tableau_nbr_places, android.R.layout.simple_spinner_item)
         adapter_places.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -194,7 +197,7 @@ class NouvelleSeanceActivity : AppCompatActivity() {
         val author = User(user.displayName!!, user.email!!, if (user.photoUrl != null) user.photoUrl.toString() else "")
 
         //CREATION DE LA SEANCE
-        val creer = findViewById<Button>(R.id.bouton_creer_seance)
+        val creer = binding.boutonCreerSeance
         creer.setOnClickListener {
             val ref = mDatabase.collection("workouts").document()
             nouvelleSeance = Seance(titre, lieu!!, description!!, dateSeance!!, nb_participants!!, auteur!!, duree!!, ref.id)
@@ -226,10 +229,6 @@ class NouvelleSeanceActivity : AppCompatActivity() {
         if (rg.checkedRadioButtonId == -1) {
             rg.check(id)
         }
-    }
-
-    companion object {
-        private val PLACE_AUTOCOMPLETE_REQUEST_CODE = 25
     }
 
 }
