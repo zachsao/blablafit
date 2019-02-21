@@ -8,6 +8,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 
 import com.google.firebase.auth.FirebaseAuth
 
@@ -18,9 +19,15 @@ import com.example.fsudouest.blablafit.Ui.Activities.NouvelleSeanceActivity
 import com.example.fsudouest.blablafit.Util.BottomNavigationViewBehavior
 import com.example.fsudouest.blablafit.Util.BottomNavigationViewHelper
 import com.example.fsudouest.blablafit.databinding.ActivityMainBinding
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
+import javax.inject.Inject
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
+
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
 
     private var mFirebaseAuth: FirebaseAuth? = null
@@ -65,5 +72,7 @@ class MainActivity : AppCompatActivity() {
             mFirebaseAuth!!.removeAuthStateListener(mAuthStateListener!!)
         }
     }
+
+    override fun supportFragmentInjector() = dispatchingAndroidInjector
 
 }
