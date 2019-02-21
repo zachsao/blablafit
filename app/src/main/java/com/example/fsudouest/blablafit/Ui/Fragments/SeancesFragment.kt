@@ -67,17 +67,11 @@ class SeancesFragment : Fragment(), Injectable {
         mList = binding.rvSeances
 
 
-        // Get a reference to the ConnectivityManager to check state of network connectivity
-        val connMgr = activity!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-        // Get details on the currently active default data network
-        val networkInfo = connMgr.activeNetworkInfo
 
         // If there is a network connection, fetch data
-        if (networkInfo != null && networkInfo.isConnected) {
+        if (isOnline() && user!=null ) {
             // Show a progress spinner, and kick off a background task
             showProgress(true)
-            if(user!=null)
                 getSeances()
         } else {
             mList.visibility = View.GONE
@@ -87,6 +81,14 @@ class SeancesFragment : Fragment(), Injectable {
         }
 
         return binding.root
+    }
+
+    private fun isOnline():Boolean{
+        // Get a reference to the ConnectivityManager to check state of network connectivity
+        val connMgr = activity!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        // Get details on the currently active default data network
+        val networkInfo = connMgr.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
     }
 
     private fun showProgress(show: Boolean) {
