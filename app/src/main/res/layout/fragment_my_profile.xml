@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     tools:context=".Ui.Fragments.MyProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <data>
+        <variable
+            name="user"
+            type="com.example.fsudouest.blablafit.model.User"/>
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,7 +30,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="16sp"
-            android:text="PSEUDO"
+            tools:text="PSEUDO"
+            android:text="@{user.nomComplet}"
             android:textColor="#000000"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -45,7 +49,8 @@
             android:id="@+id/nom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Prénom Nom: "
+            tools:text="Prénom Nom: "
+            android:text="@{user.nomComplet}"
             android:textColor="#000000"
             android:textStyle="bold" />
 
@@ -53,7 +58,8 @@
             android:id="@+id/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Email: "
+            tools:text="Email: "
+            android:text="@{user.email}"
             android:textColor="#000000"
             android:textStyle="bold" />
 
@@ -90,6 +96,4 @@
 
 
     </LinearLayout>
-
-
-</FrameLayout>
+</layout>

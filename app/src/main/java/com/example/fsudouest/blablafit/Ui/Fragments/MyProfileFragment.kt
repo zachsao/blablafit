@@ -22,7 +22,10 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
 import android.app.Activity.RESULT_OK
+import androidx.databinding.DataBindingUtil
 import com.example.fsudouest.blablafit.R
+import com.example.fsudouest.blablafit.databinding.FragmentMyProfileBinding
+import com.example.fsudouest.blablafit.model.User
 
 
 /**
@@ -32,39 +35,34 @@ class MyProfileFragment : Fragment() {
 
     private var mFirebaseStorage: FirebaseStorage? = null
     private var mProfilePhotosStorageReference: StorageReference? = null
-    private var user: FirebaseUser? = null
+    private var firebaseUser: FirebaseUser? = null
     private lateinit var profile_pic: ImageView
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val rootview = inflater.inflate(R.layout.fragment_my_profile, container, false)
+        val binding: FragmentMyProfileBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_my_profile, container, false)
 
-        user = FirebaseAuth.getInstance().currentUser
+
+        firebaseUser = FirebaseAuth.getInstance().currentUser
         mFirebaseStorage = FirebaseStorage.getInstance()
         mProfilePhotosStorageReference = mFirebaseStorage!!.reference.child("profile_pictures")
 
-        val pseudo = rootview.findViewById<TextView>(R.id.pseudo)
-        val nom = rootview.findViewById<TextView>(R.id.nom)
-        val email = rootview.findViewById<TextView>(R.id.email)
-        profile_pic = rootview.findViewById(R.id.profile_pic_image_view)
+        binding.user = User(firebaseUser?.displayName!!,firebaseUser?.email!!)
+        profile_pic = binding.profilePicImageView
 
-        pseudo.text = user!!.displayName
-        nom.text = "Nom: " + user!!.displayName!!
-        //prenom.setText("Prénom: "+preferences.getString("prénom",null));
-        email.text = "Email: " + user!!.email!!
-        if (user!!.photoUrl != null) {
+
+        if (firebaseUser!!.photoUrl != null) {
             Glide.with(context!!)
-                    .load(user!!.photoUrl!!.toString())
+                    .load(firebaseUser!!.photoUrl!!.toString())
                     .into(profile_pic)
         }
 
         profile_pic.setOnClickListener { createPhotoUpdateDialog() }
 
-        val deconnexion = rootview.findViewById<Button>(R.id.deco_button)
-        deconnexion.setOnClickListener { signOut() }
-        return rootview
+        binding.decoButton.setOnClickListener { signOut() }
+        return binding.root
     }
 
 
@@ -112,7 +110,7 @@ class MyProfileFragment : Fragment() {
                     val photoUpdate = UserProfileChangeRequest.Builder()
                             .setPhotoUri(downloadUri)
                             .build()
-                    user!!.updateProfile(photoUpdate)
+                    firebaseUser!!.updateProfile(photoUpdate)
                 } else {
                     Toast.makeText(activity, "Upload Failed - please try again", Toast.LENGTH_SHORT).show()
                 }
@@ -130,4 +128,4 @@ class MyProfileFragment : Fragment() {
         private val RC_PHOTO_PICKER = 2
     }
 
-}// Required empty public constructor
+}
