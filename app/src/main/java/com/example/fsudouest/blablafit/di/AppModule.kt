@@ -2,6 +2,6 @@ package com.example.fsudouest.blablafit.di
 
 import dagger.Module
 
-@Module
+@Module(includes = [FirebaseModule::class])
 class AppModule {
 }

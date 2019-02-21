@@ -27,6 +27,7 @@ import com.google.firebase.firestore.Source
 
 
 import java.util.ArrayList
+import javax.inject.Inject
 
 
 /**
@@ -40,7 +41,10 @@ class SeancesFragment : Fragment(), Injectable {
     private lateinit var mEmptyStateTextView: TextView
     private lateinit var mProgressView: View
 
+    @Inject
     lateinit var mDatabase: FirebaseFirestore
+
+
     private var user: FirebaseUser? = null
 
     private var seances = ArrayList<Seance>()
@@ -53,7 +57,6 @@ class SeancesFragment : Fragment(), Injectable {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_seances, container, false)
 
 
-        mDatabase = FirebaseFirestore.getInstance()
         user = FirebaseAuth.getInstance().currentUser
 
         mEmptyStateTextView = binding.emptyStateTextView
@@ -135,7 +138,7 @@ class SeancesFragment : Fragment(), Injectable {
                         mEmptyStateTextView.visibility = View.VISIBLE
                         // Update empty state with no connection error message
                         mEmptyStateTextView.text = getString(R.string.server_error)
-                        Log.d("Seances Fragment", "Error getting documents: ", task.exception)
+                        Log.e("Seances Fragment", "Error getting documents: ", task.exception)
                     }
                 }
     }
