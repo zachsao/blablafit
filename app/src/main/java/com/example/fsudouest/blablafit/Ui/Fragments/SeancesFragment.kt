@@ -44,6 +44,9 @@ class SeancesFragment : Fragment(), Injectable {
     @Inject
     lateinit var mDatabase: FirebaseFirestore
 
+    @Inject
+    lateinit var mFirebaseAuth: FirebaseAuth
+
 
     private var user: FirebaseUser? = null
 
@@ -57,7 +60,7 @@ class SeancesFragment : Fragment(), Injectable {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_seances, container, false)
 
 
-        user = FirebaseAuth.getInstance().currentUser
+        user = mFirebaseAuth.currentUser
 
         mEmptyStateTextView = binding.emptyStateTextView
         mProgressView = binding.seancesProgress
@@ -74,7 +77,8 @@ class SeancesFragment : Fragment(), Injectable {
         if (networkInfo != null && networkInfo.isConnected) {
             // Show a progress spinner, and kick off a background task
             showProgress(true)
-            getSeances()
+            if(user!=null)
+                getSeances()
         } else {
             mList.visibility = View.GONE
             mEmptyStateTextView.visibility = View.VISIBLE

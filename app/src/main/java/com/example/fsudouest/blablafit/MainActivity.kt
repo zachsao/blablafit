@@ -30,7 +30,9 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
 
-    private var mFirebaseAuth: FirebaseAuth? = null
+    @Inject
+    lateinit var mFirebaseAuth: FirebaseAuth
+
     private var mAuthStateListener: FirebaseAuth.AuthStateListener? = null
 
 
@@ -38,7 +40,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         super.onCreate(savedInstanceState)
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this,R.layout.activity_main)
 
-        mFirebaseAuth = FirebaseAuth.getInstance()
+
         mAuthStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
             val user = firebaseAuth.currentUser
             if (user == null) {
