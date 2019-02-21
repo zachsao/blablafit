@@ -13,11 +13,14 @@ import com.example.fsudouest.blablafit.model.User
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.ActivityDetailsSeanceBinding
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.android.AndroidInjection
+import dagger.android.support.HasSupportFragmentInjector
 
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 import de.hdodenhof.circleimageview.CircleImageView
+import javax.inject.Inject
 
 
 class DetailsSeanceActivity : AppCompatActivity() {
@@ -26,14 +29,13 @@ class DetailsSeanceActivity : AppCompatActivity() {
     private lateinit var date: TextView
     private lateinit var photo: CircleImageView
 
-    private lateinit var mDatabase: FirebaseFirestore
+    @Inject
+    lateinit var mDatabase: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         val binding: ActivityDetailsSeanceBinding = DataBindingUtil.setContentView(this,R.layout.activity_details_seance)
-
-        mDatabase = FirebaseFirestore.getInstance()
-
 
         date = binding.workoutDateTextview
         photo = binding.imageView3
