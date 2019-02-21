@@ -7,8 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 
 import android.os.Bundle
 import android.widget.Button
+import androidx.databinding.DataBindingUtil
 import com.example.fsudouest.blablafit.MainActivity
 import com.example.fsudouest.blablafit.R
+import com.example.fsudouest.blablafit.databinding.ActivityLogin2Binding
 
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
@@ -24,10 +26,9 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login2)
+        val binding: ActivityLogin2Binding = DataBindingUtil.setContentView(this,R.layout.activity_login2)
 
-        val startBtn = findViewById<Button>(R.id.start_button)
-        startBtn.setOnClickListener { signIn() }
+        binding.startButton.setOnClickListener { signIn() }
     }
 
     private fun signIn() {
