@@ -27,6 +27,7 @@ import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentMyProfileBinding
 import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.model.User
+import javax.inject.Inject
 
 
 /**
@@ -34,7 +35,13 @@ import com.example.fsudouest.blablafit.model.User
  */
 class MyProfileFragment : Fragment(), Injectable {
 
-    private var mFirebaseStorage: FirebaseStorage? = null
+    @Inject
+    lateinit var mFirebaseStorage: FirebaseStorage
+
+    @Inject
+    lateinit var mFirebaseAuth: FirebaseAuth
+
+
     private var mProfilePhotosStorageReference: StorageReference? = null
     private var firebaseUser: FirebaseUser? = null
     private lateinit var profile_pic: ImageView
@@ -46,9 +53,9 @@ class MyProfileFragment : Fragment(), Injectable {
         val binding: FragmentMyProfileBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_my_profile, container, false)
 
 
-        firebaseUser = FirebaseAuth.getInstance().currentUser
-        mFirebaseStorage = FirebaseStorage.getInstance()
-        mProfilePhotosStorageReference = mFirebaseStorage!!.reference.child("profile_pictures")
+        firebaseUser = mFirebaseAuth.currentUser
+
+        mProfilePhotosStorageReference = mFirebaseStorage.reference.child("profile_pictures")
 
         binding.user = User(firebaseUser?.displayName!!,firebaseUser?.email!!)
         profile_pic = binding.profilePicImageView
