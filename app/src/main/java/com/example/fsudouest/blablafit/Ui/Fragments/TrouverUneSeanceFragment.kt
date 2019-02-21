@@ -20,9 +20,11 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.Adapters.SeanceAdapter
+import com.example.fsudouest.blablafit.databinding.FragmentSeancesBinding
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
@@ -32,33 +34,31 @@ import java.util.ArrayList
 
 class TrouverUneSeanceFragment : Fragment() {
 
-
-    private var rootView: View? = null
-
-
-    private var mAdapter: SeanceAdapter? = null
-    private var mList: RecyclerView? = null
+    private lateinit var mAdapter: SeanceAdapter
+    private lateinit var mList: RecyclerView
     internal var layoutManager = LinearLayoutManager(activity)
-    private var mProgressView: View? = null
+    private lateinit var mProgressView: View
     private val mySeances = ArrayList<Seance>()
-    private var mEmptyStateTextView: TextView? = null
+    private lateinit var mEmptyStateTextView: TextView
     private val filteredSeances = ArrayList<Seance>()
     lateinit var searchView: SearchView
 
 
     lateinit var mDatabase: FirebaseFirestore
 
+    private lateinit var binding: FragmentSeancesBinding
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_trouver_une_seance, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_seances, container, false)
 
         mDatabase = FirebaseFirestore.getInstance()
 
-        mEmptyStateTextView = rootView!!.findViewById(R.id.empty_state_textView)
-        mProgressView = rootView!!.findViewById(R.id.seances_progress)
-        mList = rootView!!.findViewById(R.id.rv_search_seances)
+        mEmptyStateTextView = binding.emptyStateTextView
+        mProgressView = binding.seancesProgress
+        mList = binding.rvSeances
 
 
         // Get a reference to the ConnectivityManager to check state of network connectivity
@@ -75,32 +75,32 @@ class TrouverUneSeanceFragment : Fragment() {
             //fetchSeances(BASE_URL,client);
 
         } else {
-            mList!!.visibility = View.GONE
-            mEmptyStateTextView!!.visibility = View.VISIBLE
+            mList.visibility = View.GONE
+            mEmptyStateTextView.visibility = View.VISIBLE
             // Update empty state with no connection error message
-            mEmptyStateTextView!!.text = getString(R.string.no_internet_connection)
+            mEmptyStateTextView.text = getString(R.string.no_internet_connection)
         }
 
 
-        return rootView
+        return binding.root
     }
 
     private fun showProgress(show: Boolean) {
         val shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime)
 
-        mList!!.visibility = if (show) View.GONE else View.VISIBLE
-        mList!!.animate().setDuration(shortAnimTime.toLong()).alpha(
+        mList.visibility = if (show) View.GONE else View.VISIBLE
+        mList.animate().setDuration(shortAnimTime.toLong()).alpha(
                 (if (show) 0 else 1).toFloat()).setListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
-                mList!!.visibility = if (show) View.GONE else View.VISIBLE
+                mList.visibility = if (show) View.GONE else View.VISIBLE
             }
         })
 
-        mProgressView!!.visibility = if (show) View.VISIBLE else View.GONE
-        mProgressView!!.animate().setDuration(shortAnimTime.toLong()).alpha(
+        mProgressView.visibility = if (show) View.VISIBLE else View.GONE
+        mProgressView.animate().setDuration(shortAnimTime.toLong()).alpha(
                 (if (show) 1 else 0).toFloat()).setListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
-                mProgressView!!.visibility = if (show) View.VISIBLE else View.GONE
+                mProgressView.visibility = if (show) View.VISIBLE else View.GONE
             }
         })
     }
@@ -111,10 +111,10 @@ class TrouverUneSeanceFragment : Fragment() {
                 filteredSeances.add(seance)
             }
         }
-        mList!!.layoutManager = layoutManager
+        mList.layoutManager = layoutManager
         mAdapter = SeanceAdapter(activity!!, filteredSeances)
 
-        mList!!.adapter = mAdapter
+        mList.adapter = mAdapter
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -146,10 +146,10 @@ class TrouverUneSeanceFragment : Fragment() {
                     search(newText)
                 } else {
                     filteredSeances.clear()
-                    mList!!.layoutManager = layoutManager
+                    mList.layoutManager = layoutManager
                     mAdapter = SeanceAdapter(activity!!, mySeances)
 
-                    mList!!.adapter = mAdapter
+                    mList.adapter = mAdapter
                 }
                 return false
             }
@@ -188,22 +188,22 @@ class TrouverUneSeanceFragment : Fragment() {
                         }
 
                         if (mySeances.isEmpty()) {
-                            mList!!.visibility = View.GONE
-                            mEmptyStateTextView!!.visibility = View.VISIBLE
-                            mEmptyStateTextView!!.text = getString(R.string.no_seance_available)
+                            mList.visibility = View.GONE
+                            mEmptyStateTextView.visibility = View.VISIBLE
+                            mEmptyStateTextView.text = getString(R.string.no_seance_available)
                         } else {
                             mAdapter = SeanceAdapter(activity!!, mySeances)
-                            mList!!.adapter = mAdapter
-                            mList!!.layoutManager = layoutManager
+                            mList.adapter = mAdapter
+                            mList.layoutManager = layoutManager
                         }
 
                     } else {
-                        mList!!.visibility = View.GONE
-                        mEmptyStateTextView!!.visibility = View.VISIBLE
+                        mList.visibility = View.GONE
+                        mEmptyStateTextView.visibility = View.VISIBLE
                         // Update empty state with no connection error message
-                        mEmptyStateTextView!!.text = getString(R.string.server_error)
+                        mEmptyStateTextView.text = getString(R.string.server_error)
                         Log.d("Seances Fragment", "Error getting documents: ", task.exception)
                     }
                 }
     }
-}// Required empty public constructor
+}

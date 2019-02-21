@@ -14,7 +14,7 @@
         android:id="@+id/trouverUneSeanceFragment"
         android:name="com.example.fsudouest.blablafit.Ui.Fragments.TrouverUneSeanceFragment"
         android:label="Trouver une séance"
-        tools:layout="@layout/fragment_trouver_une_seance" />
+        tools:layout="@layout/fragment_seances" />
     <fragment
         android:id="@+id/seancesFragment"
         android:name="com.example.fsudouest.blablafit.Ui.Fragments.SeancesFragment"
