@@ -1,4 +1,6 @@
 package com.example.fsudouest.blablafit
 
-class BlablaFitApp {
+import android.app.Application
+
+class BlablaFitApp : Application() {
 }
