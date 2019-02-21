@@ -31,6 +31,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
 
 import java.util.ArrayList
+import javax.inject.Inject
 
 
 class TrouverUneSeanceFragment : Fragment(), Injectable {
@@ -45,6 +46,7 @@ class TrouverUneSeanceFragment : Fragment(), Injectable {
     lateinit var searchView: SearchView
 
 
+    @Inject
     lateinit var mDatabase: FirebaseFirestore
 
     private lateinit var binding: FragmentSeancesBinding
@@ -54,8 +56,6 @@ class TrouverUneSeanceFragment : Fragment(), Injectable {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_seances, container, false)
-
-        mDatabase = FirebaseFirestore.getInstance()
 
         mEmptyStateTextView = binding.emptyStateTextView
         mProgressView = binding.seancesProgress
@@ -203,7 +203,7 @@ class TrouverUneSeanceFragment : Fragment(), Injectable {
                         mEmptyStateTextView.visibility = View.VISIBLE
                         // Update empty state with no connection error message
                         mEmptyStateTextView.text = getString(R.string.server_error)
-                        Log.d("Seances Fragment", "Error getting documents: ", task.exception)
+                        Log.e("Seances Fragment", "Error getting documents: ", task.exception)
                     }
                 }
     }
