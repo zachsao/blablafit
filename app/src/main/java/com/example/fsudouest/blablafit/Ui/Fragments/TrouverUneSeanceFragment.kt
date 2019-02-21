@@ -25,6 +25,7 @@ import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.Adapters.SeanceAdapter
 import com.example.fsudouest.blablafit.databinding.FragmentSeancesBinding
+import com.example.fsudouest.blablafit.di.Injectable
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
@@ -32,7 +33,7 @@ import com.google.firebase.firestore.Source
 import java.util.ArrayList
 
 
-class TrouverUneSeanceFragment : Fragment() {
+class TrouverUneSeanceFragment : Fragment(), Injectable {
 
     private lateinit var mAdapter: SeanceAdapter
     private lateinit var mList: RecyclerView

@@ -25,13 +25,14 @@ import android.app.Activity.RESULT_OK
 import androidx.databinding.DataBindingUtil
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentMyProfileBinding
+import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.model.User
 
 
 /**
  * A simple [Fragment] subclass.
  */
-class MyProfileFragment : Fragment() {
+class MyProfileFragment : Fragment(), Injectable {
 
     private var mFirebaseStorage: FirebaseStorage? = null
     private var mProfilePhotosStorageReference: StorageReference? = null

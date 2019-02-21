@@ -18,6 +18,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.Adapters.SeanceAdapter
+import com.example.fsudouest.blablafit.di.Injectable
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -31,7 +32,7 @@ import java.util.ArrayList
 /**
  * A simple [Fragment] subclass.
  */
-class SeancesFragment : Fragment() {
+class SeancesFragment : Fragment(), Injectable {
 
     private lateinit var mAdapter: SeanceAdapter
     private lateinit var mList: RecyclerView

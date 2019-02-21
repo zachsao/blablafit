@@ -9,12 +9,13 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentMessagesBinding
+import com.example.fsudouest.blablafit.di.Injectable
 
 
 /**
  * A Fragment that displays the list of the user's messages with other blablafit users
  */
-class MessagesFragment : Fragment() {
+class MessagesFragment : Fragment(), Injectable {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
