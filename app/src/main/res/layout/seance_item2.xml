@@ -1,102 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="8dp"
-    >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <data>
+        <variable
+            name="seance"
+            type="com.example.fsudouest.blablafit.model.Seance"/>
+    </data>
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:id="@+id/parentLayout"
-        android:weightSum="100">
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        >
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="20"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center_vertical"
-            android:background="#5ec639">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="26/08"
-                android:id="@+id/tv_date"
-                android:textColor="@color/white"
-                android:layout_gravity="center_horizontal"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="15h30"
-                android:id="@+id/tv_heure"
-                android:textColor="@color/white"
-                android:layout_gravity="center_horizontal"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="80"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Full Body"
-                android:id="@+id/tv_titre"
-                android:textStyle="bold"
-                android:textColor="#000000"
-                android:textSize="16sp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="durée: 2h"
-                android:id="@+id/tv_durée"/>
+            android:gravity="center"
+            android:id="@+id/parentLayout"
+            android:weightSum="100">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_width="0dp"
+                android:layout_weight="20"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center_vertical"
+                android:background="#5ec639">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="26/08"
+                    android:id="@+id/tv_date"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center_horizontal"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Lieu : "
-                    android:textSize="14sp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tv_lieu"
-                    tools:text="Ceci est une très long addresse qui prend trop de place pour être affichée entièrement"
-                    android:textSize="14sp"
-                    android:maxLines="2"
-                    android:ellipsize="end"/>
+                    android:text="15h30"
+                    android:id="@+id/tv_heure"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center_horizontal"/>
             </LinearLayout>
 
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="80"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_nb_participants"
-                android:text="3 participants" />
+                android:orientation="vertical"
+                android:layout_margin="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{seance.titre}"
+                    tools:text="Full Body"
+                    android:id="@+id/tv_titre"
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="durée: 2h"
+                    android:text="@{`Durée: `+seance.duree}"
+                    android:id="@+id/tv_durée"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lieu : "
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tv_lieu"
+                        tools:text="Ceci est une très long addresse qui prend trop de place pour être affichée entièrement"
+                        android:text="@{seance.lieu}"
+                        android:textSize="14sp"
+                        android:maxLines="2"
+                        android:ellipsize="end"/>
+                </LinearLayout>
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_créateur"
-                android:text="Créée par : Vous"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_nb_participants"
+                    tools:text="3 participants"
+                    android:text="@{`Places restantes: `+seance.nb_participants}"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_créateur"
+                    android:text="@{`Créée par : `+seance.createur}"/>
+            </LinearLayout>
         </LinearLayout>
-
-
-
-
-
-    </LinearLayout>
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+</layout>

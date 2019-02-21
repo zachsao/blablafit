@@ -9,15 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
+import com.example.fsudouest.blablafit.BR
 import com.example.fsudouest.blablafit.Ui.Activities.DetailsSeanceActivity
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.R
+import com.example.fsudouest.blablafit.databinding.SeanceItem2Binding
 
 import java.text.SimpleDateFormat
 import java.util.ArrayList
 import java.util.Locale
 
-class SeanceAdapter(internal var mContext: Context, internal var mData: ArrayList<Seance>) : RecyclerView.Adapter<SeanceAdapter.SeanceViewHolder>() {
+class SeanceAdapter(private var mContext: Context, private var mData: ArrayList<Seance>) : RecyclerView.Adapter<SeanceAdapter.SeanceViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SeanceViewHolder {
@@ -28,32 +31,14 @@ class SeanceAdapter(internal var mContext: Context, internal var mData: ArrayLis
         val inflater = LayoutInflater.from(context)
         val shouldAttachToParentImmediately = false
 
-        val view = inflater.inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately)
-        val viewHolder = SeanceViewHolder(view)
+        val binding = DataBindingUtil.inflate<SeanceItem2Binding>(inflater,layoutIdForListItem, parent, shouldAttachToParentImmediately)
+        val viewHolder = SeanceViewHolder(binding)
 
         return viewHolder
     }
 
     override fun onBindViewHolder(holder: SeanceViewHolder, position: Int) {
         holder.bind(position)
-
-        val format = SimpleDateFormat("EEE d MMM yy à HH:mm", Locale("fr", "FR"))
-        val dateChaine = format.format(mData[position].date)
-
-        holder.parent.setOnClickListener {
-            //Toast.makeText(mContext,mData.get(position).getId(),Toast.LENGTH_SHORT).show();
-            val intent = Intent(mContext, DetailsSeanceActivity::class.java)
-            /*intent.putExtra("titre",mData.get(position).getTitre());
-                intent.putExtra("lieu",mData.get(position).getLieu());
-                intent.putExtra("date",dateChaine);
-                intent.putExtra("durée",mData.get(position).getDuree());
-                intent.putExtra("places",mData.get(position).getNb_participants());
-                intent.putExtra("auteur",mData.get(position).getCreateur());
-                intent.putExtra("description",mData.get(position).getDescription());*/
-            intent.putExtra("seance", mData[position])
-            mContext.startActivity(intent)
-        }
-
     }
 
 
@@ -61,29 +46,19 @@ class SeanceAdapter(internal var mContext: Context, internal var mData: ArrayLis
         return mData.size
     }
 
-    inner class SeanceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class SeanceViewHolder(var binding: SeanceItem2Binding) : RecyclerView.ViewHolder(binding.root) {
 
-        internal var titre: TextView
-        internal var date: TextView
-        internal var heure: TextView
-        internal var duree: TextView
-        internal var description: TextView? = null
-        internal var participants: TextView
-        internal var lieu: TextView
-        internal var createur: TextView
 
-        internal var parent: LinearLayout
+        private var date: TextView
+        private var heure: TextView
+        var parent: LinearLayout
 
         init {
 
-            parent = itemView.findViewById(R.id.parentLayout)
-            titre = itemView.findViewById(R.id.tv_titre)
-            date = itemView.findViewById(R.id.tv_date)
-            lieu = itemView.findViewById(R.id.tv_lieu)
-            heure = itemView.findViewById(R.id.tv_heure)
-            duree = itemView.findViewById(R.id.tv_durée)
-            participants = itemView.findViewById(R.id.tv_nb_participants)
-            createur = itemView.findViewById(R.id.tv_créateur)
+            parent = binding.parentLayout
+            date = binding.tvDate
+            heure = binding.tvHeure
+
         }
 
 
@@ -91,13 +66,18 @@ class SeanceAdapter(internal var mContext: Context, internal var mData: ArrayLis
             val dateFormat = SimpleDateFormat("dd/MM/yy")
             val hourFormat = SimpleDateFormat("HH:mm")
 
-            titre.text = mData[position].titre
+            val seance = mData[position]
+            binding.setVariable(BR.seance,seance)
+            binding.executePendingBindings()
+
             date.text = dateFormat.format(mData[position].date)
             heure.text = hourFormat.format(mData[position].date)
-            duree.text = mData[position].duree
-            participants.text = "Places restantes: " + mData[position].nb_participants
-            createur.text = "Créée par : " + mData[position].createur
-            lieu.text = mData[position].lieu
+
+            parent.setOnClickListener {
+                val intent = Intent(mContext, DetailsSeanceActivity::class.java)
+                intent.putExtra("seance", mData[position])
+                mContext.startActivity(intent)
+            }
         }
     }
 }
