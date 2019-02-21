@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit.Model
+package com.example.fsudouest.blablafit.model
 
 class User {
 

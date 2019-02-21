@@ -15,8 +15,8 @@ import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import com.example.fsudouest.blablafit.Model.Seance
-import com.example.fsudouest.blablafit.Model.User
+import com.example.fsudouest.blablafit.model.Seance
+import com.example.fsudouest.blablafit.model.User
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.ActivityNouvelleSeanceBinding
 

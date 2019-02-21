@@ -43,6 +43,14 @@
     <string name="cancel">Annuler</string>
     <string name="contact">Contacter</string>
     <string name="participate">je participe</string>
+    <string name="workout_title">Type de séance:</string>
+    <string name="workout_duration">Durée :</string>
+    <string name="workout_location">Lieu:</string>
+    <string name="workout_date">Date :</string>
+    <string name="workout_description">Description :</string>
+    <string name="workout_participants">Places restantes:</string>
+    <string name="participate_button">Je participe</string>
+    <string name="workout_author">Séance proposée par :</string>
 
 
 </resources>

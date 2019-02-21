@@ -20,7 +20,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
-import com.example.fsudouest.blablafit.Model.Seance
+import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.Adapters.SeanceAdapter
 

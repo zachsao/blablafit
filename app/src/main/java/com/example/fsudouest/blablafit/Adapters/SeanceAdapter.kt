@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.fsudouest.blablafit.Ui.Activities.DetailsSeanceActivity
-import com.example.fsudouest.blablafit.Model.Seance
+import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.R
 
 import java.text.SimpleDateFormat
