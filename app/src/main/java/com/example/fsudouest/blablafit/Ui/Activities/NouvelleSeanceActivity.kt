@@ -42,11 +42,11 @@ class NouvelleSeanceActivity : AppCompatActivity() {
     private lateinit var autocompleteFragment: PlaceAutocompleteFragment
 
     lateinit var titre: String
-    private var lieu: String? = null
+    private lateinit var lieu: String
     private val description: String? = null
-    private var dateSeance: Date? = null
-    private var nb_participants: String? = null
-    private var duree: String? = null
+    private lateinit var dateSeance: Date
+    private lateinit var nb_participants: String
+    private lateinit var duree: String
     lateinit var mDatabase: FirebaseFirestore
 
     lateinit var binding: ActivityNouvelleSeanceBinding
@@ -70,7 +70,7 @@ class NouvelleSeanceActivity : AppCompatActivity() {
         autocompleteFragment.setHint("Où allez vous faire votre séance ?")
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
-                lieu = place.name.toString() + ", " + place.address!!.toString()
+                lieu = place.name.toString() + ", " + place.address.toString()
                 tv_lieu.text = "Lieu: " + lieu!!
                 Log.i(TAG, "Place: " + place.name)
             }
@@ -200,7 +200,7 @@ class NouvelleSeanceActivity : AppCompatActivity() {
         val creer = binding.boutonCreerSeance
         creer.setOnClickListener {
             val ref = mDatabase.collection("workouts").document()
-            nouvelleSeance = Seance(titre, lieu!!, description!!, dateSeance!!, nb_participants!!, auteur!!, duree!!, ref.id)
+            nouvelleSeance = Seance(titre, lieu, description, dateSeance, nb_participants, auteur!!, duree, ref.id)
 
             ref.set(nouvelleSeance!!).addOnSuccessListener {
                 //add a subcollection of users
