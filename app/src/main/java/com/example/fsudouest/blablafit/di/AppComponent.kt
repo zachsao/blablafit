@@ -14,7 +14,8 @@ import javax.inject.Singleton
             AndroidInjectionModule::class,
             AppModule::class,
             MainActivityModule::class,
-            DetailsSeanceActivityModule::class]
+            DetailsSeanceActivityModule::class,
+            NouvelleSeanceActivityModule::class]
 )
 interface AppComponent {
     @Component.Builder

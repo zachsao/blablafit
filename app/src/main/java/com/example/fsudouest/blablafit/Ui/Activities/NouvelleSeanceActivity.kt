@@ -27,10 +27,12 @@ import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment
 import com.google.android.gms.location.places.ui.PlaceSelectionListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.android.AndroidInjection
 
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
+import javax.inject.Inject
 
 
 class NouvelleSeanceActivity : AppCompatActivity() {
@@ -47,15 +49,16 @@ class NouvelleSeanceActivity : AppCompatActivity() {
     private lateinit var dateSeance: Date
     private lateinit var nb_participants: String
     private lateinit var duree: String
+
+    @Inject
     lateinit var mDatabase: FirebaseFirestore
 
     lateinit var binding: ActivityNouvelleSeanceBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_nouvelle_seance)
-
-        mDatabase = FirebaseFirestore.getInstance()
 
         val tv_lieu = binding.textViewLieu
 
