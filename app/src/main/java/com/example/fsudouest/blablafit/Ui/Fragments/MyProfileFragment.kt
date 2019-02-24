@@ -5,9 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AlertDialog
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -22,6 +19,8 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
 import android.app.Activity.RESULT_OK
+import android.util.Log
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentMyProfileBinding
@@ -129,6 +128,30 @@ class MyProfileFragment : Fragment(), Injectable {
 
     private fun signOut() {
         AuthUI.getInstance().signOut(activity!!)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.sign_out,menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_signout -> {
+                Log.i("My Profile Fragment", " Signing out !")
+                signOut()
+                return true
+            }
+            else ->
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item)
+        }
     }
 
     companion object {
