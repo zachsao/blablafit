@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Ui.Fragments.MyProfileFragment">
 
     <data>
@@ -9,91 +10,170 @@
             type="com.example.fsudouest.blablafit.model.User"/>
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="match_parent">
 
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_pic_image_view"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:layout_gravity="center_horizontal"
-            android:scaleType="centerCrop"
-            android:src="@drawable/userphoto" />
-
-        <TextView
-            android:id="@+id/pseudo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="16sp"
-            tools:text="PSEUDO"
-            android:text="@{user.nomComplet}"
-            android:textColor="#000000"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-
-        <TextView
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:text="Mes informations personnelles: "
-            android:textColor="#000000"
-            android:textSize="21sp" />
+            android:layout_height="210dp"
+            android:background="@color/colorPrimary"/>
 
-        <TextView
-            android:id="@+id/nom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Prénom Nom: "
-            android:text="@{user.nomComplet}"
-            android:textColor="#000000"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Email: "
-            android:text="@{user.email}"
-            android:textColor="#000000"
-            android:textStyle="bold" />
-
-
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ma note moyenne: "
-                android:textColor="#000000"
-                android:textStyle="bold" />
+                android:orientation="vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
 
-            <RatingBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:isIndicator="true" />
-        </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="110dp"
+                        android:layout_height="110dp"
+                        android:id="@+id/profile_pic_image_view"
+                        android:src="@drawable/userphoto"
+                        android:layout_centerHorizontal="true"
+                        android:elevation="1dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="55dp"
+                            app:contentPadding="15dp"
+                            app:cardCornerRadius="10dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    tools:text="Zach Sao"
+                                    android:id="@+id/pseudo"
+                                    android:textStyle="bold"
+                                    android:textSize="25sp"
+                                    android:text="@{user.nomComplet}"
+                                    android:layout_marginTop="60dp"
+                                    android:layout_gravity="center_horizontal"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Niveau: Intermédiaire"
+                                    android:layout_gravity="center_horizontal"
+                                    android:textSize="15sp"
+                                    android:layout_marginTop="10dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textAlignment="center"
+                                    android:layout_gravity="center_horizontal"
+                                    android:textSize="15sp"
+                                    android:textStyle="italic"
+                                    android:layout_marginTop="20sp"
+                                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent elementum purus sed efficitur iaculis."/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Paris, Fr"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_gravity="center_horizontal"/>
+
+                            </LinearLayout>
+                        </androidx.cardview.widget.CardView>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2"
+                            android:layout_marginTop="20dp">
+
+                            <LinearLayout
+                                android:layout_width="62dp"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="1">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="35sp"
+                                    android:text="4.5"
+                                    android:textStyle="bold"
+                                    android:layout_gravity="center_horizontal"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Note /5"
+                                    android:layout_gravity="center_horizontal"
+                                    android:textSize="20sp"/>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="62dp"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="1">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="35sp"
+                                    android:text="15"
+                                    android:textStyle="bold"
+                                    android:layout_gravity="center_horizontal"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Séances"
+                                    android:layout_gravity="center_horizontal"
+                                    android:textSize="20sp"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Modifier le profil"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginBottom="30dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_gravity="center_horizontal"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:background="@drawable/element_outline"/>
+                    </LinearLayout>
+                </RelativeLayout>
 
 
-        <Button
-            android:id="@+id/deco_button"
-            android:layout_width="138dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/round_corner"
-            android:text="déconnexion"
-            android:textColor="@color/white" />
+            </LinearLayout>
+        </ScrollView>
 
 
-    </LinearLayout>
+
+    </RelativeLayout>
+
 </layout>
