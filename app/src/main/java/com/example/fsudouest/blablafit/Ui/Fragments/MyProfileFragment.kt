@@ -35,11 +35,11 @@ import javax.inject.Inject
  */
 class MyProfileFragment : Fragment(), Injectable {
 
-    @Inject
+    /*@Inject
     lateinit var mFirebaseStorage: FirebaseStorage
 
     @Inject
-    lateinit var mFirebaseAuth: FirebaseAuth
+    lateinit var mFirebaseAuth: FirebaseAuth*/
 
 
     private var mProfilePhotosStorageReference: StorageReference? = null
@@ -50,10 +50,10 @@ class MyProfileFragment : Fragment(), Injectable {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val binding: FragmentMyProfileBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_my_profile, container, false)
+        //val binding: FragmentMyProfileBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_my_profile, container, false)
 
 
-        firebaseUser = mFirebaseAuth.currentUser
+        /*firebaseUser = mFirebaseAuth.currentUser
 
         mProfilePhotosStorageReference = mFirebaseStorage.reference.child("profile_pictures")
 
@@ -69,8 +69,8 @@ class MyProfileFragment : Fragment(), Injectable {
 
         profile_pic.setOnClickListener { createPhotoUpdateDialog() }
 
-        binding.decoButton.setOnClickListener { signOut() }
-        return binding.root
+        binding.decoButton.setOnClickListener { signOut() }*/
+        return inflater.inflate(R.layout.fragment_my_profile_2,container,false)//binding.root
     }
 
 
