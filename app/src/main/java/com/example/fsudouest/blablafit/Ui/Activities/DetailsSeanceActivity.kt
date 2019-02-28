@@ -27,6 +27,7 @@ class DetailsSeanceActivity : AppCompatActivity() {
 
 
     private lateinit var date: TextView
+    private lateinit var heure: TextView
     private lateinit var photo: CircleImageView
 
     @Inject
@@ -38,16 +39,24 @@ class DetailsSeanceActivity : AppCompatActivity() {
         val binding: ActivityDetailsSeanceBinding = DataBindingUtil.setContentView(this,R.layout.activity_details_seance)
 
         date = binding.workoutDateTextview
-        photo = binding.imageView3
+        heure = binding.workoutHourTextview
+        photo = binding.circleImageView
+
+        Glide.with(this).load(R.drawable.weights).into(binding.imageView)
+
 
 
         val intent = intent
         val seance = intent.getSerializableExtra("seance") as Seance
 
-        val format = SimpleDateFormat("EEE d MMM yy à HH:mm", Locale("fr", "FR"))
-        val dateChaine = format.format(seance.date)
+        val dateFormat = SimpleDateFormat("dd/MM/yy", Locale("fr", "FR"))
+        val dateChaine = dateFormat.format(seance.date)
+
+        val hourFormat = SimpleDateFormat("HH:mm", Locale("fr", "FR"))
+        val heureChaine = hourFormat.format(seance.date)
 
         date.text = dateChaine
+        heure.text = heureChaine
 
         binding.seance = seance
 

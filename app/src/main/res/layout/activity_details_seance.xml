@@ -35,21 +35,21 @@
                         android:id="@+id/imageView"
                         android:layout_width="wrap_content"
                         android:layout_height="120dp"
-                        android:adjustViewBounds="false"
                         android:scaleType="centerCrop"
+                        android:src="@drawable/weights"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/weights" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/workout_title_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="36dp"
+                        android:layout_marginTop="32dp"
                         android:layout_marginEnd="8dp"
                         android:fontFamily="@font/roboto"
-                        android:textColor="@color/black"
+                        android:text="@{seance.titre}"
+                        android:textColor="@color/white"
                         android:textSize="30sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -182,19 +182,21 @@
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="2dp"
                                 android:fontFamily="@font/roboto"
-                                tools:text="2h" />
+                                tools:text="2h"
+                                android:text="@{seance.duree}"/>
                         </LinearLayout>
 
                     </LinearLayout>
 
                     <TextView
-                        android:id="@+id/textView8"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/workout_author_textView"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
                         android:fontFamily="@font/roboto"
+                        android:text="@{`Proposée par `+seance.createur}"
                         android:textSize="9sp"
                         app:layout_constraintEnd_toStartOf="@+id/circleImageView"
                         app:layout_constraintStart_toStartOf="parent"
@@ -223,8 +225,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/roboto"
-                            android:textSize="9sp"
-                            tools:text="4.5 / 5 - 10 avis" />
+                            android:text="4.5 / 5 - 10 avis"
+                            android:textSize="9sp" />
                     </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -248,8 +250,9 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="16dp"
                         android:layout_weight="2"
-                        android:text="Pro Gym, 4500 Rue Hochelaga, Montréal, QC H1V 3N8, Canada"
-                        android:textColor="@color/black" />
+                        tools:text="Pro Gym, 4500 Rue Hochelaga, Montréal, QC H1V 3N8, Canada"
+                        android:textColor="@color/black"
+                        android:text="@{seance.lieu}"/>
 
                     <ImageView
                         android:id="@+id/imageView7"
@@ -268,7 +271,8 @@
                 android:layout_marginLeft="16dp"
                 android:fontFamily="@font/roboto"
                 android:text="Descriptif de la séance :"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/workout_description_textview"
@@ -279,7 +283,7 @@
                 android:layout_marginRight="64dp"
                 android:text="Une brève description de la séance qui indique les exercices prévus, sans entrer dans les détails du nombre de séries et de répétitions"
                 android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -293,7 +297,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="1 place restante - "
+                    tools:text= "1 place restante - "
+                    android:text="@{seance.nb_participants +` place restante - `}"
                     android:textColor="@color/black" />
 
                 <ImageView
@@ -320,6 +325,7 @@
                 android:layout_width="125dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="32dp"
                 android:background="@drawable/round_corner"
                 android:fontFamily="@font/roboto"
                 android:text="Participer"
