@@ -4,11 +4,16 @@
     <item
         android:id="@+id/seancesFragment"
         android:icon="@drawable/ic_home"
-        android:title="accueil" />
+        android:title="Accueil" />
     <item
         android:id="@+id/trouverUneSeanceFragment"
         android:icon="@drawable/ic_menu_search"
         android:title="Rechercher" />
+
+    <item
+        android:id="@+id/creerSeanceFragment"
+        android:icon="@drawable/round_add_box_24"
+        android:title="Créer"/>
     
     <item
         android:id="@+id/messagesFragment"
