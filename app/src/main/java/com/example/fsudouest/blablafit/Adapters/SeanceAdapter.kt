@@ -10,11 +10,14 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
+import com.bumptech.glide.Glide
 import com.example.fsudouest.blablafit.BR
 import com.example.fsudouest.blablafit.Ui.Activities.DetailsSeanceActivity
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.SeanceItem2Binding
+import com.example.fsudouest.blablafit.model.User
+import com.google.firebase.firestore.FirebaseFirestore
 
 import java.text.SimpleDateFormat
 import java.util.ArrayList
@@ -22,10 +25,11 @@ import java.util.Locale
 
 class SeanceAdapter(private var mContext: Context, private var mData: ArrayList<Seance>) : RecyclerView.Adapter<SeanceAdapter.SeanceViewHolder>() {
 
+    lateinit var context: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SeanceViewHolder {
 
-        val context = parent.context
+        context = parent.context
 
         val layoutIdForListItem = R.layout.seance_item2
         val inflater = LayoutInflater.from(context)
@@ -49,14 +53,13 @@ class SeanceAdapter(private var mContext: Context, private var mData: ArrayList<
     inner class SeanceViewHolder(var binding: SeanceItem2Binding) : RecyclerView.ViewHolder(binding.root) {
 
 
-        private var date: TextView
+        private lateinit var date: TextView
         private var heure: TextView
         var parent: LinearLayout
 
         init {
 
             parent = binding.parentLayout
-            date = binding.tvDate
             heure = binding.tvHeure
 
         }
@@ -70,7 +73,19 @@ class SeanceAdapter(private var mContext: Context, private var mData: ArrayList<
             binding.setVariable(BR.seance,seance)
             binding.executePendingBindings()
 
-            date.text = dateFormat.format(mData[position].date)
+            Glide.with(context).load(R.drawable.weights).into(binding.itemImage)
+
+            val auteurRef = FirebaseFirestore.getInstance().collection("workouts")
+                    .document(seance.id).collection("users").document("auteur")
+            auteurRef.get().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val user = task.result!!.toObject<User>(User::class.java)
+                    if (user?.photoUrl!=null)
+                        Glide.with(context).load(user.photoUrl).into(binding.authorProfilePicture)
+                }
+            }
+
+            //date.text = dateFormat.format(mData[position].date)
             heure.text = hourFormat.format(mData[position].date)
 
             parent.setOnClickListener {
