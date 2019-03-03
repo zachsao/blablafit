@@ -15,23 +15,24 @@ import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import com.example.fsudouest.blablafit.BuildConfig
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.model.User
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.ActivityNouvelleSeanceBinding
 
 import com.google.android.gms.common.api.Status
-import com.google.android.gms.location.places.AutocompleteFilter
-import com.google.android.gms.location.places.Place
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment
-import com.google.android.gms.location.places.ui.PlaceSelectionListener
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.TypeFilter
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.android.AndroidInjection
 
 import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
+import java.util.*
 import javax.inject.Inject
 
 
@@ -41,7 +42,7 @@ class NouvelleSeanceActivity : AppCompatActivity() {
 
     private var nouvelleSeance: Seance? = null
     private var picktime_et: EditText? = null
-    private lateinit var autocompleteFragment: PlaceAutocompleteFragment
+    private lateinit var autocompleteFragment: AutocompleteSupportFragment
 
     lateinit var titre: String
     private lateinit var lieu: String
@@ -55,10 +56,15 @@ class NouvelleSeanceActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityNouvelleSeanceBinding
 
+    private val apiKey = BuildConfig.GOOGLE_PLACES_KEY
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_nouvelle_seance)
+
+        // Initialize Places.
+        Places.initialize(applicationContext, apiKey)
 
         val tv_lieu = binding.textViewLieu
 
@@ -68,8 +74,9 @@ class NouvelleSeanceActivity : AppCompatActivity() {
         val radioGroup = binding.radioGroup
         checkByDefault(radioGroup, R.id.salle)
 
-        autocompleteFragment = fragmentManager.findFragmentById(R.id.place_autocomplete_fragment) as PlaceAutocompleteFragment
-
+        autocompleteFragment = supportFragmentManager.findFragmentById(R.id.place_autocomplete_fragment) as AutocompleteSupportFragment
+        // Specify the types of place data to return.
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.NAME, Place.Field.ID))
         autocompleteFragment.setHint("Où allez vous faire votre séance ?")
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
@@ -89,17 +96,11 @@ class NouvelleSeanceActivity : AppCompatActivity() {
             when (i) {
                 R.id.salle -> {
                     autocompleteFragment.setHint("Rechercher une salle")
-                    val typeFilter = AutocompleteFilter.Builder()
-                            .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ESTABLISHMENT)
-                            .build()
-                    autocompleteFragment.setFilter(typeFilter)
+                    autocompleteFragment.setTypeFilter(TypeFilter.ESTABLISHMENT)
                 }
                 R.id.exterieur -> {
                     autocompleteFragment.setHint("Entrez une adresse")
-                    val adresseFilter = AutocompleteFilter.Builder()
-                            .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
-                            .build()
-                    autocompleteFragment.setFilter(adresseFilter)
+                    autocompleteFragment.setTypeFilter(TypeFilter.ADDRESS)
                 }
             }
         }
