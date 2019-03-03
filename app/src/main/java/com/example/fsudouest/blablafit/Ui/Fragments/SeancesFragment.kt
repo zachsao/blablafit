@@ -56,6 +56,7 @@ class SeancesFragment : Fragment(), Injectable {
 
     private lateinit var binding: com.example.fsudouest.blablafit.databinding.FragmentSeancesBinding
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -71,28 +72,33 @@ class SeancesFragment : Fragment(), Injectable {
         //display today's date
         val c = Calendar.getInstance()
         val day = c.get(Calendar.DAY_OF_MONTH)
-        val currentMonth = c.get(Calendar.MONTH)+1
+        val currentMonth = c.get(Calendar.MONTH)
         val year = c.get(Calendar.YEAR)
 
         val dateFormat = SimpleDateFormat("EEEE dd MMM", Locale.FRENCH)
 
         binding.dateSelectionButton.text = dateFormat.format(c.time)
 
-
-        val datePickerDialog = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { _, _, month, day_of_month ->
-            c.set(year, month, day_of_month)
+        //display date picker when the date button is clicked
+        val datePickerDialog = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { _, year, month, day_of_month ->
+            c.set(year, month, day_of_month,0,0)
+            val debutJournee = c.time
+            c.set(year, month, day_of_month,23,59)
+            val finDeJournee = c.time
             binding.dateSelectionButton.text = dateFormat.format(c.time)
+            getSeances(debutJournee,finDeJournee)
         }, year, currentMonth, day)
 
         // If there is a network connection, fetch data
         if (isOnline() && user!=null ) {
-            // Show a progress spinner, and kick off a background task
-            showProgress(true)
-                getSeances()
-
-                binding.dateSelectionButton.setOnClickListener {
-                    datePickerDialog.show()
-                }
+            c.set(year, currentMonth, day,0,0)
+            val dayBegin = c.time
+            c.set(year, currentMonth, day,23,59)
+            val dayEnd = c.time
+            getSeances(dayBegin,dayEnd)
+            binding.dateSelectionButton.setOnClickListener {
+                datePickerDialog.show()
+            }
         } else {
             mList.visibility = View.GONE
             mEmptyStateTextView.visibility = View.VISIBLE
@@ -132,18 +138,23 @@ class SeancesFragment : Fragment(), Injectable {
     }
 
 
-    fun getSeances() {
+    fun getSeances(debutJournee: Date,finJournee: Date=Date()) {
+        // Show a progress spinner, and kick off a background task
+        showProgress(true)
+        Log.i("SeancesFragment","récupération des séances")
         val ref = mDatabase.collection("workouts")
 
         // Source can be CACHE, SERVER, or DEFAULT.
         val source = Source.SERVER
 
         // Get the document, forcing the SDK to use the offline cache
-        ref.whereEqualTo("createur", user!!.email)
+        ref.whereEqualTo("createur", user!!.email).whereGreaterThanOrEqualTo("date",debutJournee)
+                .whereLessThanOrEqualTo("date",finJournee)
                 .get(source)
                 .addOnCompleteListener { task ->
+                    showProgress(false)
                     if (task.isSuccessful) {
-                        showProgress(false)
+                        seances.clear()
                         for (document in task.result!!) {
                             seances.add(document.toObject(Seance::class.java))
                         }
@@ -154,6 +165,7 @@ class SeancesFragment : Fragment(), Injectable {
                             // Update empty state with no connection error message
                             mEmptyStateTextView.text = getString(R.string.no_seance_available)
                         } else {
+                            mEmptyStateTextView.visibility = View.GONE
                             mAdapter = SeanceAdapter(activity!!, seances)
                             mList.adapter = mAdapter
                             mList.layoutManager = layoutManager
