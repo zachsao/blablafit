@@ -3,6 +3,7 @@ package com.example.fsudouest.blablafit.Ui.Fragments
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.app.DatePickerDialog
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Bundle
@@ -24,9 +25,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
+import java.text.SimpleDateFormat
+import java.util.*
 
 
-import java.util.ArrayList
 import javax.inject.Inject
 
 
@@ -66,13 +68,31 @@ class SeancesFragment : Fragment(), Injectable {
         mProgressView = binding.seancesProgress
         mList = binding.rvSeances
 
+        //display today's date
+        val c = Calendar.getInstance()
+        val day = c.get(Calendar.DAY_OF_MONTH)
+        val currentMonth = c.get(Calendar.MONTH)+1
+        val year = c.get(Calendar.YEAR)
 
+        val dateFormat = SimpleDateFormat("EEEE dd MMM", Locale.FRENCH)
+
+        binding.dateSelectionButton.text = dateFormat.format(c.time)
+
+
+        val datePickerDialog = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { _, _, month, day_of_month ->
+            c.set(year, month, day_of_month)
+            binding.dateSelectionButton.text = dateFormat.format(c.time)
+        }, year, currentMonth, day)
 
         // If there is a network connection, fetch data
         if (isOnline() && user!=null ) {
             // Show a progress spinner, and kick off a background task
             showProgress(true)
                 getSeances()
+
+                binding.dateSelectionButton.setOnClickListener {
+                    datePickerDialog.show()
+                }
         } else {
             mList.visibility = View.GONE
             mEmptyStateTextView.visibility = View.VISIBLE
