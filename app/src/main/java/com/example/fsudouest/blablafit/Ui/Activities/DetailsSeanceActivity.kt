@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.core.app.NavUtils
 import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -86,24 +87,21 @@ class DetailsSeanceActivity : AppCompatActivity() {
                 if(currentUserIsWorkoutAuthor()){
                     disableParticipateButton()
                 }else {
-                    joinWorkout()
+                    binding.participateButton.setOnClickListener {
+                        joinWorkout()
+                    }
                 }
 
             }else{
                 Log.e("DetailsSeanceActivity", task.exception?.message)
             }
         }
-
-
-
-
-
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
+
     private fun joinWorkout() {
-        binding.participateButton.setOnClickListener {
-            mDatabase.collection("workouts")
+        mDatabase.collection("workouts")
                     .document(seance.id).collection("users").document(user?.email!!)
                     .set(User(user?.displayName!!,user?.email!!,user?.photoUrl.toString()))
                     .addOnSuccessListener {
@@ -112,13 +110,10 @@ class DetailsSeanceActivity : AppCompatActivity() {
                     }.addOnFailureListener {
                         Log.e("Participer", it.message)
                     }
-        }
-
     }
 
     private fun disableParticipateButton() {
-        binding.participateButton.isEnabled = false
-        binding.participateButton.isClickable = false
+        binding.participateButton.visibility = View.GONE
     }
 
     private fun currentUserIsWorkoutAuthor(): Boolean {
