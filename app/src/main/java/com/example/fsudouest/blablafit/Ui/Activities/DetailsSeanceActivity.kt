@@ -43,10 +43,14 @@ class DetailsSeanceActivity : AppCompatActivity() {
     private var user: FirebaseUser? = null
     private var author: User? = null
 
+    lateinit var binding: ActivityDetailsSeanceBinding
+
+    lateinit var seance: Seance
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
-        val binding: ActivityDetailsSeanceBinding = DataBindingUtil.setContentView(this,R.layout.activity_details_seance)
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_details_seance)
 
         date = binding.workoutDateTextview
         heure = binding.workoutHourTextview
@@ -55,7 +59,7 @@ class DetailsSeanceActivity : AppCompatActivity() {
         Glide.with(this).load(R.drawable.weights).into(binding.imageView)
 
         val intent = intent
-        val seance = intent.getSerializableExtra("seance") as Seance
+        seance = intent.getSerializableExtra("seance") as Seance
 
         val dateFormat = SimpleDateFormat("dd/MM/yy", Locale("fr", "FR"))
         val dateChaine = dateFormat.format(seance.date)
@@ -70,37 +74,55 @@ class DetailsSeanceActivity : AppCompatActivity() {
 
         user = firebaseAuth.currentUser
 
-        val workoutParticipantsRef = mDatabase.collection("workouts")
-                .document(seance.id).collection("users")
-        val auteurRef = workoutParticipantsRef.document("auteur")
+
+        val auteurRef = mDatabase.collection("workouts")
+                .document(seance.id).collection("users").document("auteur")
         auteurRef.get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 author = task.result!!.toObject<User>(User::class.java)
                 if (author?.photoUrl!=null)
                     Glide.with(this).load(author?.photoUrl).into(photo)
+
+                if(currentUserIsWorkoutAuthor()){
+                    disableParticipateButton()
+                }else {
+                    joinWorkout()
+                }
+
+            }else{
+                Log.e("DetailsSeanceActivity", task.exception?.message)
             }
         }
 
-        if(!user?.displayName.equals(author?.nomComplet)){
-            binding.participateButton.isEnabled = false
-            binding.participateButton.isClickable = false
-        }else {
-            binding.participateButton.setOnClickListener {
-                workoutParticipantsRef.document()
-                        .set(User(user?.displayName!!,user?.email!!,user?.photoUrl.toString()))
-                        .addOnSuccessListener {
-                            Log.i("Participer", "Nouveau participant : ${user?.displayName}")
-                            finish()
-                        }.addOnFailureListener {
-                            Log.e("Participer", it.message)
-                        }
 
-            }
-        }
 
 
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+    }
+
+    private fun joinWorkout() {
+        binding.participateButton.setOnClickListener {
+            mDatabase.collection("workouts")
+                    .document(seance.id).collection("users").document(user?.email!!)
+                    .set(User(user?.displayName!!,user?.email!!,user?.photoUrl.toString()))
+                    .addOnSuccessListener {
+                        Log.i("Participer", "Nouveau participant : ${user?.displayName}")
+                        finish()
+                    }.addOnFailureListener {
+                        Log.e("Participer", it.message)
+                    }
+        }
+
+    }
+
+    private fun disableParticipateButton() {
+        binding.participateButton.isEnabled = false
+        binding.participateButton.isClickable = false
+    }
+
+    private fun currentUserIsWorkoutAuthor(): Boolean {
+        return (user?.email).equals(author?.email)
     }
 
 
