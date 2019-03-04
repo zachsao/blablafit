@@ -55,10 +55,6 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
         val layoutParams = navigation.layoutParams as CoordinatorLayout.LayoutParams
         layoutParams.behavior = BottomNavigationViewBehavior()
-
-        val floatingActionButton = binding.addWorkoutButton
-        floatingActionButton.setOnClickListener { startActivity(Intent(this, NouvelleSeanceFragment::class.java)) }
-
     }
 
     override fun onResume() {

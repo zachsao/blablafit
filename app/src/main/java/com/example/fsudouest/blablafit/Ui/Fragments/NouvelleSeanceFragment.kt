@@ -72,7 +72,7 @@ class NouvelleSeanceFragment : Fragment(), Injectable {
 
         // Initialize Places.
         Places.initialize(activity!!.applicationContext, apiKey)
-        
+
         autocompleteFragment = childFragmentManager.findFragmentById(R.id.place_autocomplete_fragment) as AutocompleteSupportFragment
         // Specify the types of place data to return.
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.NAME, Place.Field.ID))

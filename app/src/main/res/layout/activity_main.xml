@@ -35,19 +35,6 @@
             android:layout_above="@+id/coordinator_layout"
             app:navGraph="@navigation/navigation"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/add_workout_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
-            android:layout_marginBottom="32dp"
-            android:src="@drawable/ic_menu_add"
-            app:backgroundTint="@color/colorPrimaryDark"
-            android:layout_above="@+id/coordinator_layout"
-            android:layout_alignParentRight="true"/>
-
-
 
     </RelativeLayout>
 </layout>
