@@ -25,14 +25,4 @@
         android:name="com.example.fsudouest.blablafit.Ui.Fragments.MessagesFragment"
         android:label="Messages"
         tools:layout="@layout/fragment_messages" />
-    <fragment
-        android:id="@+id/nouvelleSeanceFragment"
-        android:name="com.example.fsudouest.blablafit.Ui.Fragments.NouvelleSeanceFragment"
-        android:label="Programmer une séance"
-        tools:layout="@layout/fragment_nouvelle_seance">
-        <action
-            android:id="@+id/action_nouvelleSeanceFragment_to_seancesFragment"
-            app:destination="@id/seancesFragment"
-            app:popUpTo="@+id/seancesFragment" />
-    </fragment>
 </navigation>

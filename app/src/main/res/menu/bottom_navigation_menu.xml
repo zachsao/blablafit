@@ -11,7 +11,7 @@
         android:title="Rechercher" />
 
     <item
-        android:id="@+id/nouvelleSeanceFragment"
+        android:id="@+id/creerSeanceFragment"
         android:icon="@drawable/round_add_box_24"
         android:title="Créer"/>
     

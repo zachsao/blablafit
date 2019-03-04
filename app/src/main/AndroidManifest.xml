@@ -29,6 +29,9 @@
         <activity
             android:name="com.example.fsudouest.blablafit.Ui.Activities.LoginActivity"
             android:label="@string/title_activity_login" />
+        <activity android:name="com.example.fsudouest.blablafit.Ui.Activities.NouvelleSeanceActivity"
+            android:label="Programmer une séance"
+            android:parentActivityName="com.example.fsudouest.blablafit.MainActivity"></activity>
         <activity android:name="com.example.fsudouest.blablafit.Ui.Activities.DetailsSeanceActivity"
             android:label="Détails de la séance"
             android:parentActivityName="com.example.fsudouest.blablafit.MainActivity"></activity>

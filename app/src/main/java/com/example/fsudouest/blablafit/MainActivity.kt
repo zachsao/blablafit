@@ -2,7 +2,9 @@ package com.example.fsudouest.blablafit
 
 
 import android.content.Intent
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -13,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.example.fsudouest.blablafit.Ui.Activities.LoginActivity
-import com.example.fsudouest.blablafit.Ui.Fragments.NouvelleSeanceFragment
+import com.example.fsudouest.blablafit.Ui.Activities.NouvelleSeanceActivity
 import com.example.fsudouest.blablafit.Util.BottomNavigationViewBehavior
 import com.example.fsudouest.blablafit.Util.BottomNavigationViewHelper
 import com.example.fsudouest.blablafit.databinding.ActivityMainBinding
@@ -57,7 +59,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         layoutParams.behavior = BottomNavigationViewBehavior()
 
         val floatingActionButton = binding.addWorkoutButton
-        floatingActionButton.setOnClickListener { startActivity(Intent(this, NouvelleSeanceFragment::class.java)) }
+        floatingActionButton.setOnClickListener { startActivity(Intent(this, NouvelleSeanceActivity::class.java)) }
 
     }
 

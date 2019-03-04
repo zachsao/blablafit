@@ -1,27 +1,25 @@
-package com.example.fsudouest.blablafit.Ui.Fragments
+package com.example.fsudouest.blablafit.Ui.Activities
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import androidx.core.app.NavUtils
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.Log
-import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import com.example.fsudouest.blablafit.BuildConfig
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.model.User
 import com.example.fsudouest.blablafit.R
-import com.example.fsudouest.blablafit.databinding.FragmentNouvelleSeanceBinding
-import com.example.fsudouest.blablafit.di.Injectable
+import com.example.fsudouest.blablafit.databinding.ActivityNouvelleSeanceBinding
 
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.Places
@@ -31,16 +29,16 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.android.AndroidInjection
 
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
 
-class NouvelleSeanceFragment : Fragment(), Injectable {
+class NouvelleSeanceActivity : AppCompatActivity() {
 
-
-    private val TAG = "NouvelleSeanceFragment"
+    private val TAG = "NouvelleSeanceActivity"
 
     private var nouvelleSeance: Seance? = null
     private var picktime_et: EditText? = null
@@ -56,20 +54,27 @@ class NouvelleSeanceFragment : Fragment(), Injectable {
     @Inject
     lateinit var mDatabase: FirebaseFirestore
 
-    lateinit var binding: FragmentNouvelleSeanceBinding
+    lateinit var binding: ActivityNouvelleSeanceBinding
 
     private val apiKey = BuildConfig.GOOGLE_PLACES_KEY
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_nouvelle_seance,container,false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
+        super.onCreate(savedInstanceState)
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_nouvelle_seance)
+
+        // Initialize Places.
+        Places.initialize(applicationContext, apiKey)
 
         val tv_lieu = binding.textViewLieu
+
+
 
         //CHOIX SEANCE EN SALLE OU EN EXTERIEUR
         val radioGroup = binding.radioGroup
         checkByDefault(radioGroup, R.id.salle)
 
-        autocompleteFragment = activity?.supportFragmentManager?.findFragmentById(R.id.place_autocomplete_fragment) as AutocompleteSupportFragment
+        autocompleteFragment = supportFragmentManager.findFragmentById(R.id.place_autocomplete_fragment) as AutocompleteSupportFragment
         // Specify the types of place data to return.
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.NAME, Place.Field.ID))
         autocompleteFragment.setHint("Où allez vous faire votre séance ?")
@@ -103,7 +108,7 @@ class NouvelleSeanceFragment : Fragment(), Injectable {
         //CHOIX DU TYPE DE SEANCE
         val spinner_choix_seance = binding.choixSeanceSpinner
         // Create an ArrayAdapter using the string array and a default spinner layout
-        val adapter_choix_seance = ArrayAdapter.createFromResource(activity,
+        val adapter_choix_seance = ArrayAdapter.createFromResource(this,
                 R.array.tableau_seances, android.R.layout.simple_spinner_item)
         // Specify the layout to use when the list of choices appears
         adapter_choix_seance.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -130,7 +135,7 @@ class NouvelleSeanceFragment : Fragment(), Injectable {
         val year = c.get(Calendar.YEAR)
         date.setText(dateFormat.format(c.time))
 
-        val datePickerDialog = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { datePicker, year, month, day_of_month ->
+        val datePickerDialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { datePicker, year, month, day_of_month ->
             c.set(year, month, day_of_month)
             dateSeance = c.time
             date.setText(dateFormat.format(dateSeance))
@@ -150,12 +155,12 @@ class NouvelleSeanceFragment : Fragment(), Injectable {
 
         picktime_et!!.setText(hourFormat.format(c.time))
 
-        val timePickerDialog = TimePickerDialog(activity, TimePickerDialog.OnTimeSetListener { timePicker, hourOfDay, minutes ->
+        val timePickerDialog = TimePickerDialog(this, TimePickerDialog.OnTimeSetListener { timePicker, hourOfDay, minutes ->
             c.set(Calendar.HOUR_OF_DAY, hourOfDay)
             c.set(Calendar.MINUTE, minutes)
             dateSeance = c.time
             picktime_et!!.setText(hourFormat.format(dateSeance))
-        }, hour, minute, DateFormat.is24HourFormat(activity))
+        }, hour, minute, DateFormat.is24HourFormat(this))
 
         picktime_et!!.onFocusChangeListener = View.OnFocusChangeListener { view, b -> if (b) timePickerDialog.show() }
 
@@ -164,7 +169,7 @@ class NouvelleSeanceFragment : Fragment(), Injectable {
 
         //CHOIX DE LA DUREE
         val spinner_duree = binding.dureeSpinner
-        val adapter_duree = ArrayAdapter.createFromResource(activity,
+        val adapter_duree = ArrayAdapter.createFromResource(this,
                 R.array.tableau_durees, android.R.layout.simple_spinner_item)
         adapter_duree.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner_duree.adapter = adapter_duree
@@ -178,7 +183,7 @@ class NouvelleSeanceFragment : Fragment(), Injectable {
 
         //CHOIX DU NOMBRE MAXIMUM DE PARTICIPANTS
         val spinner_places = binding.nbrPlacesSpinner
-        val adapter_places = ArrayAdapter.createFromResource(activity,
+        val adapter_places = ArrayAdapter.createFromResource(this,
                 R.array.tableau_nbr_places, android.R.layout.simple_spinner_item)
         adapter_places.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner_places.adapter = adapter_places
@@ -186,6 +191,7 @@ class NouvelleSeanceFragment : Fragment(), Injectable {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
                 nb_participants = adapterView.getItemAtPosition(i).toString()
             }
+
             override fun onNothingSelected(adapterView: AdapterView<*>) {}
         }
 
@@ -196,28 +202,31 @@ class NouvelleSeanceFragment : Fragment(), Injectable {
 
         //CREATION DE LA SEANCE
         val creer = binding.boutonCreerSeance
-        creer.setOnClickListener { view ->
+        creer.setOnClickListener {
             val ref = mDatabase.collection("workouts").document()
             nouvelleSeance = Seance(titre, lieu, description, dateSeance, nb_participants, auteur!!, duree, ref.id)
 
             ref.set(nouvelleSeance!!).addOnSuccessListener {
                 //add a subcollection of users
                 ref.collection("users").document("auteur").set(author)
-                Toast.makeText(activity, "Nouvelle séance programmée", Toast.LENGTH_SHORT).show()
-                Navigation.findNavController(view).navigate(R.id.action_nouvelleSeanceFragment_to_seancesFragment)
-            }.addOnFailureListener { Toast.makeText(activity, "Une erreur s'est produite", Toast.LENGTH_SHORT).show() }
+                Toast.makeText(this, "Nouvelle séance programmée", Toast.LENGTH_SHORT).show()
+                NavUtils.navigateUpFromSameTask(this)
+            }.addOnFailureListener { Toast.makeText(this, "Une erreur s'est produite", Toast.LENGTH_SHORT).show() }
         }
 
-
-        return binding.root
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        // Initialize Places.
-        Places.initialize(activity!!.applicationContext, apiKey)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            // Respond to the action bar's Up/Home button
+            android.R.id.home -> {
+                NavUtils.navigateUpFromSameTask(this)
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
-
 
     //Séléctionne une séance en salle par défaut
     fun checkByDefault(rg: RadioGroup, id: Int) {
