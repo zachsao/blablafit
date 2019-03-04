@@ -15,6 +15,7 @@ import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.Navigation
 import com.example.fsudouest.blablafit.BuildConfig
 import com.example.fsudouest.blablafit.model.Seance
@@ -69,7 +70,10 @@ class NouvelleSeanceFragment : Fragment(), Injectable {
         val radioGroup = binding.radioGroup
         checkByDefault(radioGroup, R.id.salle)
 
-        autocompleteFragment = activity?.supportFragmentManager?.findFragmentById(R.id.place_autocomplete_fragment) as AutocompleteSupportFragment
+        // Initialize Places.
+        Places.initialize(activity!!.applicationContext, apiKey)
+        
+        autocompleteFragment = childFragmentManager.findFragmentById(R.id.place_autocomplete_fragment) as AutocompleteSupportFragment
         // Specify the types of place data to return.
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.NAME, Place.Field.ID))
         autocompleteFragment.setHint("Où allez vous faire votre séance ?")
@@ -81,8 +85,7 @@ class NouvelleSeanceFragment : Fragment(), Injectable {
             }
 
             override fun onError(status: Status) {
-                // TODO: Handle the error.
-                Log.i(TAG, "An error occurred: $status")
+                Log.e(TAG, "An error occurred: $status")
             }
         })
 
@@ -212,11 +215,7 @@ class NouvelleSeanceFragment : Fragment(), Injectable {
         return binding.root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        // Initialize Places.
-        Places.initialize(activity!!.applicationContext, apiKey)
-    }
+
 
 
     //Séléctionne une séance en salle par défaut
