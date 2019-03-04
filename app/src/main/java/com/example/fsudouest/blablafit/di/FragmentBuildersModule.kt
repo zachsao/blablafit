@@ -1,9 +1,6 @@
 package com.example.fsudouest.blablafit.di
 
-import com.example.fsudouest.blablafit.Ui.Fragments.MessagesFragment
-import com.example.fsudouest.blablafit.Ui.Fragments.MyProfileFragment
-import com.example.fsudouest.blablafit.Ui.Fragments.SeancesFragment
-import com.example.fsudouest.blablafit.Ui.Fragments.TrouverUneSeanceFragment
+import com.example.fsudouest.blablafit.Ui.Fragments.*
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -20,4 +17,7 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeTrouverUneSeanceFragment(): TrouverUneSeanceFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeNouvelleSeanceFragment(): NouvelleSeanceFragment
 }
