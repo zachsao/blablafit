@@ -20,4 +20,7 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeNouvelleSeanceFragment(): NouvelleSeanceFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeIndoorChoiceFragment(): IndoorChoiceFragment
 }

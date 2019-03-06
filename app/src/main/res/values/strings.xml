@@ -47,6 +47,9 @@
     <string name="workout_participants">Places restantes:</string>
     <string name="participate_button">Je participe</string>
     <string name="workout_author">Séance proposée par :</string>
+    <string name="inoutdoor_choice_tv">Choisis où tu souhaites t\'entraîner</string>
+    <string name="choice_gym_tv">En salle de sport</string>
+    <string name="choice_outdoor_tv">En extérieur</string>
 
 
 </resources>

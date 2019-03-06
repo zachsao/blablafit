@@ -35,4 +35,9 @@
             app:destination="@id/seancesFragment"
             app:popUpTo="@+id/seancesFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/indoorChoiceFragment"
+        android:name="com.example.fsudouest.blablafit.Ui.Fragments.IndoorChoiceFragment"
+        android:label="Nouvelle séance"
+        tools:layout="@layout/fragment_indoor_choice" />
 </navigation>
