@@ -17,6 +17,15 @@
                             <option name="y" value="-426" />
                           </Point>
                         </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_indoorChoiceFragment_to_typeSeanceFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                       </LayoutPositions>
                     </value>
                   </entry>
@@ -84,6 +93,18 @@
                           <Point>
                             <option name="x" value="-350" />
                             <option name="y" value="66" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="typeSeanceFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-802" />
+                            <option name="y" value="-598" />
                           </Point>
                         </option>
                       </LayoutPositions>

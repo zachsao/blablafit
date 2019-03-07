@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.NavDirections
+import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 
 import com.example.fsudouest.blablafit.R
@@ -25,6 +27,10 @@ class IndoorChoiceFragment : Fragment(), Injectable {
 
         Glide.with(this).load(R.drawable.gym).into(binding.gymImage)
         Glide.with(this).load(R.drawable.outdoors).into(binding.outdoorImage)
+
+        binding.cardGym.setOnClickListener {
+            Navigation.findNavController(it).navigate(R.id.action_indoorChoiceFragment_to_typeSeanceFragment)
+        }
         return binding.root
     }
 

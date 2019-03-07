@@ -39,5 +39,15 @@
         android:id="@+id/indoorChoiceFragment"
         android:name="com.example.fsudouest.blablafit.Ui.Fragments.IndoorChoiceFragment"
         android:label="Nouvelle séance"
-        tools:layout="@layout/fragment_indoor_choice" />
+        tools:layout="@layout/fragment_indoor_choice" >
+        <action
+            android:id="@+id/action_indoorChoiceFragment_to_typeSeanceFragment"
+            app:destination="@id/typeSeanceFragment"
+            app:enterAnim="@anim/fui_slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/typeSeanceFragment"
+        android:name="com.example.fsudouest.blablafit.Ui.Fragments.TypeSeanceFragment"
+        android:label="Nouvelle Séance"
+        tools:layout="@layout/fragment_type_seance" />
 </navigation>
