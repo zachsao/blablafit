@@ -43,7 +43,8 @@
         <action
             android:id="@+id/action_indoorChoiceFragment_to_typeSeanceFragment"
             app:destination="@id/typeSeanceFragment"
-            app:enterAnim="@anim/fui_slide_out_left" />
+            app:enterAnim="@anim/fui_slide_in_right"
+            app:exitAnim="@anim/fui_slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/typeSeanceFragment"
