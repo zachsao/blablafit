@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 
 import androidx.navigation.Navigation.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.example.fsudouest.blablafit.Ui.Activities.LoginActivity
 import com.example.fsudouest.blablafit.Ui.Fragments.NouvelleSeanceFragment
@@ -55,6 +56,8 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
         val layoutParams = navigation.layoutParams as CoordinatorLayout.LayoutParams
         layoutParams.behavior = BottomNavigationViewBehavior()
+
+        NavigationUI.setupActionBarWithNavController(this,navController)
     }
 
     override fun onResume() {
@@ -67,6 +70,11 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         if (mAuthStateListener != null) {
             mFirebaseAuth!!.removeAuthStateListener(mAuthStateListener!!)
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(this, R.id.myNavHostFragment)
+        return navController.navigateUp()
     }
 
     override fun supportFragmentInjector() = dispatchingAndroidInjector
