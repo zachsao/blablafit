@@ -3,9 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".Ui.Fragments.TypeSeanceFragment">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -13,7 +17,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
                 android:padding="16dp"
-                android:text="@string/inoutdoor_choice_tv"
+                android:text="@string/workout_type_choice"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="24sp"
@@ -22,10 +26,28 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/gridRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal">
 
             </androidx.recyclerview.widget.RecyclerView>
+
+            <Button
+                android:id="@+id/next_step_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/element_fill"
+                android:text="@string/next_step_tv"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold|italic" />
         </LinearLayout>
+    </ScrollView>
+
+
 
 </layout>

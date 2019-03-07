@@ -50,6 +50,8 @@
     <string name="inoutdoor_choice_tv">Choisis où tu souhaites t\'entraîner</string>
     <string name="choice_gym_tv">En salle de sport</string>
     <string name="choice_outdoor_tv">En extérieur</string>
+    <string name="workout_type_choice">Choisis ton type de séance</string>
+    <string name="next_step_tv">étape suivante</string>
 
 
 </resources>
