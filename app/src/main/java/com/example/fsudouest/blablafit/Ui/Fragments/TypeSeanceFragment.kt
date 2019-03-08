@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fsudouest.blablafit.Adapters.WorkoutTypeAdapter
@@ -52,6 +53,9 @@ class TypeSeanceFragment : Fragment() {
             adapter = mAdapter
         }
 
+        binding.nextStepButton.setOnClickListener {
+            Navigation.findNavController(it).navigate(R.id.action_typeSeanceFragment_to_addDescriptionFragment)
+        }
 
         return binding.root
     }
