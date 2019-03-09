@@ -54,6 +54,7 @@
     <string name="next_step_tv">étape suivante</string>
     <string name="add_description_tv">Ajoute un descriptif de ta séance (optionnel)</string>
     <string name="description_edittext_hint">Entre ta description ici</string>
+    <string name="date_and_duration_fragment_title_tv">Elabore la séance parfaite</string>
 
 
 </resources>
