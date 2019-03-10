@@ -147,6 +147,7 @@
                 android:weightSum="4">
 
                 <Button
+                    android:id="@+id/decrement"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="-"
@@ -167,6 +168,7 @@
                     android:textStyle="bold|italic" />
 
                 <Button
+                    android:id="@+id/increment"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
