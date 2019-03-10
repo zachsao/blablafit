@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 
 import com.example.fsudouest.blablafit.R
@@ -24,6 +25,8 @@ class AddDateDurationFragment : Fragment() {
     private lateinit var date_button: Button
     private lateinit var hour_button: Button
     private lateinit var duration_button: Button
+    private lateinit var participantsCount: TextView
+    private var count = 0
     private lateinit var c: Calendar
     private lateinit var datePickerDialog: DatePickerDialog
     private lateinit var timePickerDialog : TimePickerDialog
@@ -59,6 +62,11 @@ class AddDateDurationFragment : Fragment() {
         duration_button.setOnClickListener {
             durationPickerDialog.show()
         }
+
+        //Choix du nombre de participants
+        participantsCount = binding.participantsSelectionButton
+        binding.increment.setOnClickListener { increment() }
+        binding.decrement.setOnClickListener { decrement() }
 
         return binding.root
     }
@@ -102,5 +110,16 @@ class AddDateDurationFragment : Fragment() {
                 else -> "$hourOfDay h $minutes min"
             }
         },0,30,true)
+    }
+
+    fun increment(){
+        participantsCount.text = "${count++}"
+    }
+
+    fun decrement(){
+        count--
+        if(count<0)
+            count=0
+        participantsCount.text = "$count"
     }
 }

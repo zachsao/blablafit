@@ -155,14 +155,16 @@
                     android:layout_weight="1"
                     android:background="@drawable/selection_button_round"/>
 
-                <Button
+                <TextView
                     android:id="@+id/participants_selection_button"
                     android:layout_width="0dp"
                     android:layout_weight="2"
                     android:layout_height="wrap_content"
                     android:background="@drawable/selection_button_round"
                     android:elevation="1sp"
-                    android:text="3"
+                    android:text="0"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
                     android:layout_margin="2dp"
                     android:textAllCaps="false"
                     android:textStyle="bold|italic" />
