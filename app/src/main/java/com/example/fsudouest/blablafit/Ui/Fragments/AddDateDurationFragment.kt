@@ -23,9 +23,11 @@ class AddDateDurationFragment : Fragment() {
     private lateinit var dateSeance: Date
     private lateinit var date_button: Button
     private lateinit var hour_button: Button
+    private lateinit var duration_button: Button
     private lateinit var c: Calendar
     private lateinit var datePickerDialog: DatePickerDialog
     private lateinit var timePickerDialog : TimePickerDialog
+    private lateinit var durationPickerDialog : TimePickerDialog
     private val dateFormat = SimpleDateFormat("EEE dd MMM", Locale.FRENCH)
     private val hourFormat = SimpleDateFormat("HH:mm", Locale.FRENCH)
 
@@ -49,6 +51,15 @@ class AddDateDurationFragment : Fragment() {
         hour_button.setOnClickListener {
             timePickerDialog.show()
         }
+
+        //Choix de la durée
+        duration_button = binding.durationSelectionButton
+
+        setDuration()
+        duration_button.setOnClickListener {
+            durationPickerDialog.show()
+        }
+
         return binding.root
     }
 
@@ -82,5 +93,14 @@ class AddDateDurationFragment : Fragment() {
             dateSeance = c.time
             hour_button.text = hourFormat.format(dateSeance)
         }, hour, minute, DateFormat.is24HourFormat(activity))
+    }
+
+    fun setDuration(){
+        durationPickerDialog = TimePickerDialog(activity, TimePickerDialog.OnTimeSetListener{_, hourOfDay, minutes ->
+            duration_button.text = when(hourOfDay){
+                0 -> "$minutes min"
+                else -> "$hourOfDay h $minutes min"
+            }
+        },0,30,true)
     }
 }
