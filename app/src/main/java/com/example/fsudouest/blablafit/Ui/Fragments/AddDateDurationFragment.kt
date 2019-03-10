@@ -2,11 +2,14 @@ package com.example.fsudouest.blablafit.Ui.Fragments
 
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
+import android.text.format.DateFormat
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.databinding.DataBindingUtil
 
 import com.example.fsudouest.blablafit.R
@@ -18,6 +21,13 @@ import java.util.*
 class AddDateDurationFragment : Fragment() {
 
     private lateinit var dateSeance: Date
+    private lateinit var date_button: Button
+    private lateinit var hour_button: Button
+    private lateinit var c: Calendar
+    private lateinit var datePickerDialog: DatePickerDialog
+    private lateinit var timePickerDialog : TimePickerDialog
+    private val dateFormat = SimpleDateFormat("EEE dd MMM", Locale.FRENCH)
+    private val hourFormat = SimpleDateFormat("HH:mm", Locale.FRENCH)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -25,33 +35,52 @@ class AddDateDurationFragment : Fragment() {
         val binding: FragmentAddDateDurationBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_add_date_duration, container, false)
 
         //CHOIX DE LA DATE
-        val date_button = binding.dateSelectionButton
+        date_button = binding.dateSelectionButton
 
-        val c = Calendar.getInstance()
-        val dateFormat = SimpleDateFormat("EEE dd MMM", Locale.FRENCH)
-        val todaysDate = c.timeInMillis
+        selectDate()
+        date_button.setOnClickListener {
+            datePickerDialog.show()
+        }
 
+        //CHOIX DE L'HEURE
+        hour_button = binding.hourSelectionButton
+
+        selectHour()
+        hour_button.setOnClickListener {
+            timePickerDialog.show()
+        }
+        return binding.root
+    }
+
+    fun selectDate(){
+        c = Calendar.getInstance()
         dateSeance = c.time
         val day = c.get(Calendar.DAY_OF_MONTH)
         val month = c.get(Calendar.MONTH)
         val year = c.get(Calendar.YEAR)
         date_button.text = dateFormat.format(c.time)
 
-        val datePickerDialog = DatePickerDialog(activity!!, DatePickerDialog.OnDateSetListener { _, year, month, day_of_month ->
+        datePickerDialog = DatePickerDialog(activity!!, DatePickerDialog.OnDateSetListener { _, year, month, day_of_month ->
             c.set(year, month, day_of_month)
             dateSeance = c.time
             date_button.text = dateFormat.format(dateSeance)
         }, year, month, day)
 
-        datePickerDialog.datePicker.minDate = todaysDate
-
-        date_button.setOnClickListener {
-            datePickerDialog.show()
-        }
-
-
-        return binding.root
+        val todayDate = c.timeInMillis
+        datePickerDialog.datePicker.minDate = todayDate
     }
 
+    fun selectHour(){
+        val hour = c.get(Calendar.HOUR_OF_DAY)
+        val minute = c.get(Calendar.MINUTE)
 
+        hour_button.text = hourFormat.format(c.time)
+
+        timePickerDialog = TimePickerDialog(activity, TimePickerDialog.OnTimeSetListener { _, hourOfDay, minutes ->
+            c.set(Calendar.HOUR_OF_DAY, hourOfDay)
+            c.set(Calendar.MINUTE, minutes)
+            dateSeance = c.time
+            hour_button.text = hourFormat.format(dateSeance)
+        }, hour, minute, DateFormat.is24HourFormat(activity))
+    }
 }
