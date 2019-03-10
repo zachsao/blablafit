@@ -8,11 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
+import androidx.recyclerview.selection.SelectionPredicates
+import androidx.recyclerview.selection.SelectionTracker
+import androidx.recyclerview.selection.StableIdKeyProvider
+import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fsudouest.blablafit.Adapters.WorkoutTypeAdapter
 
 import com.example.fsudouest.blablafit.R
+import com.example.fsudouest.blablafit.Util.MyLookup
 import com.example.fsudouest.blablafit.databinding.FragmentTypeSeanceBinding
 import com.example.fsudouest.blablafit.model.WorkoutType
 
@@ -24,10 +29,15 @@ class TypeSeanceFragment : Fragment() {
     private lateinit var workouts: ArrayList<WorkoutType>
     private lateinit var list: RecyclerView
 
+    private var tracker: SelectionTracker<Long>? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val binding = DataBindingUtil.inflate<FragmentTypeSeanceBinding>(inflater,R.layout.fragment_type_seance, container, false)
+
+        if(savedInstanceState != null)
+            tracker?.onRestoreInstanceState(savedInstanceState)
 
         list = binding.gridRecyclerView
 
@@ -53,11 +63,28 @@ class TypeSeanceFragment : Fragment() {
             adapter = mAdapter
         }
 
+        tracker = SelectionTracker.Builder<Long>(
+                "selection-1",
+                list,
+                StableIdKeyProvider(list),
+                MyLookup(list),
+                StorageStrategy.createLongStorage()
+        ).withSelectionPredicate(
+                SelectionPredicates.createSelectAnything()
+        ).build()
+
         binding.nextStepButton.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.action_typeSeanceFragment_to_addDescriptionFragment)
         }
 
+        mAdapter.setTracker(tracker)
+
         return binding.root
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        tracker?.onSaveInstanceState(outState)
     }
 
 
