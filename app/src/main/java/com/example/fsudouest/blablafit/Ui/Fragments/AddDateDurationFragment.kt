@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation
 
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentAddDateDurationBinding
@@ -67,6 +68,10 @@ class AddDateDurationFragment : Fragment() {
         participantsCount = binding.participantsSelectionButton
         binding.increment.setOnClickListener { increment() }
         binding.decrement.setOnClickListener { decrement() }
+
+        binding.nextStepButton.setOnClickListener {
+            Navigation.findNavController(it).navigate(R.id.action_addDateDurationFragment_to_searchLocationFragment)
+        }
 
         return binding.root
     }

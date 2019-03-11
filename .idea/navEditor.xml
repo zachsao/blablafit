@@ -17,6 +17,15 @@
                             <option name="y" value="-613" />
                           </Point>
                         </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_addDateDurationFragment_to_searchLocationFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                       </LayoutPositions>
                     </value>
                   </entry>
@@ -114,6 +123,18 @@
                           <Point>
                             <option name="x" value="-594" />
                             <option name="y" value="26" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="searchLocationFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-148" />
+                            <option name="y" value="-613" />
                           </Point>
                         </option>
                       </LayoutPositions>

@@ -78,5 +78,18 @@
         android:id="@+id/addDateDurationFragment"
         android:name="com.example.fsudouest.blablafit.Ui.Fragments.AddDateDurationFragment"
         android:label="Nouvelle séance"
-        tools:layout="@layout/fragment_add_date_duration" />
+        tools:layout="@layout/fragment_add_date_duration" >
+        <action
+            android:id="@+id/action_addDateDurationFragment_to_searchLocationFragment"
+            app:destination="@id/searchLocationFragment"
+            app:enterAnim="@anim/fui_slide_in_right"
+            app:exitAnim="@anim/fui_slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchLocationFragment"
+        android:name="com.example.fsudouest.blablafit.Ui.Fragments.SearchLocationFragment"
+        android:label="Nouvelle séance"
+        tools:layout="@layout/fragment_search_location" />
 </navigation>
