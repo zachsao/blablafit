@@ -57,6 +57,7 @@
     <string name="date_and_duration_fragment_title_tv">Elabore la séance parfaite</string>
     <string name="find_gym_textview">Trouve ta salle</string>
     <string name="validate_tv">Valider</string>
+    <string name="searchViewHint">Rechercher</string>
 
 
 </resources>

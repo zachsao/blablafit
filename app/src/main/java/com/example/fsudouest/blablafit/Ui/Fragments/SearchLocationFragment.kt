@@ -38,7 +38,7 @@ class SearchLocationFragment : Fragment() {
         autocompleteFragment = childFragmentManager.findFragmentById(R.id.place_autocomplete_fragment) as AutocompleteSupportFragment
         // Specify the types of place data to return.
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.NAME, Place.Field.ADDRESS))
-        autocompleteFragment.setHint("Rechercher une salle de sport")
+        autocompleteFragment.setHint(getString(R.string.searchViewHint))
         autocompleteFragment.setTypeFilter(TypeFilter.ESTABLISHMENT)
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {

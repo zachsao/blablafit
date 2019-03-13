@@ -1,48 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".Ui.Fragments.SearchLocationFragment">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        >
-
-        <!-- TODO: Update blank fragment layout -->
+        android:layout_height="match_parent">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:fontFamily="@font/roboto"
             android:text="@string/find_gym_textview"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="24sp"
-            android:textStyle="bold|italic" />
+            android:textStyle="bold|italic"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <fragment
-            android:id="@+id/place_autocomplete_fragment"
-            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@drawable/round_outline_black"/>
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/round_outline_black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <fragment
+                android:id="@+id/place_autocomplete_fragment"
+                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/validate_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/element_fill"
+            android:background="@color/colorPrimary"
+            android:fontFamily="@font/roboto"
             android:text="@string/validate_tv"
-            android:textAllCaps="false"
+            android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="14sp"
-            android:textStyle="bold|italic" />
+            android:textSize="24sp"
+            android:textStyle="bold|italic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
 </layout>
