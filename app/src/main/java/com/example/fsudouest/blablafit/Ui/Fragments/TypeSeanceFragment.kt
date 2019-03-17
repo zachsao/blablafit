@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import androidx.recyclerview.selection.SelectionPredicates
@@ -21,6 +22,7 @@ import com.example.fsudouest.blablafit.Adapters.WorkoutTypeAdapter
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.Util.MyLookup
 import com.example.fsudouest.blablafit.databinding.FragmentTypeSeanceBinding
+import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.model.WorkoutType
 import java.time.Duration
 
@@ -81,11 +83,19 @@ class TypeSeanceFragment : Fragment() {
         mAdapter.setTracker(tracker)
 
 
+
         binding.nextStepButton.setOnClickListener {
             if(tracker!!.selection.isEmpty){
-                Toast.makeText(activity,"veuillez choisir au moins un élément",LENGTH_SHORT).show()
+                Toast.makeText(activity,"Veuillez séléctionner au moins un élément",LENGTH_SHORT).show()
             }else{
-                Navigation.findNavController(it).navigate(R.id.action_typeSeanceFragment_to_addDescriptionFragment)
+                var workoutTitle = ""
+                tracker!!.selection.forEach {
+                    workoutTitle+= " - ${workouts[it.toInt()].title}"
+                }
+                Toast.makeText(activity,"Séance : $workoutTitle",LENGTH_SHORT).show()
+                val workout = Seance(workoutTitle)
+                val bundle = bundleOf("workout" to workout)
+                Navigation.findNavController(it).navigate(R.id.action_typeSeanceFragment_to_addDescriptionFragment,bundle)
             }
 
         }
