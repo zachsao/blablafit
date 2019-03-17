@@ -51,6 +51,8 @@ class WorkoutTypeAdapter(private var mContext: Context, private var mData: Array
         this.tracker = tracker
     }
 
+
+
     inner class CardViewHolder(var binding: SeanceTypeItemBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun bind(position: Int){

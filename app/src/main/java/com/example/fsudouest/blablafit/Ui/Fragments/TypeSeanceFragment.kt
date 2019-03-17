@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import androidx.recyclerview.selection.SelectionPredicates
@@ -20,6 +22,7 @@ import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.Util.MyLookup
 import com.example.fsudouest.blablafit.databinding.FragmentTypeSeanceBinding
 import com.example.fsudouest.blablafit.model.WorkoutType
+import java.time.Duration
 
 
 class TypeSeanceFragment : Fragment() {
@@ -58,6 +61,8 @@ class TypeSeanceFragment : Fragment() {
 
         mAdapter = WorkoutTypeAdapter(activity!!,workouts)
 
+
+
         list.apply {
             layoutManager = GridLayoutManager(activity!!,3)
             adapter = mAdapter
@@ -73,11 +78,19 @@ class TypeSeanceFragment : Fragment() {
                 SelectionPredicates.createSelectAnything()
         ).build()
 
+        mAdapter.setTracker(tracker)
+
+
         binding.nextStepButton.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_typeSeanceFragment_to_addDescriptionFragment)
+            if(tracker!!.selection.isEmpty){
+                Toast.makeText(activity,"veuillez choisir au moins un élément",LENGTH_SHORT).show()
+            }else{
+                Navigation.findNavController(it).navigate(R.id.action_typeSeanceFragment_to_addDescriptionFragment)
+            }
+
         }
 
-        mAdapter.setTracker(tracker)
+
 
         return binding.root
     }
