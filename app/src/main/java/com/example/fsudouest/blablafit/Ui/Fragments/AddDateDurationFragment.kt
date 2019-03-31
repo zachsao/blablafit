@@ -79,7 +79,6 @@ class AddDateDurationFragment : Fragment() {
             workout.duree = duration_button.text.toString()
             workout.nb_participants = resources.getQuantityString(R.plurals.numberOfPlacesAvailable,count,count)
             val bundle = bundleOf("workout" to workout)
-            Toast.makeText(activity,"Séance : ${workout.date}, ${workout.duree}, ${workout.nb_participants}", Toast.LENGTH_SHORT).show()
             Navigation.findNavController(it).navigate(R.id.action_addDateDurationFragment_to_searchLocationFragment, bundle)
         }
 

@@ -80,7 +80,6 @@ class SearchLocationFragment : Fragment(), Injectable {
                 ref.set(workout).addOnSuccessListener {
                     //add a subcollection of users
                     ref.collection("users").document("auteur").set(author)
-                    Toast.makeText(activity, "Nouvelle séance programmée", Toast.LENGTH_SHORT).show()
                     Navigation.findNavController(view).navigate(R.id.action_searchLocationFragment_to_seancesFragment)
                 }.addOnFailureListener { Toast.makeText(activity, "Une erreur s'est produite", Toast.LENGTH_SHORT).show() }
             }

@@ -31,7 +31,6 @@ import java.time.Duration
 class TypeSeanceFragment : Fragment() {
 
     private lateinit var mAdapter: WorkoutTypeAdapter
-    private lateinit var layoutManager: GridLayoutManager
     private lateinit var workouts: ArrayList<WorkoutType>
     private lateinit var list: RecyclerView
 
@@ -89,7 +88,6 @@ class TypeSeanceFragment : Fragment() {
                 val workoutTitle = tracker!!.selection.joinToString(separator = " - "){index ->
                     workouts[index.toInt()].title
                 }
-                Toast.makeText(activity,"Séance : $workoutTitle",LENGTH_SHORT).show()
                 val workout = Seance(workoutTitle)
                 val bundle = bundleOf("workout" to workout)
                 Navigation.findNavController(it).navigate(R.id.action_typeSeanceFragment_to_addDescriptionFragment,bundle)
