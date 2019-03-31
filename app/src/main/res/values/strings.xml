@@ -59,5 +59,9 @@
     <string name="validate_tv">Valider</string>
     <string name="searchViewHint">Rechercher</string>
 
+    <plurals name="numberOfPlacesAvailable">
+        <item quantity="one">%d place disponible</item>
+        <item quantity="other">%d places disponibles - </item>
+    </plurals>
 
 </resources>

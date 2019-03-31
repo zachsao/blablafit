@@ -4,6 +4,7 @@ package com.example.fsudouest.blablafit.Ui.Fragments
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -81,16 +82,12 @@ class TypeSeanceFragment : Fragment() {
         ).build()
 
         mAdapter.setTracker(tracker)
-
-
-
         binding.nextStepButton.setOnClickListener {
             if(tracker!!.selection.isEmpty){
                 Toast.makeText(activity,"Veuillez séléctionner au moins un élément",LENGTH_SHORT).show()
             }else{
-                var workoutTitle = ""
-                tracker!!.selection.forEach {
-                    workoutTitle+= " - ${workouts[it.toInt()].title}"
+                val workoutTitle = tracker!!.selection.joinToString(separator = " - "){index ->
+                    workouts[index.toInt()].title
                 }
                 Toast.makeText(activity,"Séance : $workoutTitle",LENGTH_SHORT).show()
                 val workout = Seance(workoutTitle)
@@ -99,9 +96,6 @@ class TypeSeanceFragment : Fragment() {
             }
 
         }
-
-
-
         return binding.root
     }
 

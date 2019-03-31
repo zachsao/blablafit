@@ -82,7 +82,7 @@ class DetailsSeanceActivity : AppCompatActivity() {
             if (task.isSuccessful) {
                 author = task.result!!.toObject<User>(User::class.java)
                 if (author?.photoUrl!=null)
-                    Glide.with(this).load(author?.photoUrl).into(photo)
+                    Glide.with(this).load(author?.photoUrl).placeholder(R.drawable.userphoto).into(photo)
 
                 if(currentUserIsWorkoutAuthor()){
                     disableParticipateButton()

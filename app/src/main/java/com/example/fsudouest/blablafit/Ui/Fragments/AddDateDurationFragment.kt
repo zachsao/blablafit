@@ -29,7 +29,7 @@ class AddDateDurationFragment : Fragment() {
     private lateinit var hour_button: Button
     private lateinit var duration_button: Button
     private lateinit var participantsCount: TextView
-    private var count = 0
+    private var count = 1
     private lateinit var c: Calendar
     private lateinit var datePickerDialog: DatePickerDialog
     private lateinit var timePickerDialog : TimePickerDialog
@@ -73,11 +73,11 @@ class AddDateDurationFragment : Fragment() {
         //Choix du nombre de participants
         participantsCount = binding.participantsSelectionButton
         binding.increment.setOnClickListener { increment() }
-        binding.decrement.setOnClickListener { decrement() }
+        binding.decrement.setOnClickListener { if(count>1) decrement() }
 
         binding.nextStepButton.setOnClickListener {
             workout.duree = duration_button.text.toString()
-            workout.nb_participants = count.toString()
+            workout.nb_participants = resources.getQuantityString(R.plurals.numberOfPlacesAvailable,count,count)
             val bundle = bundleOf("workout" to workout)
             Toast.makeText(activity,"Séance : ${workout.date}, ${workout.duree}, ${workout.nb_participants}", Toast.LENGTH_SHORT).show()
             Navigation.findNavController(it).navigate(R.id.action_addDateDurationFragment_to_searchLocationFragment, bundle)
@@ -128,13 +128,12 @@ class AddDateDurationFragment : Fragment() {
     }
 
     fun increment(){
-        participantsCount.text = "${count++}"
+        count++
+        participantsCount.text = "$count"
     }
 
     fun decrement(){
         count--
-        if(count<1)
-            count=1
         participantsCount.text = "$count"
     }
 }

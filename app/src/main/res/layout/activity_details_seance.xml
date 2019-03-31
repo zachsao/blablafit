@@ -298,7 +298,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     tools:text= "1 place restante - "
-                    android:text="@{seance.nb_participants +` place restante - `}"
+                    android:text="@{seance.nb_participants}"
                     android:textColor="@color/black" />
 
                 <ImageView

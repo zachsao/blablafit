@@ -66,7 +66,6 @@ class SeanceAdapter(private var mContext: Context, private var mData: ArrayList<
 
 
         fun bind(position: Int) {
-            val dateFormat = SimpleDateFormat("dd/MM/yy")
             val hourFormat = SimpleDateFormat("HH:mm")
 
             val seance = mData[position]

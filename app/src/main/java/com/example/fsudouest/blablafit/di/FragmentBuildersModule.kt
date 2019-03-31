@@ -23,4 +23,7 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeIndoorChoiceFragment(): IndoorChoiceFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeSearchLocationFragment(): SearchLocationFragment
 }

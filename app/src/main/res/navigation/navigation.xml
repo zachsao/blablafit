@@ -91,5 +91,12 @@
         android:id="@+id/searchLocationFragment"
         android:name="com.example.fsudouest.blablafit.Ui.Fragments.SearchLocationFragment"
         android:label="Nouvelle séance"
-        tools:layout="@layout/fragment_search_location" />
+        tools:layout="@layout/fragment_search_location" >
+        <action
+            android:id="@+id/action_searchLocationFragment_to_seancesFragment"
+            app:destination="@id/seancesFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popUpTo="@+id/seancesFragment" />
+    </fragment>
 </navigation>

@@ -208,7 +208,9 @@ class NouvelleSeanceFragment : Fragment(), Injectable {
                 ref.collection("users").document("auteur").set(author)
                 Toast.makeText(activity, "Nouvelle séance programmée", Toast.LENGTH_SHORT).show()
                 Navigation.findNavController(view).navigate(R.id.action_nouvelleSeanceFragment_to_seancesFragment)
-            }.addOnFailureListener { Toast.makeText(activity, "Une erreur s'est produite", Toast.LENGTH_SHORT).show() }
+            }.addOnFailureListener {
+                Log.e("SearchLocation Fragment", "${it.message}")
+                Toast.makeText(activity, "Une erreur s'est produite", Toast.LENGTH_SHORT).show() }
         }
 
 
