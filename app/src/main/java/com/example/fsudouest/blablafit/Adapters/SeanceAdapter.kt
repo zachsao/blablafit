@@ -80,7 +80,7 @@ class SeanceAdapter(private var mContext: Context, private var mData: ArrayList<
                 if (task.isSuccessful) {
                     val user = task.result!!.toObject<User>(User::class.java)
                     if (user?.photoUrl!=null)
-                        Glide.with(context).load(user.photoUrl).into(binding.authorProfilePicture)
+                        Glide.with(context).load(user.photoUrl).placeholder(R.drawable.userphoto).into(binding.authorProfilePicture)
                 }
             }
 
