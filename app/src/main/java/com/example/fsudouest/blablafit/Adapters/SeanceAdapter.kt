@@ -5,7 +5,6 @@ import android.content.Intent
 import androidx.recyclerview.widget.RecyclerView
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -21,7 +20,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 import java.text.SimpleDateFormat
 import java.util.ArrayList
-import java.util.Locale
+
+
 
 class SeanceAdapter(private var mContext: Context, private var mData: ArrayList<Seance>) : RecyclerView.Adapter<SeanceAdapter.SeanceViewHolder>() {
 
@@ -48,6 +48,17 @@ class SeanceAdapter(private var mContext: Context, private var mData: ArrayList<
 
     override fun getItemCount(): Int {
         return mData.size
+    }
+
+    fun removeAt(position: Int) {
+        mData.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
+    fun restoreItem(item: Seance, position: Int) {
+        mData.add(position, item)
+        // notify item added by position
+        notifyItemInserted(position)
     }
 
     inner class SeanceViewHolder(var binding: SeanceItem2Binding) : RecyclerView.ViewHolder(binding.root) {

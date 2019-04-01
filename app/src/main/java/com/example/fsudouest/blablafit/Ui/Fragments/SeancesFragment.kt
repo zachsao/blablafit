@@ -5,6 +5,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.app.DatePickerDialog
 import android.content.Context
+import android.graphics.Color
 import android.net.ConnectivityManager
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -15,16 +16,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.Adapters.SeanceAdapter
+import com.example.fsudouest.blablafit.Util.SwipeToDeleteCallback
 import com.example.fsudouest.blablafit.di.Injectable
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_seances.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -33,7 +41,7 @@ import javax.inject.Inject
 
 
 /**
- * A simple [Fragment] subclass.
+ * A simple [Fragment] subclas.
  */
 class SeancesFragment : Fragment(), Injectable {
 
@@ -105,6 +113,19 @@ class SeancesFragment : Fragment(), Injectable {
             // Update empty state with no connection error message
             mEmptyStateTextView.text = getString(R.string.no_internet_connection)
         }
+
+        val swipeHandler = object : SwipeToDeleteCallback(activity!!) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = mList.adapter as SeanceAdapter
+                val deletedIndex = viewHolder.adapterPosition
+                val deletedItem = seances[deletedIndex]
+                adapter.removeAt(deletedIndex)
+
+                showSnackBar(deletedItem,deletedIndex)
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(mList)
 
         return binding.root
     }
@@ -179,6 +200,17 @@ class SeancesFragment : Fragment(), Injectable {
                         Log.e("Seances Fragment", "Error getting documents: ", task.exception)
                     }
                 }
+    }
+
+    fun showSnackBar(deletedItem: Seance, deletedIndex: Int){
+        // showing snack bar with Undo option
+            Snackbar.make(binding.coordinatorLayout, "Séance supprimée", Snackbar.LENGTH_LONG)
+                .setAction("ANNULER"){
+                    // undo is selected, restore the deleted item
+                    mAdapter.restoreItem(deletedItem, deletedIndex)
+                }
+                .show()
+
     }
 
 }
