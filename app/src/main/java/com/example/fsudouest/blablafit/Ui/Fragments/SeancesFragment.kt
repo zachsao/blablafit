@@ -202,9 +202,23 @@ class SeancesFragment : Fragment(), Injectable {
                 }
     }
 
+    fun deleteWorkout(workoutId: String){
+        val ref = mDatabase.collection("workouts")
+        ref.document(workoutId)
+                .delete()
+                .addOnSuccessListener { Log.d("Seances Fragment", "DocumentSnapshot successfully deleted!") }
+                .addOnFailureListener { e -> Log.e("Seances Fragment", "Error deleting document", e) }
+    }
+
     fun showSnackBar(deletedItem: Seance, deletedIndex: Int){
         // showing snack bar with Undo option
             Snackbar.make(binding.coordinatorLayout, "Séance supprimée", Snackbar.LENGTH_LONG)
+                    .addCallback(object : Snackbar.Callback(){
+                        override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                            Log.d("Seances Fragment", "Snackbar dismissed")
+                            deleteWorkout(deletedItem.id)
+                        }
+                    })
                 .setAction("ANNULER"){
                     // undo is selected, restore the deleted item
                     mAdapter.restoreItem(deletedItem, deletedIndex)
