@@ -23,7 +23,7 @@ import java.util.ArrayList
 
 
 
-class SeanceAdapter(private var mContext: Context, private var mData: ArrayList<Seance>) : RecyclerView.Adapter<SeanceAdapter.SeanceViewHolder>() {
+class SeanceAdapter(private var mContext: Context, private var mData: ArrayList<Seance?>) : RecyclerView.Adapter<SeanceAdapter.SeanceViewHolder>() {
 
     lateinit var context: Context
 
@@ -86,7 +86,7 @@ class SeanceAdapter(private var mContext: Context, private var mData: ArrayList<
             Glide.with(context).load(R.drawable.weights).into(binding.itemImage)
 
             val auteurRef = FirebaseFirestore.getInstance().collection("workouts")
-                    .document(seance.id).collection("users").document("auteur")
+                    .document(seance!!.id).collection("users").document("auteur")
             auteurRef.get().addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val user = task.result!!.toObject<User>(User::class.java)
@@ -96,7 +96,7 @@ class SeanceAdapter(private var mContext: Context, private var mData: ArrayList<
             }
 
             //date.text = dateFormat.format(mData[position].date)
-            heure.text = hourFormat.format(mData[position].date)
+            heure.text = hourFormat.format(mData[position]?.date)
 
             parent.setOnClickListener {
                 val intent = Intent(mContext, DetailsSeanceActivity::class.java)

@@ -40,9 +40,9 @@ class TrouverUneSeanceFragment : Fragment(), Injectable {
     private lateinit var mList: RecyclerView
     internal var layoutManager = LinearLayoutManager(activity)
     private lateinit var mProgressView: View
-    private val mySeances = ArrayList<Seance>()
+    private val mySeances = ArrayList<Seance?>()
     private lateinit var mEmptyStateTextView: TextView
-    private val filteredSeances = ArrayList<Seance>()
+    private val filteredSeances = ArrayList<Seance?>()
     lateinit var searchView: SearchView
 
 
@@ -108,7 +108,7 @@ class TrouverUneSeanceFragment : Fragment(), Injectable {
 
     fun search(query: String) {
         for (seance in mySeances) {
-            if (seance.titre.toLowerCase().contains(query)) {
+            if (seance!!.titre.toLowerCase().contains(query)) {
                 filteredSeances.add(seance)
             }
         }

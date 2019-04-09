@@ -18,12 +18,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.Adapters.SeanceAdapter
 import com.example.fsudouest.blablafit.Util.SwipeToDeleteCallback
 import com.example.fsudouest.blablafit.di.Injectable
+import com.example.fsudouest.blablafit.viewModel.WorkoutsViewModel
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 
@@ -57,10 +59,11 @@ class SeancesFragment : Fragment(), Injectable {
     @Inject
     lateinit var mFirebaseAuth: FirebaseAuth
 
+    private lateinit var viewModel: WorkoutsViewModel
 
     private var user: FirebaseUser? = null
 
-    private var seances = ArrayList<Seance>()
+    private var seances = ArrayList<Seance?>()
 
     private lateinit var binding: com.example.fsudouest.blablafit.databinding.FragmentSeancesBinding
 
@@ -77,11 +80,29 @@ class SeancesFragment : Fragment(), Injectable {
         mProgressView = binding.seancesProgress
         mList = binding.rvSeances
 
+        viewModel = ViewModelProviders.of(this).get(WorkoutsViewModel::class.java).apply {
+            workoutsLiveData().observe(this@SeancesFragment, androidx.lifecycle.Observer {
+                Log.i("SeanceFragment","Observing workouts")
+                showError(false)
+                showProgress(true)
+                mAdapter = SeanceAdapter(activity!!,it)
+                displayList(it)
+                seances = it
+            })
+        }
+
+
         //display today's date
         val c = Calendar.getInstance()
         val day = c.get(Calendar.DAY_OF_MONTH)
         val currentMonth = c.get(Calendar.MONTH)
         val year = c.get(Calendar.YEAR)
+
+        c.set(year, currentMonth, day,0,0)
+        var debutJournee = c.time
+        c.set(year, currentMonth, day,23,59)
+        var finDeJournee = c.time
+        viewModel.getWorkouts(debutJournee,finDeJournee,user?.email,mDatabase)
 
         val dateFormat = SimpleDateFormat("EEEE dd MMM", Locale.FRENCH)
 
@@ -90,26 +111,21 @@ class SeancesFragment : Fragment(), Injectable {
         //display date picker when the date button is clicked
         val datePickerDialog = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { _, year, month, day_of_month ->
             c.set(year, month, day_of_month,0,0)
-            val debutJournee = c.time
+            debutJournee = c.time
             c.set(year, month, day_of_month,23,59)
-            val finDeJournee = c.time
+            finDeJournee = c.time
             binding.dateSelectionButton.text = dateFormat.format(c.time)
-            getSeances(debutJournee,finDeJournee)
+            viewModel.getWorkouts(debutJournee,finDeJournee,user?.email,mDatabase)
         }, year, currentMonth, day)
 
         // If there is a network connection, fetch data
         if (isOnline() && user!=null ) {
-            c.set(year, currentMonth, day,0,0)
-            val dayBegin = c.time
-            c.set(year, currentMonth, day,23,59)
-            val dayEnd = c.time
-            getSeances(dayBegin,dayEnd)
+            showError(false)
             binding.dateSelectionButton.setOnClickListener {
                 datePickerDialog.show()
             }
         } else {
-            mList.visibility = View.GONE
-            mEmptyStateTextView.visibility = View.VISIBLE
+            showError(true)
             // Update empty state with no connection error message
             mEmptyStateTextView.text = getString(R.string.no_internet_connection)
         }
@@ -120,14 +136,30 @@ class SeancesFragment : Fragment(), Injectable {
                 val deletedIndex = viewHolder.adapterPosition
                 val deletedItem = seances[deletedIndex]
                 adapter.removeAt(deletedIndex)
-
-                showSnackBar(deletedItem,deletedIndex)
+                showSnackBar(deletedItem!!,deletedIndex)
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(mList)
 
         return binding.root
+    }
+
+    private fun displayList(workouts: ArrayList<Seance?>) {
+        showProgress(false)
+        if (workouts.isNotEmpty()){
+            mList.apply {
+                adapter = mAdapter
+                layoutManager = LinearLayoutManager(activity)
+                setHasFixedSize(true)
+            }
+        }else showError(true)
+
+    }
+
+    private fun showError(show: Boolean) {
+        binding.emptyStateTextView.visibility = if (show) View.VISIBLE else View.GONE
+        mList.visibility = if (show) View.GONE else View.VISIBLE
     }
 
     private fun isOnline():Boolean{
@@ -139,68 +171,12 @@ class SeancesFragment : Fragment(), Injectable {
     }
 
     private fun showProgress(show: Boolean) {
-        val shortAnimTime = resources.getInteger(android.R.integer.config_shortAnimTime)
-
         mList.visibility = if (show) View.GONE else View.VISIBLE
-        mList.animate().setDuration(shortAnimTime.toLong()).alpha(
-                (if (show) 0 else 1).toFloat()).setListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-                mList.visibility = if (show) View.GONE else View.VISIBLE
-            }
-        })
-
         mProgressView.visibility = if (show) View.VISIBLE else View.GONE
-        mProgressView.animate().setDuration(shortAnimTime.toLong()).alpha(
-                (if (show) 1 else 0).toFloat()).setListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
-                mProgressView.visibility = if (show) View.VISIBLE else View.GONE
-            }
-        })
     }
 
 
-    fun getSeances(debutJournee: Date,finJournee: Date=Date()) {
-        // Show a progress spinner, and kick off a background task
-        showProgress(true)
-        Log.i("SeancesFragment","récupération des séances")
-        val ref = mDatabase.collection("workouts")
 
-        // Source can be CACHE, SERVER, or DEFAULT.
-        val source = Source.SERVER
-
-        // Get the document, forcing the SDK to use the offline cache
-        ref.whereEqualTo("createur", user!!.email).whereGreaterThanOrEqualTo("date",debutJournee)
-                .whereLessThanOrEqualTo("date",finJournee)
-                .get(source)
-                .addOnCompleteListener { task ->
-                    showProgress(false)
-                    if (task.isSuccessful) {
-                        seances.clear()
-                        for (document in task.result!!) {
-                            seances.add(document.toObject(Seance::class.java))
-                        }
-
-                        if (seances.isEmpty()) {
-                            mList.visibility = View.GONE
-                            mEmptyStateTextView.visibility = View.VISIBLE
-                            // Update empty state with no connection error message
-                            mEmptyStateTextView.text = getString(R.string.no_seance_available)
-                        } else {
-                            mEmptyStateTextView.visibility = View.GONE
-                            mAdapter = SeanceAdapter(activity!!, seances)
-                            mList.adapter = mAdapter
-                            mList.layoutManager = layoutManager
-                        }
-
-                    } else {
-                        mList.visibility = View.GONE
-                        mEmptyStateTextView.visibility = View.VISIBLE
-                        // Update empty state with no connection error message
-                        mEmptyStateTextView.text = getString(R.string.server_error)
-                        Log.e("Seances Fragment", "Error getting documents: ", task.exception)
-                    }
-                }
-    }
 
     fun deleteWorkout(workoutId: String){
         val ref = mDatabase.collection("workouts")
