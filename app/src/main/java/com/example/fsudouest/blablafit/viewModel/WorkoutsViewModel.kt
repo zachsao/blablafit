@@ -1,12 +1,8 @@
 package com.example.fsudouest.blablafit.viewModel
 
 import android.util.Log
-import android.view.View
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.fsudouest.blablafit.Adapters.SeanceAdapter
-import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.model.Seance
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source

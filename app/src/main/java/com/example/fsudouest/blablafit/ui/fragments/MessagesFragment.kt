@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit.Ui.Fragments
+package com.example.fsudouest.blablafit.ui.fragments
 
 
 import android.os.Bundle

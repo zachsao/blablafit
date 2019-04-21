@@ -1,11 +1,8 @@
-package com.example.fsudouest.blablafit.Ui.Fragments
+package com.example.fsudouest.blablafit.ui.fragments
 
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.app.DatePickerDialog
 import android.content.Context
-import android.graphics.Color
 import android.net.ConnectivityManager
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -16,25 +13,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.R
-import com.example.fsudouest.blablafit.Adapters.SeanceAdapter
-import com.example.fsudouest.blablafit.Util.SwipeToDeleteCallback
+import com.example.fsudouest.blablafit.adapters.SeanceAdapter
+import com.example.fsudouest.blablafit.utils.SwipeToDeleteCallback
 import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.viewModel.WorkoutsViewModel
-import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Source
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_seances.*
 import java.text.SimpleDateFormat
 import java.util.*
 

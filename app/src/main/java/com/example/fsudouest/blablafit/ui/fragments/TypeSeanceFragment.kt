@@ -1,10 +1,9 @@
-package com.example.fsudouest.blablafit.Ui.Fragments
+package com.example.fsudouest.blablafit.ui.fragments
 
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -18,14 +17,13 @@ import androidx.recyclerview.selection.StableIdKeyProvider
 import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.fsudouest.blablafit.Adapters.WorkoutTypeAdapter
+import com.example.fsudouest.blablafit.adapters.WorkoutTypeAdapter
 
 import com.example.fsudouest.blablafit.R
-import com.example.fsudouest.blablafit.Util.MyLookup
+import com.example.fsudouest.blablafit.utils.MyLookup
 import com.example.fsudouest.blablafit.databinding.FragmentTypeSeanceBinding
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.model.WorkoutType
-import java.time.Duration
 
 
 class TypeSeanceFragment : Fragment() {

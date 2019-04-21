@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit.Ui.Fragments
+package com.example.fsudouest.blablafit.ui.fragments
 
 
 import android.os.Bundle
@@ -6,9 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 

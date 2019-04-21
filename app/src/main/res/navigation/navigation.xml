@@ -7,27 +7,27 @@
 
     <fragment
         android:id="@+id/myProfileFragment"
-        android:name="com.example.fsudouest.blablafit.Ui.Fragments.MyProfileFragment"
+        android:name="com.example.fsudouest.blablafit.ui.fragments.MyProfileFragment"
         android:label="Mon profil"
         tools:layout="@layout/fragment_my_profile" />
     <fragment
         android:id="@+id/trouverUneSeanceFragment"
-        android:name="com.example.fsudouest.blablafit.Ui.Fragments.TrouverUneSeanceFragment"
+        android:name="com.example.fsudouest.blablafit.ui.fragments.TrouverUneSeanceFragment"
         android:label="Trouver une séance"
         tools:layout="@layout/fragment_seances" />
     <fragment
         android:id="@+id/seancesFragment"
-        android:name="com.example.fsudouest.blablafit.Ui.Fragments.SeancesFragment"
+        android:name="com.example.fsudouest.blablafit.ui.fragments.SeancesFragment"
         android:label="Mes séances"
         tools:layout="@layout/fragment_seances" />
     <fragment
         android:id="@+id/messagesFragment"
-        android:name="com.example.fsudouest.blablafit.Ui.Fragments.MessagesFragment"
+        android:name="com.example.fsudouest.blablafit.ui.fragments.MessagesFragment"
         android:label="Messages"
         tools:layout="@layout/fragment_messages" />
     <fragment
         android:id="@+id/nouvelleSeanceFragment"
-        android:name="com.example.fsudouest.blablafit.Ui.Fragments.NouvelleSeanceFragment"
+        android:name="com.example.fsudouest.blablafit.ui.fragments.NouvelleSeanceFragment"
         android:label="Programmer une séance"
         tools:layout="@layout/fragment_nouvelle_seance">
         <action
@@ -37,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/indoorChoiceFragment"
-        android:name="com.example.fsudouest.blablafit.Ui.Fragments.IndoorChoiceFragment"
+        android:name="com.example.fsudouest.blablafit.ui.fragments.IndoorChoiceFragment"
         android:label="Nouvelle séance"
         tools:layout="@layout/fragment_indoor_choice" >
         <action
@@ -50,7 +50,7 @@
     </fragment>
     <fragment
         android:id="@+id/typeSeanceFragment"
-        android:name="com.example.fsudouest.blablafit.Ui.Fragments.TypeSeanceFragment"
+        android:name="com.example.fsudouest.blablafit.ui.fragments.TypeSeanceFragment"
         android:label="Nouvelle séance"
         tools:layout="@layout/fragment_type_seance">
         <action
@@ -63,7 +63,7 @@
     </fragment>
     <fragment
         android:id="@+id/addDescriptionFragment"
-        android:name="com.example.fsudouest.blablafit.Ui.Fragments.AddDescriptionFragment"
+        android:name="com.example.fsudouest.blablafit.ui.fragments.AddDescriptionFragment"
         android:label="Nouvelle séance"
         tools:layout="@layout/fragment_add_description" >
         <action
@@ -76,7 +76,7 @@
     </fragment>
     <fragment
         android:id="@+id/addDateDurationFragment"
-        android:name="com.example.fsudouest.blablafit.Ui.Fragments.AddDateDurationFragment"
+        android:name="com.example.fsudouest.blablafit.ui.fragments.AddDateDurationFragment"
         android:label="Nouvelle séance"
         tools:layout="@layout/fragment_add_date_duration" >
         <action
@@ -89,7 +89,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchLocationFragment"
-        android:name="com.example.fsudouest.blablafit.Ui.Fragments.SearchLocationFragment"
+        android:name="com.example.fsudouest.blablafit.ui.fragments.SearchLocationFragment"
         android:label="Nouvelle séance"
         tools:layout="@layout/fragment_search_location" >
         <action

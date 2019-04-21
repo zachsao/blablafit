@@ -1,9 +1,6 @@
-package com.example.fsudouest.blablafit.Adapters
+package com.example.fsudouest.blablafit.adapters
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat

@@ -1,9 +1,9 @@
-package com.example.fsudouest.blablafit.Util
+package com.example.fsudouest.blablafit.utils
 
 import android.view.MotionEvent
 import androidx.recyclerview.selection.ItemDetailsLookup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.fsudouest.blablafit.Adapters.WorkoutTypeAdapter
+import com.example.fsudouest.blablafit.adapters.WorkoutTypeAdapter
 
 class MyLookup(private val rv: RecyclerView) : ItemDetailsLookup<Long>() {
     override fun getItemDetails(e: MotionEvent): ItemDetails<Long>? {

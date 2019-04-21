@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit.Ui.Fragments
+package com.example.fsudouest.blablafit.ui.fragments
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -15,7 +15,6 @@ import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.Navigation
 import com.example.fsudouest.blablafit.BuildConfig
 import com.example.fsudouest.blablafit.model.Seance

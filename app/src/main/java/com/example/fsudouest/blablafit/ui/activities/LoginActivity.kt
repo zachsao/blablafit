@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit.Ui.Activities
+package com.example.fsudouest.blablafit.ui.activities
 
 import android.app.Activity
 import android.content.Intent
@@ -6,7 +6,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
 import android.os.Bundle
-import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import com.example.fsudouest.blablafit.MainActivity
 import com.example.fsudouest.blablafit.R

@@ -1,6 +1,6 @@
 package com.example.fsudouest.blablafit.di
 
-import com.example.fsudouest.blablafit.Ui.Fragments.*
+import com.example.fsudouest.blablafit.ui.fragments.*
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

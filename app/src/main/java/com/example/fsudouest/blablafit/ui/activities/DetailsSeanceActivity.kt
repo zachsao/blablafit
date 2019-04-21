@@ -1,13 +1,10 @@
-package com.example.fsudouest.blablafit.Ui.Activities
+package com.example.fsudouest.blablafit.ui.activities
 
 import android.os.Bundle
 import android.util.Log
-import androidx.core.app.NavUtils
 import androidx.appcompat.app.AppCompatActivity
-import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 
 import com.bumptech.glide.Glide
@@ -19,7 +16,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.android.AndroidInjection
-import dagger.android.support.HasSupportFragmentInjector
 
 import java.text.SimpleDateFormat
 import java.util.Locale

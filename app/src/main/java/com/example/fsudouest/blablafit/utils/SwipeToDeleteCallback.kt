@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit.Util
+package com.example.fsudouest.blablafit.utils
 
 import android.content.Context
 import android.graphics.Canvas

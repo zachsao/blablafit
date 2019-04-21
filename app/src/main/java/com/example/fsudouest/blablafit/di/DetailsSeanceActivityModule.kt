@@ -1,7 +1,6 @@
 package com.example.fsudouest.blablafit.di
 
-import com.example.fsudouest.blablafit.MainActivity
-import com.example.fsudouest.blablafit.Ui.Activities.DetailsSeanceActivity
+import com.example.fsudouest.blablafit.ui.activities.DetailsSeanceActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

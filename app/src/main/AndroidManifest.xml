@@ -27,9 +27,9 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name="com.example.fsudouest.blablafit.Ui.Activities.LoginActivity"
+            android:name="com.example.fsudouest.blablafit.ui.activities.LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name="com.example.fsudouest.blablafit.Ui.Activities.DetailsSeanceActivity"
+        <activity android:name="com.example.fsudouest.blablafit.ui.activities.DetailsSeanceActivity"
             android:label="Détails de la séance"
             android:parentActivityName="com.example.fsudouest.blablafit.MainActivity"></activity>
     </application>

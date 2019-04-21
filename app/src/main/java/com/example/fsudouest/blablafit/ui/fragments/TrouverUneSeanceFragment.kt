@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit.Ui.Fragments
+package com.example.fsudouest.blablafit.ui.fragments
 
 
 import android.animation.Animator
@@ -23,7 +23,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.R
-import com.example.fsudouest.blablafit.Adapters.SeanceAdapter
+import com.example.fsudouest.blablafit.adapters.SeanceAdapter
 import com.example.fsudouest.blablafit.databinding.FragmentSeancesBinding
 import com.example.fsudouest.blablafit.di.Injectable
 
