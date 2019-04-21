@@ -8,7 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
 import java.util.*
 
-class WorkoutsViewModel: ViewModel() {
+class WorkoutsViewModel : ViewModel() {
 
     private val workoutsLiveData = MutableLiveData<ArrayList<Seance?>>()
 
@@ -31,5 +31,13 @@ class WorkoutsViewModel: ViewModel() {
                     else -> Log.e("WorkoutsViewModel",task.exception?.message)
                 }
             }
+    }
+
+    fun deleteWorkout(workoutId: String, mDatabase: FirebaseFirestore){
+        val ref = mDatabase.collection("workouts")
+        ref.document(workoutId)
+                .delete()
+                .addOnSuccessListener { Log.d("Seances Fragment", "DocumentSnapshot successfully deleted!") }
+                .addOnFailureListener { e -> Log.e("Seances Fragment", "Error deleting document", e) }
     }
 }
