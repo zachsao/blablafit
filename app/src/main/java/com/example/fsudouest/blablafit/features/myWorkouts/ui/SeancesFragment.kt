@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.fsudouest.blablafit.model.Seance
@@ -22,7 +23,6 @@ import com.example.fsudouest.blablafit.adapters.SeanceAdapter
 import com.example.fsudouest.blablafit.utils.SwipeToDeleteCallback
 import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.myWorkouts.viewModel.WorkoutsViewModel
-import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 
 import com.google.firebase.auth.FirebaseAuth
@@ -47,11 +47,10 @@ class SeancesFragment : Fragment(), Injectable {
     private lateinit var mProgressView: View
 
     @Inject
-    lateinit var mDatabase: FirebaseFirestore
-
-    @Inject
     lateinit var mFirebaseAuth: FirebaseAuth
 
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
     private lateinit var viewModel: WorkoutsViewModel
 
     private var user: FirebaseUser? = null
@@ -73,7 +72,7 @@ class SeancesFragment : Fragment(), Injectable {
         mProgressView = binding.seancesProgress
         mList = binding.rvSeances
 
-        viewModel = ViewModelProviders.of(this).get(WorkoutsViewModel::class.java).apply {
+        viewModel = ViewModelProviders.of(this,factory).get(WorkoutsViewModel::class.java).apply {
             workoutsLiveData().observe(this@SeancesFragment, androidx.lifecycle.Observer {
                 Log.i("SeanceFragment","Observing workouts")
                 showError(false)
@@ -95,7 +94,7 @@ class SeancesFragment : Fragment(), Injectable {
         var debutJournee = c.time
         c.set(year, currentMonth, day,23,59)
         var finDeJournee = c.time
-        viewModel.getWorkouts(debutJournee,finDeJournee,user?.email,mDatabase)
+        viewModel.getWorkouts(debutJournee,finDeJournee,user?.email)
 
         val dateFormat = SimpleDateFormat("EEEE dd MMM", Locale.FRENCH)
 
@@ -108,7 +107,7 @@ class SeancesFragment : Fragment(), Injectable {
             c.set(year, month, day_of_month,23,59)
             finDeJournee = c.time
             binding.dateSelectionButton.text = dateFormat.format(c.time)
-            viewModel.getWorkouts(debutJournee,finDeJournee,user?.email,mDatabase)
+            viewModel.getWorkouts(debutJournee,finDeJournee,user?.email)
         }, year, currentMonth, day)
 
         // If there is a network connection, fetch data
@@ -175,19 +174,19 @@ class SeancesFragment : Fragment(), Injectable {
 
     fun showSnackBar(deletedItem: Seance, deletedIndex: Int){
         // showing snack bar with Undo option
-            Snackbar.make(binding.coordinatorLayout, "Séance supprimée", Snackbar.LENGTH_LONG)
-                .addCallback(object : Snackbar.Callback(){
-                    override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                        Log.d("Seances Fragment", "Snackbar dismissed")
-                        if(event == DISMISS_EVENT_TIMEOUT)
-                            viewModel.deleteWorkout(deletedItem.id, mDatabase)
-                    }
-                })
-                .setAction("ANNULER"){
-                    // undo is selected, restore the deleted item
-                    mAdapter.restoreItem(deletedItem, deletedIndex)
+        Snackbar.make(binding.coordinatorLayout, "Séance supprimée", Snackbar.LENGTH_LONG)
+            .addCallback(object : Snackbar.Callback(){
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    Log.d("Seances Fragment", "Snackbar dismissed")
+                    if(event == DISMISS_EVENT_TIMEOUT)
+                        viewModel.deleteWorkout(deletedItem.id)
                 }
-                .show()
+            })
+            .setAction("ANNULER"){
+                // undo is selected, restore the deleted item
+                mAdapter.restoreItem(deletedItem, deletedIndex)
+            }
+            .show()
 
     }
 

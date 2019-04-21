@@ -7,14 +7,15 @@ import com.example.fsudouest.blablafit.model.Seance
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
 import java.util.*
+import javax.inject.Inject
 
-class WorkoutsViewModel : ViewModel() {
+class WorkoutsViewModel @Inject constructor(private val mDatabase: FirebaseFirestore) : ViewModel() {
 
     private val workoutsLiveData = MutableLiveData<ArrayList<Seance?>>()
 
     fun workoutsLiveData() = workoutsLiveData
 
-    fun getWorkouts(debutJournee: Date, finJournee: Date = Date(),email:String?,mDatabase: FirebaseFirestore){
+    fun getWorkouts(debutJournee: Date, finJournee: Date = Date(),email:String?){
         Log.i("Workouts view model","récupération des séances")
         val ref = mDatabase.collection("workouts")
         // Source can be CACHE, SERVER, or DEFAULT.
@@ -33,7 +34,7 @@ class WorkoutsViewModel : ViewModel() {
             }
     }
 
-    fun deleteWorkout(workoutId: String, mDatabase: FirebaseFirestore){
+    fun deleteWorkout(workoutId: String){
         val ref = mDatabase.collection("workouts")
         ref.document(workoutId)
                 .delete()
