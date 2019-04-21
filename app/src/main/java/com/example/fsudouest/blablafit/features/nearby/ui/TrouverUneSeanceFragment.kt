@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit.ui.fragments
+package com.example.fsudouest.blablafit.features.nearby.ui
 
 
 import android.animation.Animator

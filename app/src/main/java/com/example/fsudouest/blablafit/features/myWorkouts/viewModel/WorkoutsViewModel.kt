@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit.viewModel
+package com.example.fsudouest.blablafit.features.myWorkouts.viewModel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData

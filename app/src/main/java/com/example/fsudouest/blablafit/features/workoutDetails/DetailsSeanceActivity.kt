@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit.ui.activities
+package com.example.fsudouest.blablafit.features.workoutDetails
 
 import android.os.Bundle
 import android.util.Log

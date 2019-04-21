@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.NavigationUI.setupWithNavController
-import com.example.fsudouest.blablafit.ui.activities.LoginActivity
+import com.example.fsudouest.blablafit.features.login.LoginActivity
 import com.example.fsudouest.blablafit.utils.BottomNavigationViewBehavior
 import com.example.fsudouest.blablafit.utils.BottomNavigationViewHelper
 import com.example.fsudouest.blablafit.databinding.ActivityMainBinding

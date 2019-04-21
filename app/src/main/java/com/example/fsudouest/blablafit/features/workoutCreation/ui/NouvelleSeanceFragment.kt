@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit.ui.fragments
+package com.example.fsudouest.blablafit.features.workoutCreation.ui
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog

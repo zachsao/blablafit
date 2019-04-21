@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit.ui.fragments
+package com.example.fsudouest.blablafit.features.myWorkouts.ui
 
 
 import android.app.DatePickerDialog
@@ -21,7 +21,7 @@ import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.adapters.SeanceAdapter
 import com.example.fsudouest.blablafit.utils.SwipeToDeleteCallback
 import com.example.fsudouest.blablafit.di.Injectable
-import com.example.fsudouest.blablafit.viewModel.WorkoutsViewModel
+import com.example.fsudouest.blablafit.features.myWorkouts.viewModel.WorkoutsViewModel
 import com.google.android.material.snackbar.Snackbar
 
 import com.google.firebase.auth.FirebaseAuth

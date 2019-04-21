@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.example.fsudouest.blablafit.BR
-import com.example.fsudouest.blablafit.ui.activities.DetailsSeanceActivity
+import com.example.fsudouest.blablafit.features.workoutDetails.DetailsSeanceActivity
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.SeanceItem2Binding

@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit.ui.activities
+package com.example.fsudouest.blablafit.features.login
 
 import android.app.Activity
 import android.content.Intent
