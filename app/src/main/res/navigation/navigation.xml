@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_my_profile" />
     <fragment
         android:id="@+id/trouverUneSeanceFragment"
-        android:name="com.example.fsudouest.blablafit.features.nearby.ui.TrouverUneSeanceFragment"
+        android:name="com.example.fsudouest.blablafit.features.nearby.ui.NearByFragment"
         android:label="Trouver une séance"
         tools:layout="@layout/fragment_seances" />
     <fragment

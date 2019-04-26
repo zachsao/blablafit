@@ -5,33 +5,29 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
-import com.example.fsudouest.blablafit.model.Seance
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.adapters.SeanceAdapter
-import com.example.fsudouest.blablafit.utils.SwipeToDeleteCallback
 import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.myWorkouts.viewModel.WorkoutsViewModel
+import com.example.fsudouest.blablafit.model.Seance
+import com.example.fsudouest.blablafit.utils.SwipeToDeleteCallback
+import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
-
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
-
-
 import javax.inject.Inject
 
 
@@ -50,7 +46,7 @@ class SeancesFragment : Fragment(), Injectable {
     lateinit var mFirebaseAuth: FirebaseAuth
 
     @Inject
-    lateinit var factory: ViewModelProvider.Factory
+    lateinit var factory: ViewModelFactory
     private lateinit var viewModel: WorkoutsViewModel
 
     private var user: FirebaseUser? = null
@@ -63,7 +59,7 @@ class SeancesFragment : Fragment(), Injectable {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_seances, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_seances, container, false)
 
 
         user = mFirebaseAuth.currentUser
@@ -72,12 +68,12 @@ class SeancesFragment : Fragment(), Injectable {
         mProgressView = binding.seancesProgress
         mList = binding.rvSeances
 
-        viewModel = ViewModelProviders.of(this,factory).get(WorkoutsViewModel::class.java).apply {
+        viewModel = ViewModelProviders.of(this, factory).get(WorkoutsViewModel::class.java).apply {
             workoutsLiveData().observe(this@SeancesFragment, androidx.lifecycle.Observer {
-                Log.i("SeanceFragment","Observing workouts")
+                Log.i("SeanceFragment", "Observing workouts")
                 showError(false)
                 showProgress(true)
-                mAdapter = SeanceAdapter(activity!!,it)
+                mAdapter = SeanceAdapter(activity!!, it)
                 displayList(it)
                 seances = it
             })
@@ -90,11 +86,11 @@ class SeancesFragment : Fragment(), Injectable {
         val currentMonth = c.get(Calendar.MONTH)
         val year = c.get(Calendar.YEAR)
 
-        c.set(year, currentMonth, day,0,0)
+        c.set(year, currentMonth, day, 0, 0)
         var debutJournee = c.time
-        c.set(year, currentMonth, day,23,59)
+        c.set(year, currentMonth, day, 23, 59)
         var finDeJournee = c.time
-        viewModel.getWorkouts(debutJournee,finDeJournee,user?.email)
+        viewModel.getWorkouts(debutJournee, finDeJournee, user?.email)
 
         val dateFormat = SimpleDateFormat("EEEE dd MMM", Locale.FRENCH)
 
@@ -102,16 +98,16 @@ class SeancesFragment : Fragment(), Injectable {
 
         //display date picker when the date button is clicked
         val datePickerDialog = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener { _, year, month, day_of_month ->
-            c.set(year, month, day_of_month,0,0)
+            c.set(year, month, day_of_month, 0, 0)
             debutJournee = c.time
-            c.set(year, month, day_of_month,23,59)
+            c.set(year, month, day_of_month, 23, 59)
             finDeJournee = c.time
             binding.dateSelectionButton.text = dateFormat.format(c.time)
-            viewModel.getWorkouts(debutJournee,finDeJournee,user?.email)
+            viewModel.getWorkouts(debutJournee, finDeJournee, user?.email)
         }, year, currentMonth, day)
 
         // If there is a network connection, fetch data
-        if (isOnline() && user!=null ) {
+        if (isOnline() && user != null) {
             showError(false)
             binding.dateSelectionButton.setOnClickListener {
                 datePickerDialog.show()
@@ -128,7 +124,7 @@ class SeancesFragment : Fragment(), Injectable {
                 val deletedIndex = viewHolder.adapterPosition
                 val deletedItem = seances[deletedIndex]
                 adapter.removeAt(deletedIndex)
-                showSnackBar(deletedItem!!,deletedIndex)
+                showSnackBar(deletedItem!!, deletedIndex)
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
@@ -139,13 +135,13 @@ class SeancesFragment : Fragment(), Injectable {
 
     private fun displayList(workouts: ArrayList<Seance?>) {
         showProgress(false)
-        if (workouts.isNotEmpty()){
+        if (workouts.isNotEmpty()) {
             mList.apply {
                 adapter = mAdapter
                 layoutManager = LinearLayoutManager(activity)
                 setHasFixedSize(true)
             }
-        }else showError(true)
+        } else showError(true)
 
     }
 
@@ -154,7 +150,7 @@ class SeancesFragment : Fragment(), Injectable {
         mList.visibility = if (show) View.GONE else View.VISIBLE
     }
 
-    private fun isOnline():Boolean{
+    private fun isOnline(): Boolean {
         // Get a reference to the ConnectivityManager to check state of network connectivity
         val connMgr = activity!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         // Get details on the currently active default data network
@@ -168,25 +164,21 @@ class SeancesFragment : Fragment(), Injectable {
     }
 
 
-
-
-
-
-    fun showSnackBar(deletedItem: Seance, deletedIndex: Int){
+    fun showSnackBar(deletedItem: Seance, deletedIndex: Int) {
         // showing snack bar with Undo option
         Snackbar.make(binding.coordinatorLayout, "Séance supprimée", Snackbar.LENGTH_LONG)
-            .addCallback(object : Snackbar.Callback(){
-                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                    Log.d("Seances Fragment", "Snackbar dismissed")
-                    if(event == DISMISS_EVENT_TIMEOUT)
-                        viewModel.deleteWorkout(deletedItem.id)
+                .addCallback(object : Snackbar.Callback() {
+                    override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                        Log.d("Seances Fragment", "Snackbar dismissed")
+                        if (event == DISMISS_EVENT_TIMEOUT)
+                            viewModel.deleteWorkout(deletedItem.id)
+                    }
+                })
+                .setAction("ANNULER") {
+                    // undo is selected, restore the deleted item
+                    mAdapter.restoreItem(deletedItem, deletedIndex)
                 }
-            })
-            .setAction("ANNULER"){
-                // undo is selected, restore the deleted item
-                mAdapter.restoreItem(deletedItem, deletedIndex)
-            }
-            .show()
+                .show()
 
     }
 
