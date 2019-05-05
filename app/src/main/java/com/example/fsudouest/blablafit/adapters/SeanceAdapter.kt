@@ -22,7 +22,6 @@ import java.text.SimpleDateFormat
 import java.util.ArrayList
 
 
-
 class SeanceAdapter(private var mContext: Context, private var mData: ArrayList<Seance?>) : RecyclerView.Adapter<SeanceAdapter.SeanceViewHolder>() {
 
     lateinit var context: Context
@@ -36,9 +35,8 @@ class SeanceAdapter(private var mContext: Context, private var mData: ArrayList<
         val shouldAttachToParentImmediately = false
 
         val binding = DataBindingUtil.inflate<SeanceItem2Binding>(inflater,layoutIdForListItem, parent, shouldAttachToParentImmediately)
-        val viewHolder = SeanceViewHolder(binding)
 
-        return viewHolder
+        return SeanceViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: SeanceViewHolder, position: Int) {
@@ -63,8 +61,6 @@ class SeanceAdapter(private var mContext: Context, private var mData: ArrayList<
 
     inner class SeanceViewHolder(var binding: SeanceItem2Binding) : RecyclerView.ViewHolder(binding.root) {
 
-
-        private lateinit var date: TextView
         private var heure: TextView
         var parent: LinearLayout
 
@@ -94,8 +90,6 @@ class SeanceAdapter(private var mContext: Context, private var mData: ArrayList<
                         Glide.with(context).load(user.photoUrl).placeholder(R.drawable.userphoto).into(binding.authorProfilePicture)
                 }
             }
-
-            //date.text = dateFormat.format(mData[position].date)
             heure.text = hourFormat.format(mData[position]?.date)
 
             parent.setOnClickListener {

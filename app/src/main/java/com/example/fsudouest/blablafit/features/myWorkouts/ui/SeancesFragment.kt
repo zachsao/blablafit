@@ -10,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -26,6 +28,7 @@ import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -71,8 +74,6 @@ class SeancesFragment : Fragment(), Injectable {
         viewModel = ViewModelProviders.of(this, factory).get(WorkoutsViewModel::class.java).apply {
             workoutsLiveData().observe(this@SeancesFragment, androidx.lifecycle.Observer {
                 Log.i("SeanceFragment", "Observing workouts")
-                showError(false)
-                showProgress(true)
                 mAdapter = SeanceAdapter(activity!!, it)
                 displayList(it)
                 seances = it
@@ -108,12 +109,12 @@ class SeancesFragment : Fragment(), Injectable {
 
         // If there is a network connection, fetch data
         if (isOnline() && user != null) {
-            showError(false)
+            showProgress(true)
             binding.dateSelectionButton.setOnClickListener {
                 datePickerDialog.show()
             }
         } else {
-            showError(true)
+            showError(true, R.string.no_internet_connection, R.drawable.no_workouts)
             // Update empty state with no connection error message
             mEmptyStateTextView.text = getString(R.string.no_internet_connection)
         }
@@ -141,12 +142,15 @@ class SeancesFragment : Fragment(), Injectable {
                 layoutManager = LinearLayoutManager(activity)
                 setHasFixedSize(true)
             }
-        } else showError(true)
+        } else showError(true, R.string.no_seance_available, R.drawable.no_workouts)
 
     }
 
-    private fun showError(show: Boolean) {
+    private fun showError(show: Boolean, @StringRes errorMessageId: Int, @DrawableRes imageId: Int) {
+        binding.emptyStateTextView.text = getString(errorMessageId)
+        binding.emptyStateImageView.setImageResource(imageId)
         binding.emptyStateTextView.visibility = if (show) View.VISIBLE else View.GONE
+        binding.emptyStateImageView.visibility = if (show) View.VISIBLE else View.GONE
         mList.visibility = if (show) View.GONE else View.VISIBLE
     }
 
@@ -166,19 +170,20 @@ class SeancesFragment : Fragment(), Injectable {
 
     fun showSnackBar(deletedItem: Seance, deletedIndex: Int) {
         // showing snack bar with Undo option
-        Snackbar.make(binding.coordinatorLayout, "Séance supprimée", Snackbar.LENGTH_LONG)
-                .addCallback(object : Snackbar.Callback() {
-                    override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                        Log.d("Seances Fragment", "Snackbar dismissed")
-                        if (event == DISMISS_EVENT_TIMEOUT)
-                            viewModel.deleteWorkout(deletedItem.id)
-                    }
-                })
-                .setAction("ANNULER") {
-                    // undo is selected, restore the deleted item
-                    mAdapter.restoreItem(deletedItem, deletedIndex)
+        Snackbar.make(binding.coordinatorLayout, "Séance supprimée", Snackbar.LENGTH_LONG).apply {
+            anchorView = activity!!.bottom_navigation
+            addCallback(object : Snackbar.Callback() {
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    Log.d("Seances Fragment", "Snackbar dismissed")
+                    if (event != DISMISS_EVENT_ACTION)
+                        viewModel.deleteWorkout(deletedItem.id)
                 }
-                .show()
+            })
+            setAction("ANNULER") {
+                // undo is selected, restore the deleted item
+                mAdapter.restoreItem(deletedItem, deletedIndex)
+            }
+        }.show()
 
     }
 
