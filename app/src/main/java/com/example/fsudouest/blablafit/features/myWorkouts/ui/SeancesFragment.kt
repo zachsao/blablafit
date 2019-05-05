@@ -114,9 +114,7 @@ class SeancesFragment : Fragment(), Injectable {
                 datePickerDialog.show()
             }
         } else {
-            showError(true, R.string.no_internet_connection, R.drawable.no_workouts)
-            // Update empty state with no connection error message
-            mEmptyStateTextView.text = getString(R.string.no_internet_connection)
+            showError(R.string.no_internet_connection, R.drawable.ic_undraw_fitness_tracker)
         }
 
         val swipeHandler = object : SwipeToDeleteCallback(activity!!) {
@@ -126,6 +124,10 @@ class SeancesFragment : Fragment(), Injectable {
                 val deletedItem = seances[deletedIndex]
                 adapter.removeAt(deletedIndex)
                 showSnackBar(deletedItem!!, deletedIndex)
+
+                if (adapter.itemCount == 0){
+                    showError(R.string.no_seance_available,R.drawable.ic_undraw_healthy_habit)
+                }
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
@@ -137,21 +139,28 @@ class SeancesFragment : Fragment(), Injectable {
     private fun displayList(workouts: ArrayList<Seance?>) {
         showProgress(false)
         if (workouts.isNotEmpty()) {
+            hideError()
             mList.apply {
                 adapter = mAdapter
                 layoutManager = LinearLayoutManager(activity)
                 setHasFixedSize(true)
             }
-        } else showError(true, R.string.no_seance_available, R.drawable.no_workouts)
+        } else showError( R.string.no_seance_available, R.drawable.ic_undraw_healthy_habit)
 
     }
 
-    private fun showError(show: Boolean, @StringRes errorMessageId: Int, @DrawableRes imageId: Int) {
+    private fun showError(@StringRes errorMessageId: Int, @DrawableRes imageId: Int) {
         binding.emptyStateTextView.text = getString(errorMessageId)
         binding.emptyStateImageView.setImageResource(imageId)
-        binding.emptyStateTextView.visibility = if (show) View.VISIBLE else View.GONE
-        binding.emptyStateImageView.visibility = if (show) View.VISIBLE else View.GONE
-        mList.visibility = if (show) View.GONE else View.VISIBLE
+        binding.emptyStateTextView.visibility =  View.VISIBLE
+        binding.emptyStateImageView.visibility = View.VISIBLE
+        mList.visibility = View.GONE
+    }
+
+    private fun hideError(){
+        binding.emptyStateTextView.visibility =  View.GONE
+        binding.emptyStateImageView.visibility =  View.GONE
+        mList.visibility = View.VISIBLE
     }
 
     private fun isOnline(): Boolean {
@@ -181,6 +190,7 @@ class SeancesFragment : Fragment(), Injectable {
             })
             setAction("ANNULER") {
                 // undo is selected, restore the deleted item
+                if (deletedIndex == 0) hideError()
                 mAdapter.restoreItem(deletedItem, deletedIndex)
             }
         }.show()

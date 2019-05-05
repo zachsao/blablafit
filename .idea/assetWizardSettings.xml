@@ -180,9 +180,13 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_delete_white_24" />
-                            <entry key="sourceFile" value="C:\Users\zach" />
+                            <entry key="height" value="751" />
+                            <entry key="outputName" value="ic_undraw_fitness_tracker" />
+                            <entry key="overrideSize" value="true" />
+                            <entry key="sourceFile" value="C:\Users\zach\Documents\Android icons design\undraw\undraw_fitness_tracker.svg" />
+                            <entry key="width" value="1050" />
                           </map>
                         </option>
                       </PersistentState>
