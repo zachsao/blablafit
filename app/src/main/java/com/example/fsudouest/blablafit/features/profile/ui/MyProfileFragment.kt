@@ -1,29 +1,26 @@
 package com.example.fsudouest.blablafit.features.profile.ui
 
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.appcompat.app.AlertDialog
-import android.widget.ImageView
-import android.widget.Toast
-
-import com.bumptech.glide.Glide
-import com.firebase.ui.auth.AuthUI
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-
-import android.app.Activity.RESULT_OK
 import android.util.Log
 import android.view.*
+import android.widget.ImageView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.Glide
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentMyProfileBinding
 import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.model.User
+import com.example.fsudouest.blablafit.utils.ViewModelFactory
+import com.firebase.ui.auth.AuthUI
+import com.google.firebase.auth.UserProfileChangeRequest
 import javax.inject.Inject
 
 
@@ -32,41 +29,34 @@ import javax.inject.Inject
  */
 class MyProfileFragment : Fragment(), Injectable {
 
-    @Inject
-    lateinit var mFirebaseStorage: FirebaseStorage
-
-    @Inject
-    lateinit var mFirebaseAuth: FirebaseAuth
-
-
-    private var mProfilePhotosStorageReference: StorageReference? = null
-    private var firebaseUser: FirebaseUser? = null
     private lateinit var profile_pic: ImageView
 
+    @Inject
+    lateinit var factory: ViewModelFactory
+
+    private lateinit var viewModel: ProfileViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val binding: FragmentMyProfileBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_my_profile, container, false)
-
-
-        firebaseUser = mFirebaseAuth.currentUser
-
-        mProfilePhotosStorageReference = mFirebaseStorage.reference.child("profile_pictures")
-
-        binding.user = User(firebaseUser?.displayName!!)
+        viewModel = ViewModelProviders.of(this, factory).get(ProfileViewModel::class.java)
         profile_pic = binding.profilePicImageView
 
 
-        if (firebaseUser!!.photoUrl != null) {
-            Glide.with(context!!)
-                    .load(firebaseUser!!.photoUrl!!.toString())
-                    .into(profile_pic)
-        }
+        viewModel.user().observe(this, Observer {
+            binding.user = it
+        })
+
+        viewModel.firebaseUser().observe(this, Observer {
+            it.photoUrl?.let {uri ->
+                Glide.with(activity!!)
+                        .load(uri.toString())
+                        .into(profile_pic)
+            }
+        })
 
         profile_pic.setOnClickListener { createPhotoUpdateDialog() }
-
-        //binding.decoButton.setOnClickListener { signOut() }
         return binding.root
     }
 
@@ -99,28 +89,14 @@ class MyProfileFragment : Fragment(), Injectable {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
-            val selectedImageUri = data!!.data
-            profile_pic.setImageURI(selectedImageUri)
-            // Get a reference to store file at profile_pictures/<FILENAME>
-            val photoRef = mProfilePhotosStorageReference!!.child(selectedImageUri!!.lastPathSegment!!)
-            photoRef.putFile(selectedImageUri).continueWithTask { task ->
-                if (!task.isSuccessful) {
-                    throw task.exception!!.fillInStackTrace()
-                }
-                // Continue with the task to get the download URL
-                photoRef.downloadUrl
-            }.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val downloadUri = task.result
-                    val photoUpdate = UserProfileChangeRequest.Builder()
-                            .setPhotoUri(downloadUri)
-                            .build()
-                    firebaseUser!!.updateProfile(photoUpdate)
-                } else {
-                    Toast.makeText(activity, "Upload Failed - please try again", Toast.LENGTH_SHORT).show()
-                }
-            }
+            val selectedImageUri = data?.data
+            Glide.with(activity!!)
+                    .load(selectedImageUri.toString())
+                    .into(profile_pic)
 
+            selectedImageUri?.let {
+                viewModel.uploadProfilePictureToStorage(it)
+            }
         }
     }
 
