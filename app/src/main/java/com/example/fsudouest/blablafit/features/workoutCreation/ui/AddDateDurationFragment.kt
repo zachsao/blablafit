@@ -13,10 +13,13 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentAddDateDurationBinding
+import com.example.fsudouest.blablafit.features.workoutCreation.viewModel.WorkoutCreationViewModel
 import com.example.fsudouest.blablafit.model.Seance
 import java.text.SimpleDateFormat
 import java.util.*
@@ -36,15 +39,20 @@ class AddDateDurationFragment : Fragment() {
     private val dateFormat = SimpleDateFormat("EEE dd MMM", Locale.FRENCH)
     private val hourFormat = SimpleDateFormat("HH:mm", Locale.FRENCH)
 
+    private lateinit var viewModel: WorkoutCreationViewModel
 
-    private lateinit var workout: Seance
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = activity?.run {
+            ViewModelProviders.of(this).get(WorkoutCreationViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val binding: FragmentAddDateDurationBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_add_date_duration, container, false)
-
-        workout = arguments?.getSerializable("workout") as Seance
-
+        val args: AddDateDurationFragmentArgs by navArgs()
         //CHOIX DE LA DATE
         date_button = binding.dateSelectionButton
 
@@ -75,10 +83,11 @@ class AddDateDurationFragment : Fragment() {
         binding.decrement.setOnClickListener { if(count>1) decrement() }
 
         binding.nextStepButton.setOnClickListener {
-            workout.duree = duration_button.text.toString()
-            workout.nb_participants = resources.getQuantityString(R.plurals.numberOfPlacesAvailable,count,count)
-            val bundle = bundleOf("workout" to workout)
-            Navigation.findNavController(it).navigate(R.id.action_addDateDurationFragment_to_searchLocationFragment, bundle)
+            viewModel.workoutLiveData.value?.duree = duration_button.text.toString()
+            viewModel.workoutLiveData.value?.nb_participants = resources.getQuantityString(R.plurals.numberOfPlacesAvailable,count,count)
+            Navigation.findNavController(it)
+                    .navigate(AddDateDurationFragmentDirections
+                            .actionAddDateDurationFragmentToSearchLocationFragment(args.choice))
         }
 
         return binding.root
@@ -86,7 +95,7 @@ class AddDateDurationFragment : Fragment() {
 
     fun selectDate(){
         c = Calendar.getInstance()
-        workout.date = c.time
+        viewModel.workoutLiveData.value?.date = c.time
         val day = c.get(Calendar.DAY_OF_MONTH)
         val month = c.get(Calendar.MONTH)
         val year = c.get(Calendar.YEAR)
@@ -94,7 +103,7 @@ class AddDateDurationFragment : Fragment() {
 
         datePickerDialog = DatePickerDialog(activity!!, DatePickerDialog.OnDateSetListener { _, year, month, day_of_month ->
             c.set(year, month, day_of_month)
-            workout.date = c.time
+            viewModel.workoutLiveData.value?.date = c.time
             date_button.text = dateFormat.format(c.time)
         }, year, month, day)
 
@@ -111,7 +120,7 @@ class AddDateDurationFragment : Fragment() {
         timePickerDialog = TimePickerDialog(activity, TimePickerDialog.OnTimeSetListener { _, hourOfDay, minutes ->
             c.set(Calendar.HOUR_OF_DAY, hourOfDay)
             c.set(Calendar.MINUTE, minutes)
-            workout.date = c.time
+            viewModel.workoutLiveData.value?.date = c.time
             hour_button.text = hourFormat.format(c.time)
         }, hour, minute, DateFormat.is24HourFormat(activity))
     }

@@ -5,7 +5,6 @@ import com.example.fsudouest.blablafit.features.myWorkouts.ui.SeancesFragment
 import com.example.fsudouest.blablafit.features.nearby.ui.NearByFragment
 import com.example.fsudouest.blablafit.features.profile.ui.MyProfileFragment
 import com.example.fsudouest.blablafit.features.workoutCreation.ui.IndoorChoiceFragment
-import com.example.fsudouest.blablafit.features.workoutCreation.ui.NouvelleSeanceFragment
 import com.example.fsudouest.blablafit.features.workoutCreation.ui.SearchLocationFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -23,9 +22,6 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeTrouverUneSeanceFragment(): NearByFragment
-
-    @ContributesAndroidInjector
-    abstract fun contributeNouvelleSeanceFragment(): NouvelleSeanceFragment
 
     @ContributesAndroidInjector
     abstract fun contributeIndoorChoiceFragment(): IndoorChoiceFragment

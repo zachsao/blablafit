@@ -26,16 +26,6 @@
         android:label="Messages"
         tools:layout="@layout/fragment_messages" />
     <fragment
-        android:id="@+id/nouvelleSeanceFragment"
-        android:name="com.example.fsudouest.blablafit.features.workoutCreation.ui.NouvelleSeanceFragment"
-        android:label="Programmer une séance"
-        tools:layout="@layout/fragment_nouvelle_seance">
-        <action
-            android:id="@+id/action_nouvelleSeanceFragment_to_seancesFragment"
-            app:destination="@id/seancesFragment"
-            app:popUpTo="@+id/seancesFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/indoorChoiceFragment"
         android:name="com.example.fsudouest.blablafit.features.workoutCreation.ui.IndoorChoiceFragment"
         android:label="Nouvelle séance"
@@ -60,6 +50,10 @@
             app:exitAnim="@anim/fui_slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <argument
+            android:name="choice"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/addDescriptionFragment"
@@ -73,6 +67,10 @@
             app:exitAnim="@anim/fui_slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <argument
+            android:name="choice"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/addDateDurationFragment"
@@ -86,6 +84,10 @@
             app:exitAnim="@anim/fui_slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <argument
+            android:name="choice"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/searchLocationFragment"
@@ -98,5 +100,9 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popUpTo="@+id/seancesFragment" />
+        <argument
+            android:name="choice"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 </navigation>

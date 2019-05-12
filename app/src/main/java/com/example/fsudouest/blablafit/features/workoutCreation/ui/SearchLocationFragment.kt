@@ -9,12 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import com.example.fsudouest.blablafit.BuildConfig
 
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentSearchLocationBinding
 import com.example.fsudouest.blablafit.di.Injectable
+import com.example.fsudouest.blablafit.features.workoutCreation.viewModel.WorkoutCreationViewModel
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.model.User
 import com.google.android.gms.common.api.Status
@@ -39,13 +42,22 @@ class SearchLocationFragment : Fragment(), Injectable {
     @Inject
     lateinit var mDatabase: FirebaseFirestore
 
+    private lateinit var viewModel: WorkoutCreationViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = activity?.run {
+            ViewModelProviders.of(this).get(WorkoutCreationViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val binding: FragmentSearchLocationBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_search_location, container, false)
 
 
-        val workout = arguments?.getSerializable("workout") as Seance
+        val args: AddDateDurationFragmentArgs by navArgs()
         // Initialize Places.
         Places.initialize(activity!!.applicationContext, apiKey)
 
@@ -53,31 +65,37 @@ class SearchLocationFragment : Fragment(), Injectable {
         // Specify the types of place data to return.
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.NAME, Place.Field.ADDRESS))
         autocompleteFragment.setHint(getString(R.string.searchViewHint))
-        autocompleteFragment.setTypeFilter(TypeFilter.ESTABLISHMENT)
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
                 lieu = "${place.name}, ${place.address}"
                 location_textview.text = lieu
-                workout.lieu = lieu
+                viewModel.workoutLiveData.value?.lieu = lieu
             }
 
             override fun onError(status: Status) {
                 Log.e("SearchLocationFragment", "An error occurred: $status")
             }
         })
+        when(args.choice){
+            0 -> autocompleteFragment.setTypeFilter(TypeFilter.ESTABLISHMENT)
+            1 -> {
+                autocompleteFragment.setTypeFilter(TypeFilter.ADDRESS)
+                binding.findGymTextView.text = getString(R.string.find_your_workout_location)
+            }
+        }
 
         val user = FirebaseAuth.getInstance().currentUser
         val author = User(user?.displayName!!, user.email!!, if (user.photoUrl != null) user.photoUrl.toString() else "")
-        workout.createur = author.email
+        viewModel.workoutLiveData.value?.createur = author.email
 
         binding.validateButton.setOnClickListener { view ->
-            if(workout.lieu.equals("")){
+            if(viewModel.workoutLiveData.value?.lieu == ""){
                 Toast.makeText(activity, "Veuillez entrer une adresse valide", Toast.LENGTH_SHORT).show()
             }else{
                 val ref = mDatabase.collection("workouts").document()
-                workout.id = ref.id
+                viewModel.workoutLiveData.value?.id = ref.id
 
-                ref.set(workout).addOnSuccessListener {
+                ref.set(viewModel.workoutLiveData.value!!).addOnSuccessListener {
                     //add a subcollection of users
                     ref.collection("users").document("auteur").set(author)
                     Navigation.findNavController(view).navigate(R.id.action_searchLocationFragment_to_seancesFragment)
@@ -85,7 +103,6 @@ class SearchLocationFragment : Fragment(), Injectable {
             }
 
         }
-
         return binding.root
     }
 

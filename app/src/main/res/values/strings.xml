@@ -58,6 +58,7 @@
     <string name="find_gym_textview">Trouve ta salle</string>
     <string name="validate_tv">Valider</string>
     <string name="searchViewHint">Rechercher</string>
+    <string name="find_your_workout_location">Choisis ton lieu d\'entraînement</string>
 
     <plurals name="numberOfPlacesAvailable">
         <item quantity="one">%d place disponible</item>

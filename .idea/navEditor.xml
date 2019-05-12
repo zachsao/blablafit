@@ -95,27 +95,6 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="nouvelleSeanceFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="-842" />
-                            <option name="y" value="-305" />
-                          </Point>
-                        </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_nouvelleSeanceFragment_to_seancesFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
                   <entry key="seancesFragment">
                     <value>
                       <LayoutPositions>

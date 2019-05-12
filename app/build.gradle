@@ -69,8 +69,8 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:4.37.0'
 
     //navigation components
-    implementation "android.arch.navigation:navigation-fragment:$navigationVersion"
-    implementation "android.arch.navigation:navigation-ui:$navigationVersion"
+    implementation "android.arch.navigation:navigation-fragment-ktx:$navigationVersion"
+    implementation "android.arch.navigation:navigation-ui-ktx:$navigationVersion"
 
     //dagger 2
     implementation "com.google.dagger:dagger:$dagger_version"

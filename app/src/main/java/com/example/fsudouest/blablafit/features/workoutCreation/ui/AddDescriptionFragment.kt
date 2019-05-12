@@ -9,29 +9,41 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavArgs
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import com.example.fsudouest.blablafit.databinding.FragmentAddDescriptionBinding
 import com.example.fsudouest.blablafit.R
+import com.example.fsudouest.blablafit.features.workoutCreation.viewModel.WorkoutCreationViewModel
 import com.example.fsudouest.blablafit.model.Seance
 
 
 class AddDescriptionFragment : Fragment() {
 
+    private lateinit var viewModel: WorkoutCreationViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = activity?.run {
+            ViewModelProviders.of(this).get(WorkoutCreationViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val binding: FragmentAddDescriptionBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_add_description, container, false)
-
-
-        val workout = arguments?.getSerializable("workout") as Seance
+        val binding: FragmentAddDescriptionBinding = DataBindingUtil
+                .inflate(inflater, R.layout.fragment_add_description, container, false)
 
         val description = binding.descriptionEdittext
+        val args: AddDescriptionFragmentArgs by navArgs()
 
         binding.nextStepButton.setOnClickListener {
-            workout.description = description.text.toString()
-            Toast.makeText(activity,"Séance : ${workout.titre}, ${workout.description}", Toast.LENGTH_SHORT).show()
-            val bundle = bundleOf("workout" to workout)
-            Navigation.findNavController(it).navigate(R.id.action_addDescriptionFragment_to_addDateDurationFragment,bundle)
+            viewModel.workoutLiveData.value?.description = description.text.toString()
+            Navigation.findNavController(it)
+                    .navigate(AddDescriptionFragmentDirections
+                            .actionAddDescriptionFragmentToAddDateDurationFragment(args.choice))
         }
         return binding.root
     }

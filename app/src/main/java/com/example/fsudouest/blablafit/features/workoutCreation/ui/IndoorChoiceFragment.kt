@@ -14,7 +14,8 @@ import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentIndoorChoiceBinding
 import com.example.fsudouest.blablafit.di.Injectable
 
-
+const val CHOICE_INDOOR = 0
+const val CHOICE_OUTDOOR = 1
 
 class IndoorChoiceFragment : Fragment(), Injectable {
 
@@ -27,7 +28,10 @@ class IndoorChoiceFragment : Fragment(), Injectable {
         Glide.with(this).load(R.drawable.outdoors).into(binding.outdoorImage)
 
         binding.cardGym.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_indoorChoiceFragment_to_typeSeanceFragment)
+            Navigation.findNavController(it).navigate(IndoorChoiceFragmentDirections.actionIndoorChoiceFragmentToTypeSeanceFragment(CHOICE_INDOOR))
+        }
+        binding.cardOutdoor.setOnClickListener{
+            Navigation.findNavController(it).navigate(IndoorChoiceFragmentDirections.actionIndoorChoiceFragmentToTypeSeanceFragment(CHOICE_OUTDOOR))
         }
         return binding.root
     }

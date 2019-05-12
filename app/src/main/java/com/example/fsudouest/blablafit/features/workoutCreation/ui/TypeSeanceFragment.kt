@@ -10,7 +10,9 @@ import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.selection.SelectionPredicates
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StableIdKeyProvider
@@ -22,6 +24,7 @@ import com.example.fsudouest.blablafit.adapters.WorkoutTypeAdapter
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.utils.MyLookup
 import com.example.fsudouest.blablafit.databinding.FragmentTypeSeanceBinding
+import com.example.fsudouest.blablafit.features.workoutCreation.viewModel.WorkoutCreationViewModel
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.model.WorkoutType
 
@@ -34,37 +37,46 @@ class TypeSeanceFragment : Fragment() {
 
     private var tracker: SelectionTracker<Long>? = null
 
+    private lateinit var viewModel: WorkoutCreationViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = activity?.run {
+            ViewModelProviders.of(this).get(WorkoutCreationViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val binding = DataBindingUtil.inflate<FragmentTypeSeanceBinding>(inflater,R.layout.fragment_type_seance, container, false)
+        val binding = DataBindingUtil.inflate<FragmentTypeSeanceBinding>(inflater, R.layout.fragment_type_seance, container, false)
 
-        if(savedInstanceState != null)
+        if (savedInstanceState != null)
             tracker?.onRestoreInstanceState(savedInstanceState)
 
         list = binding.gridRecyclerView
 
         workouts = ArrayList()
-        workouts.add(WorkoutType("Full body",R.drawable.icons8_weightlifting_50))
-        workouts.add(WorkoutType("Yoga",R.drawable.icons8_yoga_50))
-        workouts.add(WorkoutType("Running",R.drawable.icons8_running_50))
-        workouts.add(WorkoutType("Upper body",R.drawable.icons8_torso_50))
-        workouts.add(WorkoutType("Jambes",R.drawable.icons8_leg_50))
-        workouts.add(WorkoutType("Bras",R.drawable.icons8_muscle_50))
-        workouts.add(WorkoutType("Pecs",R.drawable.icons8_chest_50))
-        workouts.add(WorkoutType("Epaules",R.drawable.icons8_shoulders_50))
-        workouts.add(WorkoutType("Triceps",R.drawable.icons8_triceps_50))
-        workouts.add(WorkoutType("Dos",R.drawable.icons8_bodybuilder_50))
-        workouts.add(WorkoutType("Biceps",R.drawable.icons8_biceps_50))
-        workouts.add(WorkoutType("Abdos",R.drawable.icons8_prelum_50))
+        workouts.add(WorkoutType("Full body", R.drawable.icons8_weightlifting_50))
+        workouts.add(WorkoutType("Yoga", R.drawable.icons8_yoga_50))
+        workouts.add(WorkoutType("Running", R.drawable.icons8_running_50))
+        workouts.add(WorkoutType("Upper body", R.drawable.icons8_torso_50))
+        workouts.add(WorkoutType("Jambes", R.drawable.icons8_leg_50))
+        workouts.add(WorkoutType("Bras", R.drawable.icons8_muscle_50))
+        workouts.add(WorkoutType("Pecs", R.drawable.icons8_chest_50))
+        workouts.add(WorkoutType("Epaules", R.drawable.icons8_shoulders_50))
+        workouts.add(WorkoutType("Triceps", R.drawable.icons8_triceps_50))
+        workouts.add(WorkoutType("Dos", R.drawable.icons8_bodybuilder_50))
+        workouts.add(WorkoutType("Biceps", R.drawable.icons8_biceps_50))
+        workouts.add(WorkoutType("Abdos", R.drawable.icons8_prelum_50))
 
 
-        mAdapter = WorkoutTypeAdapter(activity!!,workouts)
+        mAdapter = WorkoutTypeAdapter(activity!!, workouts)
 
 
 
         list.apply {
-            layoutManager = GridLayoutManager(activity!!,3)
+            layoutManager = GridLayoutManager(activity!!, 3)
             adapter = mAdapter
         }
 
@@ -78,17 +90,21 @@ class TypeSeanceFragment : Fragment() {
                 SelectionPredicates.createSelectAnything()
         ).build()
 
+        val args: TypeSeanceFragmentArgs by navArgs()
+
         mAdapter.setTracker(tracker)
         binding.nextStepButton.setOnClickListener {
-            if(tracker!!.selection.isEmpty){
-                Toast.makeText(activity,"Veuillez séléctionner au moins un élément",LENGTH_SHORT).show()
-            }else{
-                val workoutTitle = tracker!!.selection.joinToString(separator = " - "){index ->
+            if (tracker!!.selection.isEmpty) {
+                Toast.makeText(activity, "Veuillez séléctionner au moins un élément", LENGTH_SHORT).show()
+            } else {
+                val workoutTitle = tracker!!.selection.joinToString(separator = " - ") { index ->
                     workouts[index.toInt()].title
                 }
                 val workout = Seance(workoutTitle)
-                val bundle = bundleOf("workout" to workout)
-                Navigation.findNavController(it).navigate(R.id.action_typeSeanceFragment_to_addDescriptionFragment,bundle)
+                viewModel.addWorkout(workout)
+                Navigation.findNavController(it)
+                        .navigate(TypeSeanceFragmentDirections.
+                                actionTypeSeanceFragmentToAddDescriptionFragment(args.choice))
             }
 
         }
