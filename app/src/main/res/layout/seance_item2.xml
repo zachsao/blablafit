@@ -113,7 +113,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/tv_créateur"
                         tools:text="john.doe@gmail.com"
-                        android:text="@{seance.createur}"
+                        android:text="@{seance.auteur}"
                         android:layout_gravity="center_vertical" />
 
                     <de.hdodenhof.circleimageview.CircleImageView

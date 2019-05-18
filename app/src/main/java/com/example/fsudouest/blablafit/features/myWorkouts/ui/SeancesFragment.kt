@@ -91,7 +91,7 @@ class SeancesFragment : Fragment(), Injectable {
         var debutJournee = c.time
         c.set(year, currentMonth, day, 23, 59)
         var finDeJournee = c.time
-        viewModel.getWorkouts(debutJournee, finDeJournee, user?.email)
+        viewModel.getWorkouts(debutJournee, finDeJournee, user?.email ?: "")
 
         val dateFormat = SimpleDateFormat("EEEE dd MMM", Locale.FRENCH)
 
@@ -104,7 +104,7 @@ class SeancesFragment : Fragment(), Injectable {
             c.set(year, month, day_of_month, 23, 59)
             finDeJournee = c.time
             binding.dateSelectionButton.text = dateFormat.format(c.time)
-            viewModel.getWorkouts(debutJournee, finDeJournee, user?.email)
+            viewModel.getWorkouts(debutJournee, finDeJournee, user?.email ?: "")
         }, year, currentMonth, day)
 
         // If there is a network connection, fetch data

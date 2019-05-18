@@ -13,7 +13,7 @@ class NearByViewModel @Inject constructor(private val mDatabase: FirebaseFiresto
     private val workoutListLiveData = MutableLiveData<ArrayList<Seance?>>()
 
     val filteredList = ArrayList<Seance?>()
-    val fullList = ArrayList<Seance?>()
+    private val fullList = ArrayList<Seance?>()
 
     fun workoutsLiveData() = workoutListLiveData
 

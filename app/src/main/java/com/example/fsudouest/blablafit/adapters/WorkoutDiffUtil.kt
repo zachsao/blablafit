@@ -11,7 +11,7 @@ class WorkoutDiffUtil(val oldList: ArrayList<Seance?>, val newList: ArrayList<Se
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val oldItem = oldList[oldItemPosition]!!
         val newItem = newList[newItemPosition]!!
-        return oldItem.createur == newItem.createur &&
+        return oldItem.participants == newItem.participants &&
                 oldItem.date == newItem.date &&
                 oldItem.description == newItem.description &&
                 oldItem.duree == newItem.duree &&

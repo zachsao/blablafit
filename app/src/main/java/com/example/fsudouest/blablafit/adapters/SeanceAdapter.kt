@@ -15,9 +15,6 @@ import com.example.fsudouest.blablafit.features.workoutDetails.DetailsSeanceActi
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.SeanceItem2Binding
-import com.example.fsudouest.blablafit.model.User
-import com.google.firebase.firestore.FirebaseFirestore
-
 import java.text.SimpleDateFormat
 import java.util.ArrayList
 
@@ -80,16 +77,11 @@ class SeanceAdapter(private var mContext: Context, private var mData: ArrayList<
             binding.executePendingBindings()
 
             Glide.with(context).load(R.drawable.weights).into(binding.itemImage)
-
-            val auteurRef = FirebaseFirestore.getInstance().collection("workouts")
-                    .document(seance!!.id).collection("users").document("auteur")
-            auteurRef.get().addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val user = task.result!!.toObject<User>(User::class.java)
-                    if (user?.photoUrl!=null)
-                        Glide.with(context).load(user.photoUrl).placeholder(R.drawable.userphoto).into(binding.authorProfilePicture)
-                }
+            val authorProfilePicture = seance?.auteurPhotoUrl
+            if (!authorProfilePicture.isNullOrEmpty()) {
+                Glide.with(context).load(authorProfilePicture).placeholder(R.drawable.userphoto).into(binding.authorProfilePicture)
             }
+
             heure.text = hourFormat.format(mData[position]?.date)
 
             parent.setOnClickListener {

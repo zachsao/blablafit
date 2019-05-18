@@ -12,8 +12,6 @@ import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.SeanceItem2Binding
 import com.example.fsudouest.blablafit.features.workoutDetails.DetailsSeanceActivity
 import com.example.fsudouest.blablafit.model.Seance
-import com.example.fsudouest.blablafit.model.User
-import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 
 class NearByAdapter(val context: Context, val mData: ArrayList<Seance?>) : RecyclerView.Adapter<NearByAdapter.WorkoutViewHolder>() {
@@ -39,15 +37,9 @@ class NearByAdapter(val context: Context, val mData: ArrayList<Seance?>) : Recyc
 
             Glide.with(context).load(R.drawable.weights).into(binding.itemImage)
 
-            val auteurRef = FirebaseFirestore.getInstance().collection("workouts")
-                    .document(seance.id).collection("users").document("auteur")
-            auteurRef.get().addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val user = task.result!!.toObject<User>(User::class.java)
-                    if (user?.photoUrl != null)
-                        Glide.with(context).load(user.photoUrl).placeholder(R.drawable.userphoto).into(binding.authorProfilePicture)
-                }
-            }
+            val authorProfilePicture = seance.auteurPhotoUrl
+            if (authorProfilePicture.isNotEmpty())
+                Glide.with(context).load(authorProfilePicture).placeholder(R.drawable.userphoto).into(binding.authorProfilePicture)
             binding.tvHeure.text = hourFormat.format(seance.date)
 
             binding.parentLayout.setOnClickListener {

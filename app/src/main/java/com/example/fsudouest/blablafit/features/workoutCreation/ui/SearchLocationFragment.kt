@@ -85,8 +85,7 @@ class SearchLocationFragment : Fragment(), Injectable {
         }
 
         val user = FirebaseAuth.getInstance().currentUser
-        val author = User(user?.displayName!!, user.email!!, if (user.photoUrl != null) user.photoUrl.toString() else "")
-        viewModel.workoutLiveData.value?.createur = author.email
+        viewModel.workoutLiveData.value?.participants = listOf("${user?.email}")
 
         binding.validateButton.setOnClickListener { view ->
             if(viewModel.workoutLiveData.value?.lieu == ""){
@@ -97,7 +96,6 @@ class SearchLocationFragment : Fragment(), Injectable {
 
                 ref.set(viewModel.workoutLiveData.value!!).addOnSuccessListener {
                     //add a subcollection of users
-                    ref.collection("users").document("auteur").set(author)
                     Navigation.findNavController(view).navigate(R.id.action_searchLocationFragment_to_seancesFragment)
                 }.addOnFailureListener { Toast.makeText(activity, "Une erreur s'est produite", Toast.LENGTH_SHORT).show() }
             }
