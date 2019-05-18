@@ -85,7 +85,8 @@ class SearchLocationFragment : Fragment(), Injectable {
         }
 
         val user = FirebaseAuth.getInstance().currentUser
-        viewModel.workoutLiveData.value?.participants = listOf("${user?.email}")
+        viewModel.workoutLiveData.value?.participants = listOf(user?.email ?: "")
+        viewModel.workoutLiveData.value?.auteur = user?.email ?: ""
 
         binding.validateButton.setOnClickListener { view ->
             if(viewModel.workoutLiveData.value?.lieu == ""){

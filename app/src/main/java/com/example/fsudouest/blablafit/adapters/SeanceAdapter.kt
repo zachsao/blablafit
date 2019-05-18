@@ -37,7 +37,9 @@ class SeanceAdapter(private var mContext: Context, private var mData: ArrayList<
     }
 
     override fun onBindViewHolder(holder: SeanceViewHolder, position: Int) {
-        holder.bind(position)
+        mData[position]?.let {
+            holder.bind(it)
+        }
     }
 
 
@@ -58,35 +60,27 @@ class SeanceAdapter(private var mContext: Context, private var mData: ArrayList<
 
     inner class SeanceViewHolder(var binding: SeanceItem2Binding) : RecyclerView.ViewHolder(binding.root) {
 
-        private var heure: TextView
-        var parent: LinearLayout
-
-        init {
-
-            parent = binding.parentLayout
-            heure = binding.tvHeure
-
-        }
+        private var heure: TextView = binding.tvHeure
+        var parent: LinearLayout = binding.parentLayout
 
 
-        fun bind(position: Int) {
+        fun bind(seance: Seance) {
             val hourFormat = SimpleDateFormat("HH:mm")
 
-            val seance = mData[position]
             binding.setVariable(BR.seance,seance)
             binding.executePendingBindings()
 
             Glide.with(context).load(R.drawable.weights).into(binding.itemImage)
-            val authorProfilePicture = seance?.auteurPhotoUrl
-            if (!authorProfilePicture.isNullOrEmpty()) {
+            val authorProfilePicture = seance.auteurPhotoUrl
+            if (authorProfilePicture.isNotEmpty()) {
                 Glide.with(context).load(authorProfilePicture).placeholder(R.drawable.userphoto).into(binding.authorProfilePicture)
             }
 
-            heure.text = hourFormat.format(mData[position]?.date)
+            heure.text = hourFormat.format(seance.date)
 
             parent.setOnClickListener {
                 val intent = Intent(mContext, DetailsSeanceActivity::class.java)
-                intent.putExtra("seance", mData[position])
+                intent.putExtra("seance", seance)
                 mContext.startActivity(intent)
             }
         }
