@@ -31,7 +31,6 @@ class WorkoutsViewModel @Inject constructor(private val mDatabase: FirebaseFires
                             workoutsLiveData.value = task.result!!.documents.map { it.toObject(Seance::class.java) } as ArrayList
                         }
                         else -> {
-                            workoutsLiveData.value = arrayListOf()
                             Log.e("WorkoutsViewModel", task.exception?.message)
                         }
                     }

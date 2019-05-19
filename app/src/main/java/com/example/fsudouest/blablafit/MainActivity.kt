@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 
 import androidx.navigation.Navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.example.fsudouest.blablafit.features.login.LoginActivity
@@ -51,7 +52,10 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         BottomNavigationViewHelper.removeShiftMode(navigation)
         setupWithNavController(navigation, navController)
 
-        NavigationUI.setupActionBarWithNavController(this,navController)
+        val appBarConfiguration = AppBarConfiguration(setOf(R.id.trouverUneSeanceFragment, R.id.seancesFragment,
+                R.id.messagesFragment,R.id.myProfileFragment,R.id.indoorChoiceFragment))
+
+        NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration)
     }
 
     override fun onResume() {
