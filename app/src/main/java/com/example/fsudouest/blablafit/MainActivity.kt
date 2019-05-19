@@ -2,7 +2,6 @@ package com.example.fsudouest.blablafit
 
 
 import android.content.Intent
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -14,7 +13,6 @@ import androidx.navigation.Navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.example.fsudouest.blablafit.features.login.LoginActivity
-import com.example.fsudouest.blablafit.utils.BottomNavigationViewBehavior
 import com.example.fsudouest.blablafit.utils.BottomNavigationViewHelper
 import com.example.fsudouest.blablafit.databinding.ActivityMainBinding
 import dagger.android.DispatchingAndroidInjector
@@ -53,21 +51,18 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         BottomNavigationViewHelper.removeShiftMode(navigation)
         setupWithNavController(navigation, navController)
 
-        val layoutParams = navigation.layoutParams as CoordinatorLayout.LayoutParams
-        layoutParams.behavior = BottomNavigationViewBehavior()
-
         NavigationUI.setupActionBarWithNavController(this,navController)
     }
 
     override fun onResume() {
         super.onResume()
-        mFirebaseAuth!!.addAuthStateListener(mAuthStateListener!!)
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener!!)
     }
 
     override fun onPause() {
         super.onPause()
         if (mAuthStateListener != null) {
-            mFirebaseAuth!!.removeAuthStateListener(mAuthStateListener!!)
+            mFirebaseAuth.removeAuthStateListener(mAuthStateListener!!)
         }
     }
 
