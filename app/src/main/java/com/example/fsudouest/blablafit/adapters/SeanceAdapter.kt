@@ -15,11 +15,12 @@ import com.example.fsudouest.blablafit.features.workoutDetails.DetailsSeanceActi
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.SeanceItem2Binding
+import com.example.fsudouest.blablafit.features.nearby.ui.NearByAdapter
 import java.text.SimpleDateFormat
 import java.util.ArrayList
 
 
-class SeanceAdapter(private var mContext: Context, private var mData: ArrayList<Seance?>) : RecyclerView.Adapter<SeanceAdapter.SeanceViewHolder>() {
+class SeanceAdapter(private var mContext: Context, private var mData: ArrayList<Seance?>, val clickListener: NearByAdapter.ClickListener) : RecyclerView.Adapter<SeanceAdapter.SeanceViewHolder>() {
 
     lateinit var context: Context
 
@@ -79,9 +80,7 @@ class SeanceAdapter(private var mContext: Context, private var mData: ArrayList<
             heure.text = hourFormat.format(seance.date)
 
             parent.setOnClickListener {
-                val intent = Intent(mContext, DetailsSeanceActivity::class.java)
-                intent.putExtra("seance", seance)
-                mContext.startActivity(intent)
+                clickListener.navigateToDetails(seance.id)
             }
         }
     }

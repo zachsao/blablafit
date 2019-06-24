@@ -322,7 +322,7 @@
 
             <Button
                 android:id="@+id/participate_button"
-                android:layout_width="125dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center_horizontal"
                 android:layout_marginBottom="32dp"

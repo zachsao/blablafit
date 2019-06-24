@@ -2,10 +2,14 @@ package com.example.fsudouest.blablafit.features.workoutDetails
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.NavArgs
+import androidx.navigation.navArgs
 
 import com.bumptech.glide.Glide
 import com.example.fsudouest.blablafit.model.Seance
@@ -48,39 +52,17 @@ class DetailsSeanceActivity : AppCompatActivity() {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_details_seance)
-
         date = binding.workoutDateTextview
         heure = binding.workoutHourTextview
         photo = binding.circleImageView
 
         Glide.with(this).load(R.drawable.weights).into(binding.imageView)
 
-        val intent = intent
-        seance = intent.getSerializableExtra("seance") as Seance
-
-        val dateFormat = SimpleDateFormat("dd/MM/yy", Locale("fr", "FR"))
-        val dateChaine = dateFormat.format(seance.date)
-
-        val hourFormat = SimpleDateFormat("HH:mm", Locale("fr", "FR"))
-        val heureChaine = hourFormat.format(seance.date)
-
-        date.text = dateChaine
-        heure.text = heureChaine
-
-        binding.seance = seance
+        val args : DetailsSeanceActivityArgs by navArgs()
+        val workoutId = args.id
+        getWorkoutDetails(workoutId)
 
         user = firebaseAuth.currentUser
-
-        val authorProfilePicture = seance.auteurPhotoUrl
-        if (authorProfilePicture.isNotEmpty())
-            Glide.with(this).load(authorProfilePicture).placeholder(R.drawable.userphoto).into(photo)
-
-        if (currentUserIsWorkoutAuthor(seance)) {
-            disableParticipateButton()
-        } else {
-            binding.participateButton.setOnClickListener { joinWorkout() }
-        }
-
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
@@ -97,6 +79,74 @@ class DetailsSeanceActivity : AppCompatActivity() {
                 }
     }
 
+    private fun unjoinWorkout(){
+        mDatabase.collection("workouts")
+                .document(seance.id)
+                .update("participants", FieldValue.arrayRemove(user?.email))
+                .addOnSuccessListener {
+                    Log.i("Participer", "${user?.displayName} s'est désinscrit de la séance :(")
+                    finish()
+                }.addOnFailureListener {
+                    Log.e("Participer", it.message)
+                }
+    }
+
+    private fun deleteWorkout(){
+        mDatabase.collection("workouts")
+                .document(seance.id)
+                .delete()
+                .addOnSuccessListener {
+                    finish()
+                }.addOnFailureListener {
+                    Log.e("Delete workout", it.message)
+                }
+    }
+
+    private fun getWorkoutDetails(id:String){
+        mDatabase.collection("workouts")
+                .document(id)
+                .get()
+                .addOnSuccessListener {
+                    seance = it.toObject(Seance::class.java)!!
+                    binding.seance = seance
+                    val dateFormat = SimpleDateFormat("dd/MM/yy", Locale("fr", "FR"))
+                    val dateChaine = dateFormat.format(seance.date)
+
+                    val hourFormat = SimpleDateFormat("HH:mm", Locale("fr", "FR"))
+                    val heureChaine = hourFormat.format(seance.date)
+
+                    date.text = dateChaine
+                    heure.text = heureChaine
+
+                    val authorProfilePicture = seance.auteurPhotoUrl
+                    if (authorProfilePicture.isNotEmpty())
+                        Glide.with(this).load(authorProfilePicture).placeholder(R.drawable.userphoto).into(photo)
+
+                    if (hasAlreadyJoined()) {
+                        if (currentUserIsWorkoutAuthor(seance)){
+                            binding.participateButton.text = "Delete workout"
+                            binding.participateButton.background = getDrawable(R.drawable.round_corner_red)
+                            binding.participateButton.setOnClickListener {
+                                deleteWorkout()
+                            }
+                        }
+                        else {
+                            // disableParticipateButton()
+                            binding.participateButton.text = "Unjoin workout"
+                            binding.participateButton.background = getDrawable(R.drawable.round_corner_red)
+                            binding.participateButton.setOnClickListener {
+                                unjoinWorkout()
+                            }
+                        }
+                    } else {
+                        binding.participateButton.setOnClickListener { joinWorkout() }
+                    }
+                }
+                .addOnFailureListener{
+                    Log.e("Participer", it.message)
+                }
+    }
+
     private fun disableParticipateButton() {
         binding.participateButton.visibility = View.GONE
     }
@@ -105,5 +155,13 @@ class DetailsSeanceActivity : AppCompatActivity() {
         return user?.email == seance.auteur
     }
 
+    private fun hasAlreadyJoined(): Boolean{
+        // The user's email appears in the participants array
+        return seance.participants.contains(user?.email)
+    }
 
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true;
+    }
 }

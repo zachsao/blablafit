@@ -14,12 +14,24 @@
         android:id="@+id/trouverUneSeanceFragment"
         android:name="com.example.fsudouest.blablafit.features.nearby.ui.NearByFragment"
         android:label="Trouver une séance"
-        tools:layout="@layout/fragment_seances" />
+        tools:layout="@layout/fragment_seances" >
+        <action
+            android:id="@+id/action_trouverUneSeanceFragment_to_detailsSeanceActivity"
+            app:destination="@id/detailsSeanceActivity"
+            app:enterAnim="@anim/slide_in_up"
+            app:exitAnim="@anim/slide_out_up"
+            app:popEnterAnim="@anim/slide_in_down"
+            app:popExitAnim="@anim/slide_out_down" />
+    </fragment>
     <fragment
         android:id="@+id/seancesFragment"
         android:name="com.example.fsudouest.blablafit.features.myWorkouts.ui.SeancesFragment"
         android:label="Mes séances"
-        tools:layout="@layout/fragment_seances" />
+        tools:layout="@layout/fragment_seances" >
+        <action
+            android:id="@+id/action_seancesFragment_to_detailsSeanceActivity"
+            app:destination="@id/detailsSeanceActivity" />
+    </fragment>
     <fragment
         android:id="@+id/messagesFragment"
         android:name="com.example.fsudouest.blablafit.features.messages.ui.MessagesFragment"
@@ -105,4 +117,13 @@
             app:argType="integer"
             android:defaultValue="0" />
     </fragment>
+    <activity
+        android:id="@+id/detailsSeanceActivity"
+        android:name="com.example.fsudouest.blablafit.features.workoutDetails.DetailsSeanceActivity"
+        android:label="activity_details_seance"
+        tools:layout="@layout/activity_details_seance" >
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </activity>
 </navigation>

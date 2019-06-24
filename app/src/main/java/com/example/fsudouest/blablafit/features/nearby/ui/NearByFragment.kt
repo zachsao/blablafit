@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,7 +27,7 @@ import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import javax.inject.Inject
 
 
-class NearByFragment : Fragment(), Injectable {
+class NearByFragment : Fragment(), Injectable, NearByAdapter.ClickListener {
 
     private lateinit var mList: RecyclerView
     private val layoutManager = LinearLayoutManager(activity)
@@ -69,6 +70,13 @@ class NearByFragment : Fragment(), Injectable {
         return binding.root
     }
 
+    override fun navigateToDetails(seanceId: String) {
+        /*val intent = Intent(context, DetailsSeanceActivity::class.java)
+        intent.putExtra("seance", seance)
+        startActivity(intent)*/
+        findNavController().navigate(NearByFragmentDirections.actionTrouverUneSeanceFragmentToDetailsSeanceActivity(seanceId))
+    }
+
     private fun isOnline(): Boolean {
         val connMgr = activity!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo = connMgr.activeNetworkInfo
@@ -87,7 +95,7 @@ class NearByFragment : Fragment(), Injectable {
         if (list.isEmpty()) {
             showError(true, getString(R.string.no_seance_available))
         } else {
-            mList.adapter = NearByAdapter(activity!!, list)
+            mList.adapter = NearByAdapter(activity!!, list, this)
         }
     }
 

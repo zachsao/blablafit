@@ -15,6 +15,7 @@ import androidx.annotation.StringRes
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +23,7 @@ import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.adapters.SeanceAdapter
 import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.myWorkouts.viewModel.WorkoutsViewModel
+import com.example.fsudouest.blablafit.features.nearby.ui.NearByAdapter
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.utils.SwipeToDeleteCallback
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
@@ -37,7 +39,7 @@ import javax.inject.Inject
 /**
  * A simple [Fragment] subclas.
  */
-class SeancesFragment : Fragment(), Injectable {
+class SeancesFragment : Fragment(), Injectable, NearByAdapter.ClickListener {
 
     private lateinit var mAdapter: SeanceAdapter
     private lateinit var mList: RecyclerView
@@ -74,7 +76,7 @@ class SeancesFragment : Fragment(), Injectable {
         viewModel = ViewModelProviders.of(this, factory).get(WorkoutsViewModel::class.java).apply {
             workoutsLiveData().observe(this@SeancesFragment, androidx.lifecycle.Observer {
                 Log.i("SeanceFragment", "Observing workouts")
-                mAdapter = SeanceAdapter(activity!!, it)
+                mAdapter = SeanceAdapter(activity!!, it, this@SeancesFragment)
                 displayList(it)
                 seances = it
             })
@@ -176,6 +178,9 @@ class SeancesFragment : Fragment(), Injectable {
         mProgressView.visibility = if (show) View.VISIBLE else View.GONE
     }
 
+    override fun navigateToDetails(seanceId: String) {
+        findNavController().navigate(SeancesFragmentDirections.actionSeancesFragmentToDetailsSeanceActivity(seanceId))
+    }
 
     fun showSnackBar(deletedItem: Seance, deletedIndex: Int) {
         // showing snack bar with Undo option

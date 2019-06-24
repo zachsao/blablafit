@@ -14,7 +14,7 @@ import com.example.fsudouest.blablafit.features.workoutDetails.DetailsSeanceActi
 import com.example.fsudouest.blablafit.model.Seance
 import java.text.SimpleDateFormat
 
-class NearByAdapter(val context: Context, val mData: ArrayList<Seance?>) : RecyclerView.Adapter<NearByAdapter.WorkoutViewHolder>() {
+class NearByAdapter(val context: Context, val mData: ArrayList<Seance?>, val clickListener: ClickListener) : RecyclerView.Adapter<NearByAdapter.WorkoutViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkoutViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -43,11 +43,13 @@ class NearByAdapter(val context: Context, val mData: ArrayList<Seance?>) : Recyc
             binding.tvHeure.text = hourFormat.format(seance.date)
 
             binding.parentLayout.setOnClickListener {
-                val intent = Intent(context, DetailsSeanceActivity::class.java)
-                intent.putExtra("seance", seance)
-                context.startActivity(intent)
+                clickListener.navigateToDetails(seance.id)
             }
         }
 
+    }
+
+    interface ClickListener {
+        fun navigateToDetails(seanceId: String)
     }
 }
