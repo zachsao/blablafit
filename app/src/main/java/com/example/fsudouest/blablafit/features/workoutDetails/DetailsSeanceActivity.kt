@@ -91,10 +91,13 @@ class DetailsSeanceActivity : AppCompatActivity() {
 
         if (hasAlreadyJoined(seance)) {
             if (currentUserIsWorkoutAuthor(seance)){
-                binding.participateButton.visibility = View.GONE
+                binding.participateButton.text = "Delete workout"
+                binding.participateButton.background = getDrawable(R.drawable.round_corner_red)
+                binding.participateButton.setOnClickListener {
+                    viewModel.deleteWorkout(seance, this)
+                }
             }
             else {
-                // disableParticipateButton()
                 binding.participateButton.text = "Unjoin workout"
                 binding.participateButton.background = getDrawable(R.drawable.round_corner_red)
                 binding.participateButton.setOnClickListener {

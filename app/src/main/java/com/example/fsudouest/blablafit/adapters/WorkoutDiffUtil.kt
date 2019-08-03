@@ -3,7 +3,7 @@ package com.example.fsudouest.blablafit.adapters
 import androidx.recyclerview.widget.DiffUtil
 import com.example.fsudouest.blablafit.model.Seance
 
-class WorkoutDiffUtil(val oldList: ArrayList<Seance?>, val newList: ArrayList<Seance?>) : DiffUtil.Callback() {
+class WorkoutDiffUtil(private val oldList: ArrayList<Seance?>, private val newList: ArrayList<Seance?>) : DiffUtil.Callback() {
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         return oldList[oldItemPosition]?.id == newList[newItemPosition]?.id
     }

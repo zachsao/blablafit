@@ -3,6 +3,7 @@ package com.example.fsudouest.blablafit.features.myWorkouts.ui
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
@@ -24,6 +25,7 @@ import com.example.fsudouest.blablafit.adapters.SeanceAdapter
 import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.myWorkouts.viewModel.WorkoutsViewModel
 import com.example.fsudouest.blablafit.features.nearby.ui.NearByAdapter
+import com.example.fsudouest.blablafit.features.workoutDetails.RESULT_DETAILS
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.utils.SwipeToDeleteCallback
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
@@ -43,7 +45,6 @@ class SeancesFragment : Fragment(), Injectable, NearByAdapter.ClickListener {
 
     private lateinit var mAdapter: SeanceAdapter
     private lateinit var mList: RecyclerView
-    private val layoutManager = LinearLayoutManager(activity)
     private lateinit var mEmptyStateTextView: TextView
     private lateinit var mProgressView: View
 
@@ -125,8 +126,7 @@ class SeancesFragment : Fragment(), Injectable, NearByAdapter.ClickListener {
                 val deletedIndex = viewHolder.adapterPosition
                 val deletedItem = seances[deletedIndex]
                 adapter.removeAt(deletedIndex)
-                showSnackBar(deletedItem!!, deletedIndex)
-
+                deletedItem?.let { showSnackBar(it, deletedIndex) }
                 if (adapter.itemCount == 0){
                     showError(R.string.no_seance_available,R.drawable.ic_undraw_healthy_habit)
                 }
@@ -199,7 +199,5 @@ class SeancesFragment : Fragment(), Injectable, NearByAdapter.ClickListener {
                 mAdapter.restoreItem(deletedItem, deletedIndex)
             }
         }.show()
-
     }
-
 }
