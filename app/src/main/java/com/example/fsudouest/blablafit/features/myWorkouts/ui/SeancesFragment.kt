@@ -25,7 +25,6 @@ import com.example.fsudouest.blablafit.adapters.SeanceAdapter
 import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.myWorkouts.viewModel.WorkoutsViewModel
 import com.example.fsudouest.blablafit.features.nearby.ui.NearByAdapter
-import com.example.fsudouest.blablafit.features.workoutDetails.RESULT_DETAILS
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.utils.SwipeToDeleteCallback
 import com.example.fsudouest.blablafit.utils.ViewModelFactory

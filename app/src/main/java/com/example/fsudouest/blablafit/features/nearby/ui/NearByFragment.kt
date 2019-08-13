@@ -23,7 +23,6 @@ import com.example.fsudouest.blablafit.adapters.WorkoutDiffUtil
 import com.example.fsudouest.blablafit.databinding.FragmentSeancesBinding
 import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.nearby.viewModel.NearByViewModel
-import com.example.fsudouest.blablafit.features.workoutDetails.RESULT_DETAILS
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import java.util.*
