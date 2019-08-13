@@ -59,6 +59,14 @@
     <string name="validate_tv">Valider</string>
     <string name="searchViewHint">Rechercher</string>
     <string name="find_your_workout_location">Choisis ton lieu d\'entraînement</string>
+    <string name="firstName">Prénom</string>
+    <string name="lastName">Nom</string>
+    <string name="email">Email</string>
+    <string name="city">Ville</string>
+    <string name="basic_info">Basic information</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="next_step">Next</string>
 
     <plurals name="numberOfPlacesAvailable">
         <item quantity="one">%d place disponible</item>

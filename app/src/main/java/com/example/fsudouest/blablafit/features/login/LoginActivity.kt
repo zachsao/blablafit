@@ -27,7 +27,10 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding: ActivityLogin2Binding = DataBindingUtil.setContentView(this,R.layout.activity_login2)
 
-        binding.startButton.setOnClickListener { signIn() }
+        binding.startButton.setOnClickListener {
+            //signIn()
+            startActivity(Intent(this, SignUpActivity::class.java))
+        }
     }
 
     private fun signIn() {

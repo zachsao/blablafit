@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/sign_up_navigation"
+    app:startDestination="@id/basicInformationFragment">
+
+    <fragment
+        android:id="@+id/basicInformationFragment"
+        android:name="com.example.fsudouest.blablafit.features.login.BasicInformationFragment"
+        android:label="Create an account" />
+</navigation>
