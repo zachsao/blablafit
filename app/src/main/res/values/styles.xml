@@ -19,10 +19,5 @@
 
     </style>
 
-    <style name="FabTheme" parent="Widget.MaterialComponents.FloatingActionButton">
-        <item name="android:background">@color/white</item>
-        <item name="android:colorSecondary">@color/colorPrimary</item>
-    </style>
-
 
 </resources>

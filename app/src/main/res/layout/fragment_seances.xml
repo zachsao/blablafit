@@ -26,7 +26,7 @@
                 android:text="Samedi 3 Mars"
                 android:layout_gravity="center_horizontal"
                 android:textAllCaps="false"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/white" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

@@ -28,8 +28,8 @@ class LoginActivity : AppCompatActivity() {
         val binding: ActivityLogin2Binding = DataBindingUtil.setContentView(this,R.layout.activity_login2)
 
         binding.startButton.setOnClickListener {
-            //signIn()
-            startActivity(Intent(this, SignUpActivity::class.java))
+            signIn()
+            // startActivity(Intent(this, SignUpActivity::class.java))
         }
     }
 
@@ -44,6 +44,7 @@ class LoginActivity : AppCompatActivity() {
                         .createSignInIntentBuilder()
                         .setAvailableProviders(providers)
                         .setLogo(R.drawable.logo)
+                        .setTheme(R.style.AppTheme)
                         .build(),
                 RC_SIGN_IN)
     }
