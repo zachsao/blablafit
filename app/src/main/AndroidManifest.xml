@@ -34,6 +34,8 @@
             android:name=".features.workoutDetails.DetailsSeanceActivity"
             android:label="Détails de la séance"
             android:parentActivityName=".MainActivity" />
+        <activity android:name=".features.messages.conversation.ConversationActivity"
+            android:parentActivityName=".MainActivity"/>
 
         <meta-data
             android:name="preloaded_fonts"

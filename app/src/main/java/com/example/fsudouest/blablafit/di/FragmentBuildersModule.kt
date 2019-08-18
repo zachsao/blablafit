@@ -1,5 +1,6 @@
 package com.example.fsudouest.blablafit.di
 
+import com.example.fsudouest.blablafit.features.messages.conversation.ConversationActivity
 import com.example.fsudouest.blablafit.features.messages.ui.MessagesFragment
 import com.example.fsudouest.blablafit.features.myWorkouts.ui.SeancesFragment
 import com.example.fsudouest.blablafit.features.nearby.ui.NearByFragment

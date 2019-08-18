@@ -67,6 +67,7 @@
     <string name="password">Password</string>
     <string name="confirm_password">Confirm password</string>
     <string name="next_step">Next</string>
+    <string name="message_hint">Type a message</string>
 
     <plurals name="numberOfPlacesAvailable">
         <item quantity="one">%d place disponible</item>
