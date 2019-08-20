@@ -32,7 +32,7 @@
     <string name="no_messages_detail">Vos messages s\'afficheront ici lorsque des blablafiteurs vous contacteront.</string>
     <string name="email_sign_in_button">Sign in with Email</string>
     <string name="welcome">Bienvenue ! Vous allez bientôt pouvoir trouver des partenaires d\'entraînement et conquérir votre corps</string>
-    <string name="start">commencer</string>
+    <string name="login">Login</string>
 
     <string name="update_profile_dialog_title">Mise à jour du profil</string>
     <string name="update_photo_dialog_message">Voulez-vous mettre à jour votre photo de profil ?</string>
@@ -68,6 +68,8 @@
     <string name="confirm_password">Confirm password</string>
     <string name="next_step">Next</string>
     <string name="message_hint">Type a message</string>
+    <string name="not_member">Not a member ? </string>
+    <string name="register">Register</string>
 
     <plurals name="numberOfPlacesAvailable">
         <item quantity="one">%d place disponible</item>
