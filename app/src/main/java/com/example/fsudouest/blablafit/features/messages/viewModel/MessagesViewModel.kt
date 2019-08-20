@@ -17,7 +17,7 @@ class MessagesViewModel@Inject constructor(private val mDatabase: FirebaseFirest
 
     fun getUsers(){
         mDatabase.collection("conversations")
-            .get(Source.SERVER)
+            .get()
             .addOnCompleteListener { task ->
                 when(task.isSuccessful){
                     true -> {

@@ -79,7 +79,7 @@ class MessagesFragment : Fragment(), Injectable {
 
 }
 
-data class MessageViewItem( val conversation: Conversation): Item<ViewHolder>(){
+class MessageViewItem(val conversation: Conversation): Item<ViewHolder>(){
     override fun getLayout() = R.layout.latest_message_item
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
@@ -91,7 +91,7 @@ data class MessageViewItem( val conversation: Conversation): Item<ViewHolder>(){
             viewHolder.root.context.run {
                 val intent = Intent(this, ConversationActivity::class.java)
                 intent.putExtra("contactName", conversation.user.nomComplet)
-                // intent.putExtra("contactPhotoUrl", conversation.user.photoUrl)
+                intent.putExtra("convId", conversation.id)
                 startActivity(intent)
             }
         }
