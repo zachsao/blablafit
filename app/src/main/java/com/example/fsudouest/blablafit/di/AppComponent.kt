@@ -16,7 +16,8 @@ import javax.inject.Singleton
             MainActivityModule::class,
             DetailsSeanceActivityModule::class,
             SignUpActivityModule::class,
-            ConversationActivityModule::class]
+            ConversationActivityModule::class,
+            SplashActivityModule::class]
 )
 interface AppComponent {
     @Component.Builder

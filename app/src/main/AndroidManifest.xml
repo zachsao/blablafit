@@ -13,15 +13,18 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".features.login.SignUpActivity"></activity>
-        <activity
-            android:name=".MainActivity"
-            android:windowSoftInputMode="adjustPan">
+        <activity android:name=".features.splash.SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".features.login.SignUpActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan">
 
             <meta-data
                 android:name="android.app.searchable"
@@ -34,8 +37,9 @@
             android:name=".features.workoutDetails.DetailsSeanceActivity"
             android:label="Détails de la séance"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".features.messages.conversation.ConversationActivity"
-            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".features.messages.conversation.ConversationActivity"
+            android:parentActivityName=".MainActivity" />
 
         <meta-data
             android:name="preloaded_fonts"
