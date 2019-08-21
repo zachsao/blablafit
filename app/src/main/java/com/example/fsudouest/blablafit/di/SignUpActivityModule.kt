@@ -1,6 +1,6 @@
 package com.example.fsudouest.blablafit.di
 
-import com.example.fsudouest.blablafit.features.login.BasicInformationFragment
+import com.example.fsudouest.blablafit.features.login.SignInFormFragment
 import com.example.fsudouest.blablafit.features.login.SignUpActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -11,5 +11,5 @@ abstract class SignUpActivityModule {
     abstract fun contributeSignUpActivity(): SignUpActivity
 
     @ContributesAndroidInjector
-    abstract fun contributeBasicInformationFragment(): BasicInformationFragment
+    abstract fun contributeBasicInformationFragment(): SignInFormFragment
 }

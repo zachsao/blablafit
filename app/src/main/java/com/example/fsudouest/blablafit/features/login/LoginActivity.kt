@@ -28,8 +28,8 @@ class LoginActivity : AppCompatActivity() {
         val binding: ActivityLogin2Binding = DataBindingUtil.setContentView(this,R.layout.activity_login2)
 
         binding.startButton.setOnClickListener {
-            signIn()
-            // startActivity(Intent(this, SignUpActivity::class.java))
+            // signIn()
+            startActivity(Intent(this, SignUpActivity::class.java))
         }
     }
 
@@ -38,6 +38,7 @@ class LoginActivity : AppCompatActivity() {
         val providers = Arrays.asList<AuthUI.IdpConfig>(
                 AuthUI.IdpConfig.EmailBuilder().build(),
                 AuthUI.IdpConfig.GoogleBuilder().build())
+
         // Create and launch sign-in intent
         startActivityForResult(
                 AuthUI.getInstance()

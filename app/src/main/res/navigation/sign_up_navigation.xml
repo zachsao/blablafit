@@ -5,6 +5,6 @@
 
     <fragment
         android:id="@+id/basicInformationFragment"
-        android:name="com.example.fsudouest.blablafit.features.login.BasicInformationFragment"
+        android:name="com.example.fsudouest.blablafit.features.login.SignInFormFragment"
         android:label="Create an account" />
 </navigation>
