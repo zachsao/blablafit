@@ -58,7 +58,7 @@ class ConversationActivity : AppCompatActivity() {
             if (chatEdit.text.isNotEmpty()){
                 viewModel.sendMessage(convId, chatEdit.text.toString(), currentUser?.uid)
                 closeKeyboard()
-                chatEdit.setText("")
+                chatEdit.text.clear()
             }
 
         }
@@ -73,6 +73,7 @@ class ConversationActivity : AppCompatActivity() {
         adapter.clear()
         list.forEach { adapter.add(it) }
         chatRecyclerView.adapter = adapter
+        chatRecyclerView.scrollToPosition(adapter.itemCount.dec())
     }
 
     private fun initRecyclerView(){
