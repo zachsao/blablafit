@@ -23,23 +23,24 @@ class SignInViewModel @Inject constructor(private val firebaseAuth: FirebaseAuth
 
     fun submitForm(){
         stateLiveData.value?.data?.let {
-            checkForm(it)
-            firebaseAuth.signInWithEmailAndPassword(it.email, it.password)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success")
-                            stateLiveData.value = SignInState.Success(it.copy(errors = listOf()))
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.e(TAG, "createUserWithEmail:failure", task.exception)
-                            stateLiveData.value = SignInState.Failure(it.copy(errors = listOf()), task.exception?.message ?: "")
+            if (checkForm(it)){
+                firebaseAuth.signInWithEmailAndPassword(it.email, it.password)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "createUserWithEmail:success")
+                                stateLiveData.value = SignInState.Success(it.copy(errors = listOf()))
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.e(TAG, "createUserWithEmail:failure", task.exception)
+                                stateLiveData.value = SignInState.Failure(it.copy(errors = listOf()), task.exception?.message ?: "")
+                            }
                         }
-                    }
+            }
         }
     }
 
-    private fun checkForm(data: SignInData) {
+    private fun checkForm(data: SignInData): Boolean {
         val errors = mutableListOf<SignUpError>()
         if (data.email.isEmpty()) errors.add(SignUpError.EmailEmpty)
         else if (!Patterns.EMAIL_ADDRESS.matcher(data.email).matches()) {
@@ -51,6 +52,7 @@ class SignInViewModel @Inject constructor(private val firebaseAuth: FirebaseAuth
         if (errors.isNotEmpty()){
             stateLiveData.value = SignInState.ValidationError(data.copy(errors = errors))
         }
+        return (errors.isEmpty())
     }
 
     fun emailChanged(newText: String) {
