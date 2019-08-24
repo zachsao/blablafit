@@ -70,6 +70,10 @@
     <string name="message_hint">Type a message</string>
     <string name="not_member">Not a member ? </string>
     <string name="register">Register</string>
+    <string name="invalid_email">Please enter a valid email</string>
+    <string name="invalid_password">Password must be at least 8 characters</string>
+    <string name="mandatory_field">Champs obligatoire</string>
+    <string name="ok">Ok</string>
 
     <plurals name="numberOfPlacesAvailable">
         <item quantity="one">%d place disponible</item>
