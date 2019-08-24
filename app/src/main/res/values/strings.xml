@@ -74,6 +74,7 @@
     <string name="invalid_password">Password must be at least 8 characters</string>
     <string name="mandatory_field">Champs obligatoire</string>
     <string name="ok">Ok</string>
+    <string name="forgot_password">Forgot password ?</string>
 
     <plurals name="numberOfPlacesAvailable">
         <item quantity="one">%d place disponible</item>
