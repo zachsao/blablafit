@@ -1,7 +1,6 @@
-package com.example.fsudouest.blablafit.features.login
+package com.example.fsudouest.blablafit.features.login.signIn
 
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -14,17 +13,17 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.fsudouest.blablafit.MainActivity
 
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
-import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.fragment_signin_form.*
 import javax.inject.Inject
 
 
-class SignInFormFragment : Fragment(), Injectable {
+class SignInFragment : Fragment(), Injectable {
 
     @Inject
     lateinit var factory: ViewModelFactory
@@ -38,7 +37,7 @@ class SignInFormFragment : Fragment(), Injectable {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_signin_form, container, false)
 
         viewModel = ViewModelProviders.of(this, factory).get(SignInViewModel::class.java).apply {
-            stateLiveData().observe(this@SignInFormFragment, Observer {
+            stateLiveData().observe(this@SignInFragment, Observer {
                 render(it)
             })
         }
@@ -47,6 +46,9 @@ class SignInFormFragment : Fragment(), Injectable {
         addPasswordTextListener()
 
         binding.loginButton.setOnClickListener { viewModel.submitForm() }
+        binding.registerTextview.setOnClickListener {
+            findNavController(this).navigate(R.id.action_basicInformationFragment_to_registerFragment2)
+        }
 
         return binding.root
     }
@@ -103,13 +105,13 @@ class SignInFormFragment : Fragment(), Injectable {
         }
     }
 
-    private fun displayErrors(errors: List<SignUpError>) {
+    private fun displayErrors(errors: List<SignInError>) {
         errors.forEach {
             when (it) {
-                SignUpError.EmailEmpty -> emailInput.error = getString(R.string.mandatory_field)
-                SignUpError.PasswordEmpty -> passwordInput.error = getString(R.string.mandatory_field)
-                is SignUpError.InvalidEmail -> emailInput.error = getString(it.stringId)
-                SignUpError.InvalidPassword -> passwordInput.error = getString(R.string.invalid_password)
+                SignInError.EmailEmpty -> emailInput.error = getString(R.string.mandatory_field)
+                SignInError.PasswordEmpty -> passwordInput.error = getString(R.string.mandatory_field)
+                is SignInError.InvalidEmail -> emailInput.error = getString(it.stringId)
+                SignInError.InvalidPassword -> passwordInput.error = getString(R.string.invalid_password)
             }
         }
     }

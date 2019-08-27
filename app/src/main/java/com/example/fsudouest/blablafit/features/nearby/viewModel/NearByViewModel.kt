@@ -29,7 +29,7 @@ class NearByViewModel @Inject constructor(private val mDatabase: FirebaseFiresto
                         fullList.addAll(results)
                         workoutListLiveData.value = results
                     } else {
-                        Log.e("NearByViewModel", "Error getting documents: ", task.exception)
+                        Log.e("NearByViewModel", "ValidationError getting documents: ", task.exception)
                     }
                 }
     }

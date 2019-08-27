@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit.features.login
+package com.example.fsudouest.blablafit.features.login.signIn
 
 sealed class SignInState {
     abstract val data: SignInData
@@ -13,5 +13,5 @@ sealed class SignInState {
 data class SignInData(
         val email: String = "",
         val password: String = "",
-        val errors: List<SignUpError> = emptyList()
+        val errors: List<SignInError> = emptyList()
 )

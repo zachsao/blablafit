@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import com.example.fsudouest.blablafit.MainActivity
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.ActivityLogin2Binding
@@ -30,6 +31,9 @@ class LoginActivity : AppCompatActivity() {
         binding.startButton.setOnClickListener {
             // signIn()
             startActivity(Intent(this, SignUpActivity::class.java))
+        }
+        binding.registerButton.setOnClickListener {
+            startActivity(Intent(this, SignUpActivity::class.java).putExtra("destination", "register"))
         }
     }
 
@@ -67,7 +71,7 @@ class LoginActivity : AppCompatActivity() {
                 if (response != null) {
                     val builder = AlertDialog.Builder(this)
 
-                    builder.setTitle("Error " + response.error!!.errorCode)
+                    builder.setTitle("ValidationError " + response.error!!.errorCode)
                     builder.setMessage(response.error!!.toString())
                     // Add the button
                     builder.setPositiveButton("OK") { dialog, id ->

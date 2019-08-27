@@ -1,11 +1,15 @@
 <resources>
-    <string name="app_name">Blabla Fit</string>
+    <plurals name="numberOfPlacesAvailable">
+        <item quantity="one">%d place disponible</item>
+        <item quantity="other">%d places disponibles - </item>
+    </plurals>
 
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="app_name">Blabla Fit</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
+    <string name="title_activity_login">Sign in</string>
     <string name="no_internet_connection">Aucune connexion internet</string>
     <string name="prompt_email">john.doe@gmail.com</string>
     <string name="prompt_password">6 caractères minimum</string>
@@ -18,14 +22,14 @@
     <string name="error_incorrect_credentials">L\'identifiant ou le mot de passe est incorrect</string>
     <string name="error_field_required">Ce champ est requis</string>
     <string name="server_error">Une erreur s\'est produite sur le serveur. </string>
+
+
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
 
-
-    <string name="firebase_web_host" translatable="false">blablafit-bf234.firebaseapp.com</string>
-
     <!-- was "Signing up..." -->
+    <string name="firebase_web_host" translatable="false">blablafit-bf234.firebaseapp.com</string>
     <string name="fui_progress_dialog_signing_up">Creating your shiny new account...</string>
     <string name="no_seance_available">Aucune séance organisée à cette date. Trouvez en une à proximité ou  créez la votre.</string>
     <string name="no_messages">Aucun messages</string>
@@ -33,8 +37,8 @@
     <string name="email_sign_in_button">Sign in with Email</string>
     <string name="welcome">Bienvenue ! Vous allez bientôt pouvoir trouver des partenaires d\'entraînement et conquérir votre corps</string>
     <string name="login">Login</string>
-    <string name="sign_in">Sign in</string>
 
+    <string name="sign_in">Sign in</string>
     <string name="update_profile_dialog_title">Mise à jour du profil</string>
     <string name="update_photo_dialog_message">Voulez-vous mettre à jour votre photo de profil ?</string>
     <string name="cancel">Annuler</string>
@@ -70,16 +74,16 @@
     <string name="next_step">Next</string>
     <string name="message_hint">Type a message</string>
     <string name="not_member">Not a member ? </string>
+    <string name="already_member">Already a member ? </string>
     <string name="register">Register</string>
     <string name="invalid_email">Please enter a valid email</string>
     <string name="invalid_password">Password must be at least 8 characters</string>
-    <string name="mandatory_field">Champs obligatoire</string>
+    <string name="wrong_password">Passwords don\'t match</string>
+    <string name="mandatory_field">Mandatory</string>
     <string name="ok">Ok</string>
-    <string name="forgot_password">Forgot password ?</string>
+    <string name="incomplete_fullname">Please enter your first and last name</string>
 
-    <plurals name="numberOfPlacesAvailable">
-        <item quantity="one">%d place disponible</item>
-        <item quantity="other">%d places disponibles - </item>
-    </plurals>
+    <string name="forgot_password">Forgot password ?</string>
+    <string name="full_name">FirstName LastName</string>
 
 </resources>

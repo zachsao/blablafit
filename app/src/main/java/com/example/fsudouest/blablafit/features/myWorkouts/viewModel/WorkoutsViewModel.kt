@@ -42,6 +42,6 @@ class WorkoutsViewModel @Inject constructor(private val mDatabase: FirebaseFires
         ref.document(workoutId)
                 .delete()
                 .addOnSuccessListener { Log.d("Seances Fragment", "DocumentSnapshot successfully deleted!") }
-                .addOnFailureListener { e -> Log.e("Seances Fragment", "Error deleting document", e) }
+                .addOnFailureListener { e -> Log.e("Seances Fragment", "ValidationError deleting document", e) }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit.features.login
+package com.example.fsudouest.blablafit.features.login.signIn
 
 import android.util.Log
 import android.util.Patterns
@@ -41,13 +41,13 @@ class SignInViewModel @Inject constructor(private val firebaseAuth: FirebaseAuth
     }
 
     private fun checkForm(data: SignInData): Boolean {
-        val errors = mutableListOf<SignUpError>()
-        if (data.email.isEmpty()) errors.add(SignUpError.EmailEmpty)
+        val errors = mutableListOf<SignInError>()
+        if (data.email.isEmpty()) errors.add(SignInError.EmailEmpty)
         else if (!Patterns.EMAIL_ADDRESS.matcher(data.email).matches()) {
-            errors.add(SignUpError.InvalidEmail(R.string.invalid_email))
+            errors.add(SignInError.InvalidEmail(R.string.invalid_email))
         }
-        if (data.password.isEmpty()) errors.add(SignUpError.PasswordEmpty)
-        else if (data.password.length < 8) errors.add(SignUpError.InvalidPassword)
+        if (data.password.isEmpty()) errors.add(SignInError.PasswordEmpty)
+        else if (data.password.length < 8) errors.add(SignInError.InvalidPassword)
 
         if (errors.isNotEmpty()){
             stateLiveData.value = SignInState.ValidationError(data.copy(errors = errors))
