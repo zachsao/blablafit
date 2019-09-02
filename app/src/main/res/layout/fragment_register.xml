@@ -9,7 +9,7 @@
         android:background="@drawable/signin_background">
 
         <LinearLayout
-            android:id="@+id/signInForm"
+            android:id="@+id/registerForm"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -35,8 +35,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/round_corner_edit_white"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPassword"
+                    android:imeOptions="actionNext"
                     android:maxLines="1" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -75,7 +74,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/round_corner_edit_white"
-                    android:imeOptions="actionDone"
+                    android:imeOptions="actionNext"
                     android:inputType="textPassword"
                     android:maxLines="1" />
 
@@ -155,8 +154,8 @@
             android:fontFamily="@font/roboto_condensed_bold"
             android:text="@string/forgot_password"
             android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="@+id/signInForm"
-            app:layout_constraintTop_toBottomOf="@+id/signInForm"
+            app:layout_constraintEnd_toEndOf="@+id/registerForm"
+            app:layout_constraintTop_toBottomOf="@+id/registerForm"
             tools:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -173,7 +172,7 @@
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/signInForm" />
+            app:layout_constraintTop_toBottomOf="@+id/registerForm" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

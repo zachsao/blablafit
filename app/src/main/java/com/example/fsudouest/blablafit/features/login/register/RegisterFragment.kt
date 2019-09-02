@@ -1,6 +1,7 @@
 package com.example.fsudouest.blablafit.features.login.register
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.example.fsudouest.blablafit.MainActivity
 
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentRegisterBinding
@@ -37,6 +39,9 @@ class RegisterFragment : Fragment(), Injectable {
         viewModel = ViewModelProviders.of(this, factory).get(RegisterViewModel::class.java).apply {
             stateLiveData().observe(this@RegisterFragment, Observer { state ->
                 render(state)
+            })
+            registerStatusLiveData().observe(this@RegisterFragment, Observer { isRegistered ->
+                if (isRegistered) activity?.startActivity(Intent(requireContext(), MainActivity::class.java))
             })
         }
 

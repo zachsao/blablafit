@@ -1,29 +1,64 @@
 package com.example.fsudouest.blablafit.features.login.register
 
+import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fsudouest.blablafit.R
+import com.example.fsudouest.blablafit.model.User
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import javax.inject.Inject
 
-class RegisterViewModel @Inject constructor(mDatabase: FirebaseFirestore): ViewModel() {
+
+class RegisterViewModel @Inject constructor(private val mDatabase: FirebaseFirestore, private val auth: FirebaseAuth): ViewModel() {
 
     private val stateLiveData = MutableLiveData<RegisterState>()
+    private val registerSuccessLiveData = MutableLiveData<Boolean>()
 
     init {
         stateLiveData.value = RegisterState.Idle(RegisterData())
     }
 
     fun stateLiveData(): LiveData<RegisterState> = stateLiveData
+    fun registerStatusLiveData(): LiveData<Boolean> = registerSuccessLiveData
 
     fun submitForm(){
-        if (checkForm()) signUp()
+        if (checkForm()) signUpUser()
     }
 
-    private fun signUp() {
-        //TODO()
+    private fun signUpUser() {
+        val data = stateLiveData.value?.data ?: RegisterData()
+        val user = data.let { User(it.fullName, it.email) }
+        auth.createUserWithEmailAndPassword(data.email, data.password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        val currentUser = auth.currentUser
+                        Log.d("RegisterViewModel", "successfully created user with id: ${currentUser?.uid}")
+                        if (currentUser != null) saveUserToFirestore(currentUser.uid, user)
+                        // updateUI(user)
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w("RegisterViewModel", "createUserWithEmail:failure", task.exception)
+                        // updateUI(null)
+                        return@addOnCompleteListener
+                    }
+                }
+    }
+
+    private fun saveUserToFirestore(userId: String, user: User) {
+        mDatabase.collection("users")
+                .document(userId)
+                .set(user)
+                .addOnSuccessListener {
+                    registerSuccessLiveData.value = true
+                    Log.d("RegisterViewModel", "saved document successfully")
+                }
+                .addOnFailureListener {
+                    Log.d("RegisterViewModel", "failed to saved document : $it")
+                }
     }
 
     private fun checkForm(): Boolean{
