@@ -20,6 +20,10 @@ import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.fragment_register.*
+import org.jetbrains.anko.clearTask
+import org.jetbrains.anko.clearTop
+import org.jetbrains.anko.support.v4.intentFor
+import org.jetbrains.anko.support.v4.startActivity
 import javax.inject.Inject
 
 class RegisterFragment : Fragment(), Injectable {
@@ -41,7 +45,9 @@ class RegisterFragment : Fragment(), Injectable {
                 render(state)
             })
             registerStatusLiveData().observe(this@RegisterFragment, Observer { isRegistered ->
-                if (isRegistered) activity?.startActivity(Intent(requireContext(), MainActivity::class.java))
+                if (isRegistered) {
+                    startActivity(intentFor<MainActivity>().clearTask().clearTop())
+                }
             })
         }
 

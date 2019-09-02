@@ -8,15 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.model.Chat
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
-import com.google.firebase.auth.FirebaseAuth
-import com.xwray.groupie.Group
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.Item
-import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.Section
+import com.xwray.groupie.kotlinandroidextensions.Item
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_conversation.*
 import kotlinx.android.synthetic.main.chat_from_item.view.*
@@ -29,38 +27,36 @@ class ConversationActivity : AppCompatActivity() {
     lateinit var factory: ViewModelFactory
 
     private lateinit var viewModel: ConversationViewModel
-
-    private val adapter = GroupAdapter<ViewHolder>()
+    private var shouldInitRecyclerView = true
+    private lateinit var messagesSection: Section
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_conversation)
 
-        val convId = intent.getStringExtra("convId")
-        val currentUser = FirebaseAuth.getInstance().currentUser
-
         supportActionBar.apply {
             title = intent.getStringExtra("contactName")
         }
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-
-        initRecyclerView()
 
         viewModel = ViewModelProviders.of(this, factory).get(ConversationViewModel::class.java).apply {
             chatsLiveData().observe(this@ConversationActivity, Observer {
                 submitList(it)
             })
         }
-        viewModel.getConversation(convId, currentUser?.uid ?: "")
+        val otherUserId = intent.getStringExtra("userId")
+        viewModel.getOrCreateConversation(otherUserId) { conversationId ->
+            viewModel.listenToMessages(conversationId)
 
-        sendMessageButton.setOnClickListener{
-            if (chatEdit.text.isNotEmpty()){
-                viewModel.sendMessage(convId, chatEdit.text.toString(), currentUser?.uid)
-                closeKeyboard()
-                chatEdit.text.clear()
+            sendMessageButton.setOnClickListener{
+                if (chatEdit.text.isNotEmpty()){
+                    viewModel.sendMessage(conversationId, chatEdit.text.toString())
+                    closeKeyboard()
+                    chatEdit.text.clear()
+                }
+
             }
-
         }
     }
 
@@ -69,19 +65,22 @@ class ConversationActivity : AppCompatActivity() {
         imm.hideSoftInputFromWindow(currentFocus.windowToken, 0)
     }
 
-    private fun submitList(list: List<Group>){
-        adapter.clear()
-        list.forEach { adapter.add(it) }
-        chatRecyclerView.adapter = adapter
-        chatRecyclerView.scrollToPosition(adapter.itemCount.dec())
+    private fun submitList(list: List<Item>){
+        fun init(){
+            chatRecyclerView.apply {
+                layoutManager = LinearLayoutManager(this@ConversationActivity)
+                adapter = GroupAdapter<ViewHolder>().apply {
+                    messagesSection = Section(list)
+                    add(messagesSection)
+                }
+            }
+            shouldInitRecyclerView = false
+        }
+
+        if (shouldInitRecyclerView) init() else messagesSection.update(list)
+        chatRecyclerView.scrollToPosition(chatRecyclerView.adapter?.itemCount?.dec() ?: 0)
     }
 
-    private fun initRecyclerView(){
-        chatRecyclerView.apply {
-            layoutManager = LinearLayoutManager(this@ConversationActivity)
-            this.adapter = adapter
-        }
-    }
 
     override fun onSupportNavigateUp(): Boolean {
         finish()
@@ -89,7 +88,7 @@ class ConversationActivity : AppCompatActivity() {
     }
 }
 
-class ChatFromItem(val chat: Chat): Item<ViewHolder>(), Group{
+class ChatFromItem(val chat: Chat): Item(){
     override fun getLayout(): Int {
         return R.layout.chat_from_item
     }
@@ -98,15 +97,32 @@ class ChatFromItem(val chat: Chat): Item<ViewHolder>(), Group{
         viewHolder.itemView.chat_from_content_textView.text = chat.message
     }
 
+    override fun isSameAs(other: com.xwray.groupie.Item<*>?): Boolean {
+        if (other !is ChatFromItem || other.chat.message != chat.message) return false
+        return true
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return isSameAs(other as? ChatFromItem)
+    }
 }
 
-class ChatToItem(val chat: Chat): Item<ViewHolder>(), Group{
+class ChatToItem(val chat: Chat): Item(){
     override fun getLayout(): Int {
         return R.layout.chat_to_item
     }
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.chat_to_content_textView.text = chat.message
+    }
+
+    override fun isSameAs(other: com.xwray.groupie.Item<*>?): Boolean {
+        if (other !is ChatToItem || other.chat.message != chat.message) return false
+        return true
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return isSameAs(other as? ChatToItem)
     }
 
 }

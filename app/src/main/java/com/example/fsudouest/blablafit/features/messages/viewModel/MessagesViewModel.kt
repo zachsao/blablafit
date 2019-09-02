@@ -3,32 +3,35 @@ package com.example.fsudouest.blablafit.features.messages.viewModel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.fsudouest.blablafit.features.messages.ui.MessageViewItem
+import com.example.fsudouest.blablafit.features.messages.ui.UserViewItem
 import com.example.fsudouest.blablafit.model.Conversation
+import com.example.fsudouest.blablafit.model.User
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Source
 import javax.inject.Inject
 
-class MessagesViewModel@Inject constructor(private val mDatabase: FirebaseFirestore): ViewModel() {
+class MessagesViewModel@Inject constructor(private val mDatabase: FirebaseFirestore, auth: FirebaseAuth): ViewModel() {
 
-    private val usersLiveData = MutableLiveData<List<MessageViewItem>>()
-
+    private val usersLiveData = MutableLiveData<List<UserViewItem>>()
+    private val currentUserId = auth.currentUser?.uid
     fun usersLiveData() = usersLiveData
 
     fun getUsers(){
-        mDatabase.collection("conversations")
+        mDatabase.collection("users")
             .get()
             .addOnCompleteListener { task ->
                 when(task.isSuccessful){
                     true -> {
                         Log.d("Messages", "task is successful")
                         task.result?.let { querySnapshot ->
-                            val messages = mutableListOf<MessageViewItem>()
+                            val users = mutableListOf<UserViewItem>()
                             querySnapshot.documents.forEach { documentSnapshot ->
-                                val convo = documentSnapshot.toObject(Conversation::class.java)
-                                convo?.let { messages.add(MessageViewItem(it)) }
+                                val user = documentSnapshot.toObject(User::class.java)
+                                user?.let {
+                                    if (documentSnapshot.id != currentUserId) users.add(UserViewItem(it, documentSnapshot.id))
+                                }
                             }
-                            usersLiveData.value = messages
+                            usersLiveData.value = users
                         }
                     }
                     false -> Log.e("Messages", task.exception.toString())

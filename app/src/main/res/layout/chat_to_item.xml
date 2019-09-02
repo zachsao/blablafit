@@ -11,11 +11,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/round_corner"
+        android:background="@drawable/round_corner_white"
         android:maxWidth="240dp"
         android:padding="16dp"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Hello goog human !" />
+        tools:text="Hello good human !" />
 </androidx.constraintlayout.widget.ConstraintLayout>
