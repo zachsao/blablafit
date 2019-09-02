@@ -17,11 +17,14 @@ import com.example.fsudouest.blablafit.MainActivity
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentRegisterBinding
 import com.example.fsudouest.blablafit.di.Injectable
+import com.example.fsudouest.blablafit.service.MyFirebaseMessagingService
+import com.example.fsudouest.blablafit.utils.FirestoreUtil
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.fragment_register.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.clearTop
+import org.jetbrains.anko.newTask
 import org.jetbrains.anko.support.v4.intentFor
 import org.jetbrains.anko.support.v4.startActivity
 import javax.inject.Inject
@@ -46,7 +49,10 @@ class RegisterFragment : Fragment(), Injectable {
             })
             registerStatusLiveData().observe(this@RegisterFragment, Observer { isRegistered ->
                 if (isRegistered) {
-                    startActivity(intentFor<MainActivity>().clearTask().clearTop())
+                    startActivity(intentFor<MainActivity>().newTask().clearTask())
+                    FirestoreUtil.getRegistrationToken { newRegistrationToken ->
+                        MyFirebaseMessagingService.addTokenToFirestore(newRegistrationToken)
+                    }
                 }
             })
         }
