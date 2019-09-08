@@ -65,8 +65,8 @@ class ConversationViewModel @Inject constructor(private val mDatabase: FirebaseF
 
     }
 
-    fun sendMessage(convId: String, message: String) {
-        val chat = Chat(currentUserId, message, System.currentTimeMillis())
+    fun sendMessage(convId: String, message: String, recipientId: String, senderName: String) {
+        val chat = Chat(currentUserId, message, recipientId, senderName, System.currentTimeMillis())
           mDatabase.collection("conversations")
                   .document(convId)
                   .collection("messages")

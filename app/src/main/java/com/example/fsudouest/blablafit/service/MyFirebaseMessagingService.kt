@@ -19,18 +19,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService(){
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         if (remoteMessage.notification != null){
             // TODO : show notification
-            Log.d("FCM", "message received")
+            Log.d("FCM", "${remoteMessage.data}")
         }
     }
 
     companion object {
         fun addTokenToFirestore(newRegistrationToken: String?){
             newRegistrationToken?.let {
-                FirestoreUtil.getFCMRegistrationTokens { tokens ->
-                    if (tokens.contains(newRegistrationToken)) return@getFCMRegistrationTokens
-                    tokens.add(newRegistrationToken)
-                    FirestoreUtil.setFCMRegistrationTokens(tokens)
-                }
+                FirestoreUtil.setFCMRegistrationToken(it)
             } ?: throw NullPointerException("FCM token is null")
         }
     }

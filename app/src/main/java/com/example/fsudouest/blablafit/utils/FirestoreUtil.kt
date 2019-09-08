@@ -28,14 +28,21 @@ object FirestoreUtil {
                 }
     }
 
-    fun getFCMRegistrationTokens(onComplete: (MutableList<String>) -> Unit){
+    fun getFCMRegistrationToken(onComplete: (String) -> Unit){
         currentUserDocRef.get().addOnSuccessListener {
             val user = it.toObject(User::class.java) ?: User()
-            onComplete(user.registrationTokens)
+            onComplete(user.registrationToken)
         }
     }
 
-    fun setFCMRegistrationTokens(registrationTokens: MutableList<String>){
-        currentUserDocRef.update(mapOf("registrationTokens" to registrationTokens))
+    fun setFCMRegistrationToken(registrationToken: String){
+        currentUserDocRef.update(mapOf("registrationToken" to registrationToken))
+    }
+
+    fun getCurrentUser(onComplete: (User) -> Unit){
+        currentUserDocRef.get().addOnSuccessListener {
+            val user = it.toObject(User::class.java) ?: User()
+            onComplete(user)
+        }
     }
 }

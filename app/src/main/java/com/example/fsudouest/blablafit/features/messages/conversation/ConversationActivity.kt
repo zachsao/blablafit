@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.model.Chat
+import com.example.fsudouest.blablafit.model.User
+import com.example.fsudouest.blablafit.utils.FirestoreUtil
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
@@ -29,6 +31,7 @@ class ConversationActivity : AppCompatActivity() {
     private lateinit var viewModel: ConversationViewModel
     private var shouldInitRecyclerView = true
     private lateinit var messagesSection: Section
+    private lateinit var currentUser: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -39,6 +42,10 @@ class ConversationActivity : AppCompatActivity() {
             title = intent.getStringExtra("contactName")
         }
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        FirestoreUtil.getCurrentUser {
+            currentUser = it
+        }
 
         viewModel = ViewModelProviders.of(this, factory).get(ConversationViewModel::class.java).apply {
             chatsLiveData().observe(this@ConversationActivity, Observer {
@@ -51,7 +58,7 @@ class ConversationActivity : AppCompatActivity() {
 
             sendMessageButton.setOnClickListener{
                 if (chatEdit.text.isNotEmpty()){
-                    viewModel.sendMessage(conversationId, chatEdit.text.toString())
+                    viewModel.sendMessage(conversationId, chatEdit.text.toString(), otherUserId, currentUser.nomComplet)
                     closeKeyboard()
                     chatEdit.text.clear()
                 }

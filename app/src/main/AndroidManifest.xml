@@ -39,7 +39,13 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".features.messages.conversation.ConversationActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity" >
+
+            <intent-filter>
+                <action android:name="ConversationActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
 
         <service
             android:name=".service.MyFirebaseMessagingService"
