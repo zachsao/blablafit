@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit.features.profile.ui
+package com.example.fsudouest.blablafit.features.profile
 
 import android.net.Uri
 import android.util.Log
@@ -8,11 +8,13 @@ import com.example.fsudouest.blablafit.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor(firebaseStorage: FirebaseStorage,
-                                           firebaseAuth: FirebaseAuth) : ViewModel() {
+                                           firebaseAuth: FirebaseAuth,
+                                           val firestore: FirebaseFirestore) : ViewModel() {
 
     private var profilePhotosStorageReference = firebaseStorage.reference.child("profile_pictures")
     private var firebaseUser = firebaseAuth.currentUser
@@ -20,15 +22,22 @@ class ProfileViewModel @Inject constructor(firebaseStorage: FirebaseStorage,
     private val firebaseUserLiveData = MutableLiveData<FirebaseUser>()
 
     init {
-        firebaseUser?.displayName?.let {
-            profileLiveData.value = User(it)
-        }
-        firebaseUserLiveData.value = firebaseUser
+        getUser()
     }
 
     fun user() = profileLiveData
 
-    fun firebaseUser() = firebaseUserLiveData
+    private fun getUser(){
+        firestore.collection("users").document(firebaseUser?.uid ?: "")
+                .get()
+                .addOnSuccessListener {
+                    val user = it.toObject(User::class.java)
+                    profileLiveData.value = user
+                }
+                .addOnFailureListener {
+                    Log.e("ProfileViewModel", it.message)
+                }
+    }
 
     fun uploadProfilePictureToStorage(selectedImageUri: Uri){
         val photoRef = profilePhotosStorageReference.child(selectedImageUri.lastPathSegment!!)
@@ -36,7 +45,6 @@ class ProfileViewModel @Inject constructor(firebaseStorage: FirebaseStorage,
             if (!task.isSuccessful) {
                 throw task.exception!!.fillInStackTrace()
             }
-            // Continue with the task to get the download URL
             photoRef.downloadUrl
         }.addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -44,11 +52,20 @@ class ProfileViewModel @Inject constructor(firebaseStorage: FirebaseStorage,
                 val photoUpdate = UserProfileChangeRequest.Builder()
                         .setPhotoUri(downloadUri)
                         .build()
+                updateUsersPhotoUrl(downloadUri)
                 firebaseUser?.updateProfile(photoUpdate)
             } else {
                 Log.e("ProfileViewModel", task.exception?.message)
             }
         }
+    }
+
+    private fun updateUsersPhotoUrl(uri: Uri?) {
+        firestore.collection("users").document(firebaseUser?.uid ?: "")
+                .update("photoUrl", uri.toString())
+                .addOnSuccessListener {
+                    Log.d("ProfileViewModel", "successfully updated photoUrl")
+                }
     }
 
 }

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/myProfileFragment"
-        android:name="com.example.fsudouest.blablafit.features.profile.ui.MyProfileFragment"
+        android:name="com.example.fsudouest.blablafit.features.profile.MyProfileFragment"
         android:label="Mon profil"
         tools:layout="@layout/fragment_my_profile" />
     <fragment

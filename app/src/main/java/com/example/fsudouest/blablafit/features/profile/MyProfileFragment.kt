@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit.features.profile.ui
+package com.example.fsudouest.blablafit.features.profile
 
 
 import android.app.Activity.RESULT_OK
@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -17,16 +16,10 @@ import com.bumptech.glide.Glide
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentMyProfileBinding
 import com.example.fsudouest.blablafit.di.Injectable
-import com.example.fsudouest.blablafit.model.User
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.firebase.ui.auth.AuthUI
-import com.google.firebase.auth.UserProfileChangeRequest
 import javax.inject.Inject
 
-
-/**
- * A simple [Fragment] subclass.
- */
 class MyProfileFragment : Fragment(), Injectable {
 
     private lateinit var profile_pic: ImageView
@@ -46,12 +39,9 @@ class MyProfileFragment : Fragment(), Injectable {
 
         viewModel.user().observe(this, Observer {
             binding.user = it
-        })
-
-        viewModel.firebaseUser().observe(this, Observer {
-            it.photoUrl?.let {uri ->
+            if (it.photoUrl.isNotEmpty()) {
                 Glide.with(activity!!)
-                        .load(uri.toString())
+                        .load(it.photoUrl)
                         .into(profile_pic)
             }
         })
@@ -59,7 +49,6 @@ class MyProfileFragment : Fragment(), Injectable {
         profile_pic.setOnClickListener { createPhotoUpdateDialog() }
         return binding.root
     }
-
 
     private fun chooseImageFromGallery() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
@@ -70,17 +59,12 @@ class MyProfileFragment : Fragment(), Injectable {
 
     private fun createPhotoUpdateDialog() {
         val builder = AlertDialog.Builder(activity!!)
-
         builder.setTitle(getString(R.string.update_profile_dialog_title))
         builder.setMessage(getString(R.string.update_photo_dialog_message))
-        // Add the button
         builder.setPositiveButton("OK") { dialog, id ->
-            // User clicked OK button
             chooseImageFromGallery()
         }
-        builder.setNegativeButton(getString(R.string.cancel)) { dialogInterface, i ->
-            //
-        }
+        builder.setNegativeButton(getString(R.string.cancel)) { dialogInterface, i -> }
         // Create the AlertDialog
         val dialog = builder.create()
         dialog.show()
@@ -129,7 +113,6 @@ class MyProfileFragment : Fragment(), Injectable {
     }
 
     companion object {
-
         private val RC_PHOTO_PICKER = 2
     }
 

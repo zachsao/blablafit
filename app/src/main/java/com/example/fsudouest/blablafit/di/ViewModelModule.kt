@@ -8,7 +8,7 @@ import com.example.fsudouest.blablafit.features.messages.conversation.Conversati
 import com.example.fsudouest.blablafit.features.messages.viewModel.MessagesViewModel
 import com.example.fsudouest.blablafit.features.myWorkouts.viewModel.WorkoutsViewModel
 import com.example.fsudouest.blablafit.features.nearby.viewModel.NearByViewModel
-import com.example.fsudouest.blablafit.features.profile.ui.ProfileViewModel
+import com.example.fsudouest.blablafit.features.profile.ProfileViewModel
 import com.example.fsudouest.blablafit.features.workoutDetails.DetailsViewModel
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import dagger.Binds
