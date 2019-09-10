@@ -3,12 +3,16 @@ package com.example.fsudouest.blablafit.features.messages.conversation
 
 import android.app.Activity
 import android.os.Bundle
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fsudouest.blablafit.R
+import com.example.fsudouest.blablafit.databinding.ActivityConversationBinding
 import com.example.fsudouest.blablafit.model.Chat
 import com.example.fsudouest.blablafit.model.User
 import com.example.fsudouest.blablafit.utils.FirestoreUtil
@@ -21,6 +25,7 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_conversation.*
 import kotlinx.android.synthetic.main.chat_from_item.view.*
 import kotlinx.android.synthetic.main.chat_to_item.view.*
+import java.text.SimpleDateFormat
 import javax.inject.Inject
 
 class ConversationActivity : AppCompatActivity() {
@@ -96,12 +101,22 @@ class ConversationActivity : AppCompatActivity() {
 }
 
 class ChatFromItem(val chat: Chat): Item(){
+
+    fun formatTimeStamp(timestamp: Long): String{
+        val format = SimpleDateFormat("d MMM. HH:mm")
+        return format.format(timestamp)
+    }
+
     override fun getLayout(): Int {
         return R.layout.chat_from_item
     }
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.chat_from_content_textView.text = chat.message
+        viewHolder.itemView.timestamp_from.text = formatTimeStamp(chat.timestamp)
+        viewHolder.itemView.chat_from_content_textView.setOnClickListener {
+            viewHolder.itemView.timestamp_from.visibility = if (viewHolder.itemView.timestamp_from.isVisible) View.GONE else View.VISIBLE
+        }
     }
 
     override fun isSameAs(other: com.xwray.groupie.Item<*>?): Boolean {
@@ -115,12 +130,21 @@ class ChatFromItem(val chat: Chat): Item(){
 }
 
 class ChatToItem(val chat: Chat): Item(){
+    fun formatTimeStamp(timestamp: Long): String{
+        val format = SimpleDateFormat("d MMM. HH:mm")
+        return format.format(timestamp)
+    }
+
     override fun getLayout(): Int {
         return R.layout.chat_to_item
     }
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.chat_to_content_textView.text = chat.message
+        viewHolder.itemView.timestamp_to.text = formatTimeStamp(chat.timestamp)
+        viewHolder.itemView.chat_to_content_textView.setOnClickListener {
+            viewHolder.itemView.timestamp_to.visibility = if (viewHolder.itemView.timestamp_to.isVisible) View.GONE else View.VISIBLE
+        }
     }
 
     override fun isSameAs(other: com.xwray.groupie.Item<*>?): Boolean {
