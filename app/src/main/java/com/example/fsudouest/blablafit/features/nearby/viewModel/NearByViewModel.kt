@@ -19,10 +19,7 @@ class NearByViewModel @Inject constructor(private val mDatabase: FirebaseFiresto
 
     fun updateWorkouts() {
         val ref = mDatabase.collection("workouts")
-        // Source can be CACHE, SERVER, or DEFAULT.
-        val source = Source.SERVER
-        // Get the document, forcing the SDK to use the offline cache
-        ref.get(source)
+        ref.get()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val results = task.result!!.documents.map { it.toObject(Seance::class.java) } as ArrayList

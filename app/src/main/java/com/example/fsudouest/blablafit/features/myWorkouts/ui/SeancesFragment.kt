@@ -36,10 +36,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-
-/**
- * A simple [Fragment] subclas.
- */
 class SeancesFragment : Fragment(), Injectable, NearByAdapter.ClickListener {
 
     private lateinit var mAdapter: SeanceAdapter
@@ -76,7 +72,7 @@ class SeancesFragment : Fragment(), Injectable, NearByAdapter.ClickListener {
         viewModel = ViewModelProviders.of(this, factory).get(WorkoutsViewModel::class.java).apply {
             workoutsLiveData().observe(this@SeancesFragment, androidx.lifecycle.Observer {
                 Log.i("SeanceFragment", "Observing workouts")
-                mAdapter = SeanceAdapter(activity!!, it, this@SeancesFragment)
+                mAdapter = SeanceAdapter(it, this@SeancesFragment)
                 displayList(it)
                 seances = it
             })
@@ -93,7 +89,7 @@ class SeancesFragment : Fragment(), Injectable, NearByAdapter.ClickListener {
         var debutJournee = c.time
         c.set(year, currentMonth, day, 23, 59)
         var finDeJournee = c.time
-        viewModel.getWorkouts(debutJournee, finDeJournee, user?.email ?: "")
+        viewModel.getWorkouts(debutJournee, finDeJournee)
 
         val dateFormat = SimpleDateFormat("EEEE dd MMM", Locale.FRENCH)
 
@@ -106,7 +102,7 @@ class SeancesFragment : Fragment(), Injectable, NearByAdapter.ClickListener {
             c.set(year, month, day_of_month, 23, 59)
             finDeJournee = c.time
             binding.dateSelectionButton.text = dateFormat.format(c.time)
-            viewModel.getWorkouts(debutJournee, finDeJournee, user?.email ?: "")
+            viewModel.getWorkouts(debutJournee, finDeJournee)
         }, year, currentMonth, day)
 
         // If there is a network connection, fetch data

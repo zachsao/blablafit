@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat
 import java.util.ArrayList
 
 
-class SeanceAdapter(private var mContext: Context, private var mData: ArrayList<Seance?>, val clickListener: NearByAdapter.ClickListener) : RecyclerView.Adapter<SeanceAdapter.SeanceViewHolder>() {
+class SeanceAdapter(private var mData: ArrayList<Seance?>, val clickListener: NearByAdapter.ClickListener) : RecyclerView.Adapter<SeanceAdapter.SeanceViewHolder>() {
 
     lateinit var context: Context
 
@@ -70,9 +70,8 @@ class SeanceAdapter(private var mContext: Context, private var mData: ArrayList<
 
             binding.setVariable(BR.seance,seance)
             binding.executePendingBindings()
-
             Glide.with(context).load(R.drawable.weights).into(binding.itemImage)
-            val authorProfilePicture = seance.auteurPhotoUrl
+            val authorProfilePicture = ""
             if (authorProfilePicture.isNotEmpty()) {
                 Glide.with(context).load(authorProfilePicture).placeholder(R.drawable.userphoto).into(binding.authorProfilePicture)
             }

@@ -85,21 +85,20 @@ class SearchLocationFragment : Fragment(), Injectable {
         }
 
         val user = FirebaseAuth.getInstance().currentUser
-        viewModel.workoutLiveData.value?.participants = listOf(user?.email ?: "")
-        viewModel.workoutLiveData.value?.auteur = user?.email ?: ""
-        viewModel.workoutLiveData.value?.auteurPhotoUrl = user?.photoUrl.toString()
-
+        viewModel.workoutLiveData.value?.idAuteur = user?.uid ?: ""
+        viewModel.workoutLiveData.value?.nomAuteur = user?.displayName ?: ""
+        viewModel.workoutLiveData.value?.photoAuteur = user?.photoUrl.toString()
         binding.validateButton.setOnClickListener { view ->
             if(viewModel.workoutLiveData.value?.lieu == ""){
                 Toast.makeText(activity, "Veuillez entrer une adresse valide", Toast.LENGTH_SHORT).show()
             }else{
-                val ref = mDatabase.collection("workouts").document()
-                viewModel.workoutLiveData.value?.id = ref.id
+                val doc = mDatabase.collection("workouts").document()
+                viewModel.workoutLiveData.value?.id = doc.id
 
-                ref.set(viewModel.workoutLiveData.value!!).addOnSuccessListener {
-                    //add a subcollection of users
-                    Navigation.findNavController(view).navigate(R.id.action_searchLocationFragment_to_seancesFragment)
-                }.addOnFailureListener { Toast.makeText(activity, "Une erreur s'est produite", Toast.LENGTH_SHORT).show() }
+                    doc.set(viewModel.workoutLiveData.value!!).addOnSuccessListener {
+                        Navigation.findNavController(view).navigate(R.id.action_searchLocationFragment_to_seancesFragment)
+                    }
+                    .addOnFailureListener { Toast.makeText(activity, "Une erreur s'est produite", Toast.LENGTH_SHORT).show() }
             }
 
         }

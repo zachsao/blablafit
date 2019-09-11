@@ -4,27 +4,27 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fsudouest.blablafit.model.Seance
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
 import java.util.*
 import javax.inject.Inject
 
-class WorkoutsViewModel @Inject constructor(private val mDatabase: FirebaseFirestore) : ViewModel() {
+class WorkoutsViewModel @Inject constructor(private val mDatabase: FirebaseFirestore,
+                                            auth: FirebaseAuth) : ViewModel() {
 
     private val workoutsLiveData = MutableLiveData<ArrayList<Seance?>>()
+    private val currentUser = auth.currentUser
 
     fun workoutsLiveData() = workoutsLiveData
 
-    fun getWorkouts(debutJournee: Date, finJournee: Date = Date(), email: String) {
+    fun getWorkouts(debutJournee: Date, finJournee: Date = Date()) {
         Log.i("Workouts view model", "récupération des séances")
-        val ref = mDatabase.collection("workouts")
-        // Source can be CACHE, SERVER, or DEFAULT.
-        val source = Source.SERVER
-        // Get the document, forcing the SDK to use the offline cache
-        ref.whereArrayContains("participants", email)
+        mDatabase.collection("workouts")
+                .whereEqualTo("idAuteur", currentUser?.uid)
                 .whereGreaterThanOrEqualTo("date", debutJournee)
                 .whereLessThanOrEqualTo("date", finJournee)
-                .get(source)
+                .get()
                 .addOnCompleteListener { task ->
                     when (task.isSuccessful) {
                         true -> {

@@ -68,14 +68,23 @@ class DetailsSeanceActivity : AppCompatActivity() {
             getWorkoutDetails(workoutId)
         }
 
-        viewModel.detailsLiveData().observe(this, Observer {
-            renderWorkout(it)
+        viewModel.detailsLiveData().observe(this, Observer {workout ->
+            renderWorkout(workout)
+            binding.contactButton.setOnClickListener {
+                //navigate to conversation activity
+                //workout.idAuteur
+            }
         })
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun renderWorkout(seance: Seance){
         binding.seance = seance
+
+        val authorProfilePicture = seance.photoAuteur
+        if (authorProfilePicture.isNotEmpty())
+            Glide.with(this).load(authorProfilePicture).placeholder(R.drawable.userphoto).into(photo)
+
         val dateFormat = SimpleDateFormat("dd/MM/yy", Locale("fr", "FR"))
         val dateChaine = dateFormat.format(seance.date)
 
@@ -85,36 +94,30 @@ class DetailsSeanceActivity : AppCompatActivity() {
         date.text = dateChaine
         heure.text = heureChaine
 
-        val authorProfilePicture = seance.auteurPhotoUrl
-        if (authorProfilePicture.isNotEmpty())
-            Glide.with(this).load(authorProfilePicture).placeholder(R.drawable.userphoto).into(photo)
-
-        if (hasAlreadyJoined(seance)) {
-            if (currentUserIsWorkoutAuthor(seance)){
-                binding.participateButton.text = "Delete workout"
-                binding.participateButton.background = getDrawable(R.drawable.round_corner_red)
-                binding.participateButton.setOnClickListener {
-                    viewModel.deleteWorkout(seance, this)
-                }
-            }
-            else {
+        when {
+            hasAlreadyJoined(seance) -> {
                 binding.participateButton.text = "Unjoin workout"
                 binding.participateButton.background = getDrawable(R.drawable.round_corner_red)
                 binding.participateButton.setOnClickListener {
                     viewModel.unjoinWorkout(seance,user, this)
                 }
             }
-        } else {
-            binding.participateButton.setOnClickListener { viewModel.joinWorkout(seance, user, this) }
+            currentUserIsWorkoutAuthor(seance) -> {
+                binding.participateButton.text = "Delete workout"
+                binding.participateButton.background = getDrawable(R.drawable.round_corner_red)
+                binding.participateButton.setOnClickListener {
+                    viewModel.deleteWorkout(seance, this)
+                }
+            }
+            else -> binding.participateButton.setOnClickListener { viewModel.joinWorkout(seance, user, this) }
         }
     }
 
     private fun currentUserIsWorkoutAuthor(seance: Seance): Boolean {
-        return user?.email == seance.auteur
+        return user?.uid == seance.idAuteur
     }
 
     private fun hasAlreadyJoined(seance: Seance): Boolean{
-        // The user's email appears in the participants array
         return seance.participants.contains(user?.email)
     }
 

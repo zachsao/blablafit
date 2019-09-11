@@ -83,7 +83,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/circleImageView">
 
                         <Button
-                            android:id="@+id/button5"
+                            android:id="@+id/contactButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="16dp"
@@ -197,7 +197,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
                         android:fontFamily="@font/roboto"
-                        android:text="@{`Proposée par `+seance.auteur}"
+                        android:text="@{`Organisée par ` + seance.nomAuteur}"
                         android:textSize="9sp"
                         app:layout_constraintEnd_toStartOf="@+id/circleImageView"
                         app:layout_constraintStart_toStartOf="parent"
@@ -298,27 +298,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    tools:text= "1 place restante - "
-                    android:text="@{seance.nb_participants}"
+                    tools:text= "1 place restante"
+                    android:text="@{seance.maxParticipants}"
                     android:textColor="@color/black" />
-
-                <ImageView
-                    android:id="@+id/imageView8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/round_person_24" />
-
-                <ImageView
-                    android:id="@+id/imageView9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/round_person_24" />
-
-                <ImageView
-                    android:id="@+id/imageView10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/round_person_outline_24" />
             </LinearLayout>
 
             <Button

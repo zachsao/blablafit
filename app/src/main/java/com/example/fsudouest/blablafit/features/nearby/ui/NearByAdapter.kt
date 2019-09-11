@@ -37,7 +37,7 @@ class NearByAdapter(val context: Context, val mData: ArrayList<Seance?>, val cli
 
             Glide.with(context).load(R.drawable.weights).into(binding.itemImage)
 
-            val authorProfilePicture = seance.auteurPhotoUrl
+            val authorProfilePicture = ""
             if (authorProfilePicture.isNotEmpty())
                 Glide.with(context).load(authorProfilePicture).placeholder(R.drawable.userphoto).into(binding.authorProfilePicture)
             binding.tvHeure.text = hourFormat.format(seance.date)

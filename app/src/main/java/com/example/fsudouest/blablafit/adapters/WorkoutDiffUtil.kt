@@ -17,7 +17,7 @@ class WorkoutDiffUtil(private val oldList: ArrayList<Seance?>, private val newLi
                 oldItem.duree == newItem.duree &&
                 oldItem.titre == newItem.titre &&
                 oldItem.lieu == newItem.lieu &&
-                oldItem.nb_participants == newItem.nb_participants
+                oldItem.maxParticipants == newItem.maxParticipants
     }
 
     override fun getOldListSize() = oldList.size

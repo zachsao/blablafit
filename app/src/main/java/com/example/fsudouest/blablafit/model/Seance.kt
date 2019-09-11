@@ -8,10 +8,11 @@ data class Seance(
         var lieu: String = "",
         var description: String = "",
         var date: Date = Date(),
-        var nb_participants: String = "",
-        var participants: List<String> = listOf(),
+        var maxParticipants: String = "",
         var duree: String = "",
+        var idAuteur: String = "",
         var id: String = "",
-        var auteurPhotoUrl: String = "",
-        var auteur: String = ""
+        var participants: List<String> = emptyList(),
+        var nomAuteur: String = "",
+        var photoAuteur: String = ""
 ) : Serializable

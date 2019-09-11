@@ -74,9 +74,6 @@ class NearByFragment : Fragment(), Injectable, NearByAdapter.ClickListener {
     }
 
     override fun navigateToDetails(seanceId: String) {
-        /*val intent = Intent(context, DetailsSeanceActivity::class.java)
-        intent.putExtra("seance", seance)
-        startActivity(intent)*/
         findNavController().navigate(NearByFragmentDirections.actionTrouverUneSeanceFragmentToDetailsSeanceActivity(seanceId))
     }
 
