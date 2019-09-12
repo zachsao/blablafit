@@ -17,6 +17,7 @@ import com.example.fsudouest.blablafit.MainActivity
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentRegisterBinding
 import com.example.fsudouest.blablafit.di.Injectable
+import com.example.fsudouest.blablafit.features.accountSetup.AccountSetupActivity
 import com.example.fsudouest.blablafit.service.MyFirebaseMessagingService
 import com.example.fsudouest.blablafit.utils.FirestoreUtil
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
@@ -49,7 +50,7 @@ class RegisterFragment : Fragment(), Injectable {
             })
             registerStatusLiveData().observe(this@RegisterFragment, Observer { isRegistered ->
                 if (isRegistered) {
-                    startActivity(intentFor<MainActivity>().newTask().clearTask())
+                    startActivity(intentFor<AccountSetupActivity>().newTask().clearTask())
                     FirestoreUtil.getRegistrationToken { newRegistrationToken ->
                         MyFirebaseMessagingService.addTokenToFirestore(newRegistrationToken)
                     }

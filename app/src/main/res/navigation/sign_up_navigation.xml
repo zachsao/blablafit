@@ -9,10 +9,10 @@
         android:label="Create an account" >
         <action
             android:id="@+id/action_basicInformationFragment_to_registerFragment2"
-            app:destination="@id/registerFragment2" />
+            app:destination="@id/registerFragment" />
     </fragment>
     <fragment
-        android:id="@+id/registerFragment2"
+        android:id="@+id/registerFragment"
         android:name="com.example.fsudouest.blablafit.features.login.register.RegisterFragment"
         android:label="RegisterFragment" />
 </navigation>

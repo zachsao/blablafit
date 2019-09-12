@@ -2,6 +2,7 @@ package com.example.fsudouest.blablafit.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.fsudouest.blablafit.features.accountSetup.AccountSetupViewModel
 import com.example.fsudouest.blablafit.features.login.register.RegisterViewModel
 import com.example.fsudouest.blablafit.features.login.signIn.SignInViewModel
 import com.example.fsudouest.blablafit.features.messages.conversation.ConversationViewModel
@@ -56,6 +57,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(RegisterViewModel::class)
     abstract fun bindRegisterViewModel(repoViewModel: RegisterViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AccountSetupViewModel::class)
+    abstract fun bindAccountSetupViewModel(repoViewModel: AccountSetupViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
