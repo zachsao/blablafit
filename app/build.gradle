@@ -26,7 +26,10 @@ android {
         }
     }
 
-    buildTypes.each { it.buildConfigField 'String', 'GOOGLE_PLACES_KEY', GooglePlacesApiKey }
+    buildTypes.each {
+        it.buildConfigField 'String', 'GOOGLE_PLACES_KEY', GooglePlacesApiKey
+        it.buildConfigField 'String', 'MAPBOX_PLACES_KEY', MapboxAutoCompleteApiKey
+    }
 
     dataBinding {
         enabled = true
@@ -93,6 +96,9 @@ dependencies {
 
     // Anko
     implementation "org.jetbrains.anko:anko:$anko_version"
+
+    //Mapbox
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-places-v8:0.9.0'
 
 }
 

@@ -2,6 +2,7 @@ package com.example.fsudouest.blablafit.features.login.register
 
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -26,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_register.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.clearTop
 import org.jetbrains.anko.newTask
+import org.jetbrains.anko.support.v4.defaultSharedPreferences
 import org.jetbrains.anko.support.v4.intentFor
 import org.jetbrains.anko.support.v4.startActivity
 import javax.inject.Inject
@@ -36,7 +38,6 @@ class RegisterFragment : Fragment(), Injectable {
     lateinit var factory: ViewModelFactory
 
     private lateinit var viewModel: RegisterViewModel
-
     private lateinit var binding: FragmentRegisterBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +51,9 @@ class RegisterFragment : Fragment(), Injectable {
             })
             registerStatusLiveData().observe(this@RegisterFragment, Observer { isRegistered ->
                 if (isRegistered) {
-                    startActivity(intentFor<AccountSetupActivity>().newTask().clearTask())
+                    startActivity(intentFor<AccountSetupActivity>(
+                            "userName" to binding.nameEdit.text.toString()
+                    ).newTask().clearTask())
                     FirestoreUtil.getRegistrationToken { newRegistrationToken ->
                         MyFirebaseMessagingService.addTokenToFirestore(newRegistrationToken)
                     }
