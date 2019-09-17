@@ -59,7 +59,6 @@ dependencies {
     // Displaying images
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     kapt 'com.github.bumptech.glide:compiler:4.9.0'
-    implementation 'com.squareup.picasso:picasso:2.5.1'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 
     //maps dependencies
@@ -73,9 +72,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:19.0.0'
     implementation 'com.google.firebase:firebase-firestore:21.0.0'
     implementation 'com.google.firebase:firebase-messaging:20.0.0'
-
-    //Facebook sdk
-    implementation 'com.facebook.android:facebook-android-sdk:4.37.0'
 
     //navigation components
     implementation "android.arch.navigation:navigation-fragment-ktx:$navigationVersion"

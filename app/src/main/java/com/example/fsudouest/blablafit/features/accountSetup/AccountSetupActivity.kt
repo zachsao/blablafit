@@ -3,6 +3,9 @@ package com.example.fsudouest.blablafit.features.accountSetup
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.fsudouest.blablafit.R
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector

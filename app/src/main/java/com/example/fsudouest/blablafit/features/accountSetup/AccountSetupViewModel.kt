@@ -9,25 +9,28 @@ import com.example.fsudouest.blablafit.features.accountSetup.basicinformation.Va
 import javax.inject.Inject
 
 class AccountSetupViewModel @Inject constructor(): ViewModel() {
-    private val stateLiveData = MutableLiveData<BasicInformationState>()
+    private val infoStateLiveData = MutableLiveData<BasicInformationState>()
+    private val genderLiveData = MutableLiveData<Boolean>()
 
     init {
-        stateLiveData.value = BasicInformationState.Idle(BasicInformationData())
+        infoStateLiveData.value = BasicInformationState.Idle(BasicInformationData())
+        genderLiveData.value = true
     }
 
-    fun stateLiveData(): LiveData<BasicInformationState> = stateLiveData
+    fun infoStateLiveData(): LiveData<BasicInformationState> = infoStateLiveData
+    fun genderLiveData(): LiveData<Boolean> = genderLiveData
 
     fun dateChanged(date: String) {
-        stateLiveData.value = BasicInformationState.DateUpdated(previousStateData()
+        infoStateLiveData.value = BasicInformationState.DateUpdated(previousStateData()
                 .copy(
                         birthday = date,
                         errors = previousStateData().errors.filter { it !is ValidationError.BirthDateEmpty }
                 )
         )
     }
-    private fun previousStateData() = stateLiveData.value?.data ?: BasicInformationData()
+    private fun previousStateData() = infoStateLiveData.value?.data ?: BasicInformationData()
     fun submitBasicInfoForm() {
-        stateLiveData.value = checkForm(previousStateData())
+        infoStateLiveData.value = checkForm(previousStateData())
     }
 
     private fun checkForm(data: BasicInformationData): BasicInformationState {
@@ -40,11 +43,16 @@ class AccountSetupViewModel @Inject constructor(): ViewModel() {
     }
 
     fun updateCity(placeName: String?) {
-        stateLiveData.value = BasicInformationState.CityUpdated(previousStateData()
+        infoStateLiveData.value = BasicInformationState.CityUpdated(previousStateData()
                 .copy(
                         city = placeName ?: "",
                         errors = previousStateData().errors.filter { it !is ValidationError.CityEmpty }
                 )
         )
+    }
+
+    fun updateGender(isMale: Boolean) {
+        val previousGender = genderLiveData.value
+        if (previousGender != isMale) genderLiveData.value = isMale
     }
 }

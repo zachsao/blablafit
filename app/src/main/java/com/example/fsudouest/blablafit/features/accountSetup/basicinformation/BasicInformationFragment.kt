@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.fsudouest.blablafit.BuildConfig
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.di.Injectable
@@ -36,7 +37,7 @@ class BasicInformationFragment : Fragment(), Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, factory).get(AccountSetupViewModel::class.java)
-        viewModel.stateLiveData().observe(this, Observer {
+        viewModel.infoStateLiveData().observe(this, Observer {
             render(it)
         })
 
@@ -82,6 +83,9 @@ class BasicInformationFragment : Fragment(), Injectable {
             is BasicInformationState.CityUpdated -> {
                 cityEdit.setText(state.data.city)
                 cityInput.error = null
+            }
+            is BasicInformationState.Success -> {
+                findNavController().navigate(R.id.action_basicInformationFragment2_to_genderSelectionFragment)
             }
             is BasicInformationState.Error -> {
                 state.data.errors.forEach { error ->

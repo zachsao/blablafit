@@ -91,5 +91,8 @@
     <string name="date_of_birth">Date of birth</string>
     <string name="gender_male">Male</string>
     <string name="gender_female">Female</string>
+    <string name="select_gender">Select your gender</string>
+    <string name="previous_step">back</string>
+    <string name="step_two">Step 2/3</string>
 
 </resources>

@@ -1,10 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/account_setup_navigation"
-    app:startDestination="@id/basicInformationFragment2">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/account_setup_navigation"
+    app:startDestination="@id/basicInformationFragment">
 
     <fragment
-        android:id="@+id/basicInformationFragment2"
+        android:id="@+id/basicInformationFragment"
         android:name="com.example.fsudouest.blablafit.features.accountSetup.basicinformation.BasicInformationFragment"
-        android:label="BasicInformationFragment" />
+        android:label="BasicInformationFragment" >
+        <action
+            android:id="@+id/action_basicInformationFragment2_to_genderSelectionFragment"
+            app:destination="@id/genderSelectionFragment"
+            app:enterAnim="@anim/fui_slide_in_right"
+            app:exitAnim="@anim/fui_slide_out_left"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/genderSelectionFragment"
+        android:name="com.example.fsudouest.blablafit.features.accountSetup.genderSelection.GenderSelectionFragment"
+        android:label="fragment_gender_selection"
+        tools:layout="@layout/fragment_gender_selection" >
+        <action
+            android:id="@+id/action_genderSelectionFragment_to_basicInformationFragment"
+            app:destination="@id/basicInformationFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_genderSelectionFragment_to_levelFragment"
+            app:destination="@id/levelFragment"
+            app:enterAnim="@anim/fui_slide_in_right"
+            app:exitAnim="@anim/fui_slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/levelFragment"
+        android:name="com.example.fsudouest.blablafit.features.accountSetup.LevelFragment"
+        android:label="fragment_level"
+        tools:layout="@layout/fragment_level" />
 </navigation>
