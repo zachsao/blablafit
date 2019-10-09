@@ -18,12 +18,16 @@ import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.accountSetup.AccountSetupState
 import com.example.fsudouest.blablafit.features.accountSetup.AccountSetupViewModel
+import com.example.fsudouest.blablafit.features.login.LoginActivity
 import com.example.fsudouest.blablafit.utils.CanSelectPhotoFromGallery
 import com.example.fsudouest.blablafit.utils.RC_PHOTO_PICKER
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions
 import kotlinx.android.synthetic.main.basic_information_fragment.*
+import org.jetbrains.anko.clearTask
+import org.jetbrains.anko.newTask
+import org.jetbrains.anko.support.v4.intentFor
 import java.util.*
 import javax.inject.Inject
 private const val REQUEST_CODE_AUTOCOMPLETE = 1001
@@ -53,6 +57,9 @@ class BasicInformationFragment : Fragment(), Injectable, CanSelectPhotoFromGalle
         birthdayEdit.setOnClickListener { datePickerDialog.show() }
         cityEdit.setOnClickListener { launchPlacesSearchActivity() }
         next.setOnClickListener { viewModel.submitBasicInfoForm() }
+        cancel.setOnClickListener {
+            startActivity(intentFor<LoginActivity>().newTask().clearTask())
+        }
     }
 
     private fun launchPlacesSearchActivity() {
@@ -82,12 +89,13 @@ class BasicInformationFragment : Fragment(), Injectable, CanSelectPhotoFromGalle
     private fun render(state: AccountSetupState) {
         when(state){
             is AccountSetupState.Idle -> {
-                val userName = activity?.intent?.getStringExtra("userName") ?: "Zacharia Sao"
-                nameEdit.setText(userName)
+                val userName = activity?.intent?.getStringExtra("userName")
+                if (userName.isNullOrEmpty()) viewModel.getUsername() else nameEdit.setText(userName)
                 birthdayEdit.setText(state.data.birthday)
                 cityEdit.setText(state.data.city)
                 displayPicture(state.data.profilePictureUri)
             }
+            is AccountSetupState.NameChanged -> nameEdit.setText(state.data.name)
             is AccountSetupState.DateUpdated -> {
                 birthdayEdit.setText(state.data.birthday)
                 birthdayInput.error = null

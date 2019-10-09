@@ -52,6 +52,16 @@ class AccountSetupViewModel @Inject constructor(
             else AccountSetupState.Error(data.copy(errors = errors))
     }
 
+    fun getUsername() {
+        firestore.collection("users").document(uid)
+                .get()
+                .addOnSuccessListener {
+                    val user = it.toObject(User::class.java)
+                    val username = user?.let { it.nomComplet } ?: ""
+                    stateLiveData.value = AccountSetupState.NameChanged(previousStateData().copy(name = username))
+                }
+    }
+
     fun updateCity(placeName: String?) {
         stateLiveData.value = AccountSetupState.CityUpdated(previousStateData()
                 .copy(

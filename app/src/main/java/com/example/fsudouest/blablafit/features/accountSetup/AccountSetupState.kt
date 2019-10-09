@@ -17,6 +17,7 @@ sealed class AccountSetupState {
     data class Success(override val data: AccountSetupData): AccountSetupState()
     data class Loading(override val data: AccountSetupData): AccountSetupState()
     data class Failure(override val data: AccountSetupData): AccountSetupState()
+    data class NameChanged(override val data: AccountSetupData) : AccountSetupState()
 }
 
 data class AccountSetupData(
