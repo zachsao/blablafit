@@ -94,5 +94,13 @@
     <string name="select_gender">Select your gender</string>
     <string name="previous_step">back</string>
     <string name="step_two">Step 2/3</string>
+    <string name="fitness_level">Your fitness level</string>
+    <string name="beginner">Beginner</string>
+    <string name="beginner_description">I exercise once a week or less.</string>
+    <string name="intermediate">Intermediate</string>
+    <string name="intermediate_description">I workout 2 to 3 times a week.</string>
+    <string name="advanced">Advanced</string>
+    <string name="advanced_description">I workout 4 times a week or more.</string>
+    <string name="step_three">Step 3/3</string>
 
 </resources>

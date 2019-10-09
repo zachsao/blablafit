@@ -1,7 +1,7 @@
 package com.example.fsudouest.blablafit.di
 
 import com.example.fsudouest.blablafit.features.accountSetup.AccountSetupActivity
-import com.example.fsudouest.blablafit.features.accountSetup.LevelFragment
+import com.example.fsudouest.blablafit.features.accountSetup.fitnessLevel.LevelFragment
 import com.example.fsudouest.blablafit.features.accountSetup.basicinformation.BasicInformationFragment
 import com.example.fsudouest.blablafit.features.accountSetup.genderSelection.GenderSelectionFragment
 import dagger.Module

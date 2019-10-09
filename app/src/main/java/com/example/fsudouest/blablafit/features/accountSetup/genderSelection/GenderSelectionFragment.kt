@@ -32,10 +32,12 @@ class GenderSelectionFragment : Fragment(), Injectable {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, factory).get(AccountSetupViewModel::class.java)
-        viewModel.genderLiveData().observe(this, Observer{
-            selectMale(it)
-            selectFemale(it)
+        viewModel = activity?.run {
+            ViewModelProviders.of(this, factory)[AccountSetupViewModel::class.java]
+        } ?: throw Exception("Invalid Activity")
+        viewModel.stateLiveData().observe(this, Observer{state ->
+            selectMale(state.data.gender)
+            selectFemale(state.data.gender)
         })
         male.setOnClickListener { viewModel.updateGender(true) }
         female.setOnClickListener { viewModel.updateGender(false) }

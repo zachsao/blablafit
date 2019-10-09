@@ -22,19 +22,25 @@
         android:label="fragment_gender_selection"
         tools:layout="@layout/fragment_gender_selection" >
         <action
-            android:id="@+id/action_genderSelectionFragment_to_basicInformationFragment"
-            app:destination="@id/basicInformationFragment"
-            app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_out_right" />
-        <action
             android:id="@+id/action_genderSelectionFragment_to_levelFragment"
             app:destination="@id/levelFragment"
             app:enterAnim="@anim/fui_slide_in_right"
             app:exitAnim="@anim/fui_slide_out_left" />
+        <action
+            android:id="@+id/action_genderSelectionFragment_to_basicInformationFragment"
+            app:destination="@id/basicInformationFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/levelFragment"
-        android:name="com.example.fsudouest.blablafit.features.accountSetup.LevelFragment"
+        android:name="com.example.fsudouest.blablafit.features.accountSetup.fitnessLevel.LevelFragment"
         android:label="fragment_level"
-        tools:layout="@layout/fragment_level" />
+        tools:layout="@layout/fragment_level" >
+        <action
+            android:id="@+id/action_levelFragment_to_genderSelectionFragment"
+            app:destination="@id/genderSelectionFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right" />
+    </fragment>
 </navigation>

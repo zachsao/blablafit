@@ -61,7 +61,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/circleImageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/profilePicture" />
 
     <View
         android:id="@+id/view"
@@ -153,7 +153,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circleImageView2"
+        android:id="@+id/profilePicture"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_marginTop="16dp"
