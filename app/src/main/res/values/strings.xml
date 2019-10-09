@@ -102,5 +102,8 @@
     <string name="advanced">Advanced</string>
     <string name="advanced_description">I workout 4 times a week or more.</string>
     <string name="step_three">Step 3/3</string>
+    <string name="search_workout_hint">Search for a workout or a gym</string>
+    <string name="most_recent">Most recent in your city</string>
+    <string name="categories_section_title">Search by categories</string>
 
 </resources>
