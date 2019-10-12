@@ -17,12 +17,15 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentAddDateDurationBinding
+import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.workoutCreation.viewModel.WorkoutCreationViewModel
+import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 
-class AddDateDurationFragment : Fragment() {
+class AddDateDurationFragment : Fragment(), Injectable {
 
     private lateinit var date_button: Button
     private lateinit var hour_button: Button
@@ -37,19 +40,20 @@ class AddDateDurationFragment : Fragment() {
     private val hourFormat = SimpleDateFormat("HH:mm", Locale.FRENCH)
 
     private lateinit var viewModel: WorkoutCreationViewModel
+    @Inject
+    lateinit var factory: ViewModelFactory
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = activity?.run {
-            ViewModelProviders.of(this).get(WorkoutCreationViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val binding: FragmentAddDateDurationBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_date_duration, container, false)
         val args: AddDateDurationFragmentArgs by navArgs()
+
+        viewModel = activity?.run {
+            ViewModelProviders.of(this, factory).get(WorkoutCreationViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+
         //CHOIX DE LA DATE
         date_button = binding.dateSelectionButton
 

@@ -10,6 +10,7 @@ import com.example.fsudouest.blablafit.features.messages.viewModel.MessagesViewM
 import com.example.fsudouest.blablafit.features.myWorkouts.viewModel.WorkoutsViewModel
 import com.example.fsudouest.blablafit.features.nearby.viewModel.NearByViewModel
 import com.example.fsudouest.blablafit.features.profile.ProfileViewModel
+import com.example.fsudouest.blablafit.features.workoutCreation.viewModel.WorkoutCreationViewModel
 import com.example.fsudouest.blablafit.features.workoutDetails.DetailsViewModel
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import dagger.Binds
@@ -27,6 +28,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(NearByViewModel::class)
     abstract fun bindNearByViewModel(repoViewModel: NearByViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(WorkoutCreationViewModel::class)
+    abstract fun bindWorkoutCreationViewModel(repoViewModel: WorkoutCreationViewModel): ViewModel
 
     @Binds
     @IntoMap

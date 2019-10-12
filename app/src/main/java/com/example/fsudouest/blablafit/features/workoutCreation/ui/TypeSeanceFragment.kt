@@ -24,12 +24,15 @@ import com.example.fsudouest.blablafit.adapters.WorkoutTypeAdapter
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.utils.MyLookup
 import com.example.fsudouest.blablafit.databinding.FragmentTypeSeanceBinding
+import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.workoutCreation.viewModel.WorkoutCreationViewModel
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.model.WorkoutType
+import com.example.fsudouest.blablafit.utils.ViewModelFactory
+import javax.inject.Inject
 
 
-class TypeSeanceFragment : Fragment() {
+class TypeSeanceFragment : Fragment(), Injectable {
 
     private lateinit var mAdapter: WorkoutTypeAdapter
     private lateinit var workouts: ArrayList<WorkoutType>
@@ -38,11 +41,12 @@ class TypeSeanceFragment : Fragment() {
     private var tracker: SelectionTracker<Long>? = null
 
     private lateinit var viewModel: WorkoutCreationViewModel
+    @Inject lateinit var factory: ViewModelFactory
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         viewModel = activity?.run {
-            ViewModelProviders.of(this).get(WorkoutCreationViewModel::class.java)
+            ViewModelProviders.of(this, factory).get(WorkoutCreationViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
     }
 

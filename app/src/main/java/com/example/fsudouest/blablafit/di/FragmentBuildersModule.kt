@@ -4,8 +4,7 @@ import com.example.fsudouest.blablafit.features.messages.ui.MessagesFragment
 import com.example.fsudouest.blablafit.features.myWorkouts.ui.SeancesFragment
 import com.example.fsudouest.blablafit.features.nearby.ui.NearByFragment
 import com.example.fsudouest.blablafit.features.profile.MyProfileFragment
-import com.example.fsudouest.blablafit.features.workoutCreation.ui.IndoorChoiceFragment
-import com.example.fsudouest.blablafit.features.workoutCreation.ui.SearchLocationFragment
+import com.example.fsudouest.blablafit.features.workoutCreation.ui.*
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -28,4 +27,13 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeSearchLocationFragment(): SearchLocationFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeAddDateDurationFragment(): AddDateDurationFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeTypeSeanceFragment(): TypeSeanceFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeDescriptionFragment(): AddDescriptionFragment
 }

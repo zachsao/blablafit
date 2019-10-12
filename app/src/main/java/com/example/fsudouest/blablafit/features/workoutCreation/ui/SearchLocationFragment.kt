@@ -20,6 +20,7 @@ import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.workoutCreation.viewModel.WorkoutCreationViewModel
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.model.User
+import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
@@ -29,6 +30,8 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_search_location.*
+import org.jetbrains.anko.support.v4.toast
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -41,13 +44,14 @@ class SearchLocationFragment : Fragment(), Injectable {
 
     @Inject
     lateinit var mDatabase: FirebaseFirestore
-
+    @Inject
+    lateinit var factory: ViewModelFactory
     private lateinit var viewModel: WorkoutCreationViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         viewModel = activity?.run {
-            ViewModelProviders.of(this).get(WorkoutCreationViewModel::class.java)
+            ViewModelProviders.of(this, factory).get(WorkoutCreationViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
     }
 
@@ -73,7 +77,7 @@ class SearchLocationFragment : Fragment(), Injectable {
             }
 
             override fun onError(status: Status) {
-                Log.e("SearchLocationFragment", "An error occurred: $status")
+                Timber.e("An error occurred: $status")
             }
         })
         when(args.choice){
@@ -84,26 +88,23 @@ class SearchLocationFragment : Fragment(), Injectable {
             }
         }
 
-        val user = FirebaseAuth.getInstance().currentUser
-        viewModel.workoutLiveData.value?.idAuteur = user?.uid ?: ""
-        viewModel.workoutLiveData.value?.nomAuteur = user?.displayName ?: ""
-        viewModel.workoutLiveData.value?.photoAuteur = user?.photoUrl.toString()
         binding.validateButton.setOnClickListener { view ->
-            if(viewModel.workoutLiveData.value?.lieu == ""){
-                Toast.makeText(activity, "Veuillez entrer une adresse valide", Toast.LENGTH_SHORT).show()
+            if(viewModel.workoutLiveData.value?.lieu.isNullOrEmpty()){
+                toast(getString(R.string.empty_address_toast_message))
             }else{
-                val doc = mDatabase.collection("workouts").document()
-                viewModel.workoutLiveData.value?.id = doc.id
-
-                    doc.set(viewModel.workoutLiveData.value!!).addOnSuccessListener {
-                        Navigation.findNavController(view).navigate(R.id.action_searchLocationFragment_to_seancesFragment)
-                    }
-                    .addOnFailureListener { Toast.makeText(activity, "Une erreur s'est produite", Toast.LENGTH_SHORT).show() }
+                viewModel.addAuthor {
+                    viewModel.saveWorkout(
+                            {Navigation.findNavController(view).navigate(R.id.action_searchLocationFragment_to_seancesFragment)},
+                            {toast("Une erreur s'est produite")}
+                    )
+                }
             }
 
         }
         return binding.root
     }
+
+
 
 
 }

@@ -71,10 +71,7 @@ class SeanceAdapter(private var mData: ArrayList<Seance?>, val clickListener: Ne
             binding.setVariable(BR.seance,seance)
             binding.executePendingBindings()
             Glide.with(context).load(R.drawable.weights).into(binding.itemImage)
-            val authorProfilePicture = ""
-            if (authorProfilePicture.isNotEmpty()) {
-                Glide.with(context).load(authorProfilePicture).placeholder(R.drawable.userphoto).into(binding.authorProfilePicture)
-            }
+            Glide.with(context).load(seance.photoAuteur).fallback(R.drawable.userphoto).into(binding.authorProfilePicture)
 
             heure.text = hourFormat.format(seance.date)
 

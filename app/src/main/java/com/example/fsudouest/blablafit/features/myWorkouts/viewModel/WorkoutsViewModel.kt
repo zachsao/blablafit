@@ -7,6 +7,7 @@ import com.example.fsudouest.blablafit.model.Seance
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -19,7 +20,7 @@ class WorkoutsViewModel @Inject constructor(private val mDatabase: FirebaseFires
     fun workoutsLiveData() = workoutsLiveData
 
     fun getWorkouts(debutJournee: Date, finJournee: Date = Date()) {
-        Log.i("Workouts view model", "récupération des séances")
+        Timber.i("récupération des séances")
         mDatabase.collection("workouts")
                 .whereEqualTo("idAuteur", currentUser?.uid)
                 .whereGreaterThanOrEqualTo("date", debutJournee)

@@ -105,5 +105,6 @@
     <string name="search_workout_hint">Search for a workout or a gym</string>
     <string name="most_recent">Most recent in your city</string>
     <string name="categories_section_title">Search by categories</string>
+    <string name="empty_address_toast_message">Please enter a valid address</string>
 
 </resources>

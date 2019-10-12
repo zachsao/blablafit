@@ -14,5 +14,5 @@ data class Seance(
         var id: String = "",
         var participants: List<String> = emptyList(),
         var nomAuteur: String = "",
-        var photoAuteur: String = ""
+        var photoAuteur: String? = null
 ) : Serializable
