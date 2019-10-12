@@ -2,42 +2,38 @@ package com.example.fsudouest.blablafit.features.nearby.ui
 
 
 import android.content.Context
-import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.view.*
-import android.view.inputmethod.EditorInfo
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.widget.SearchView
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fsudouest.blablafit.R
-import com.example.fsudouest.blablafit.adapters.WorkoutDiffUtil
-import com.example.fsudouest.blablafit.databinding.FragmentSeancesBinding
 import com.example.fsudouest.blablafit.di.Injectable
+import com.example.fsudouest.blablafit.features.nearby.NearByState
 import com.example.fsudouest.blablafit.features.nearby.viewModel.NearByViewModel
-import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
-import java.util.*
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
+import com.xwray.groupie.Section
+import kotlinx.android.synthetic.main.fragment_nearby.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 
-class NearByFragment : Fragment(), Injectable, NearByAdapter.ClickListener {
+class NearByFragment : Fragment(), Injectable {
 
     private lateinit var mList: RecyclerView
-    private val layoutManager = LinearLayoutManager(activity)
-    private lateinit var mProgressView: View
     private lateinit var mEmptyStateTextView: TextView
-    lateinit var searchView: SearchView
-    private lateinit var binding: FragmentSeancesBinding
+    private lateinit var mostRecentWorkoutsAdapter: GroupAdapter<GroupieViewHolder>
+    private lateinit var mostRecentSection: Section
+    private lateinit var categoriesAdapter: GroupAdapter<GroupieViewHolder>
+    private lateinit var categoriesSection: Section
     @Inject
     lateinit var factory: ViewModelFactory
 
@@ -46,34 +42,35 @@ class NearByFragment : Fragment(), Injectable, NearByAdapter.ClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_seances, container, false)
-
-        mEmptyStateTextView = binding.emptyStateTextView
-        mProgressView = binding.seancesProgress
-        mList = binding.rvSeances
-
-        mList.layoutManager = layoutManager
-
-        viewModel = ViewModelProviders.of(this, factory).get(NearByViewModel::class.java).apply {
-            workoutsLiveData().observe(this@NearByFragment, Observer {
-                renderList(it)
-            })
-        }
-
-        // If there is a network connection, fetch data
-        if (isOnline()) {
-            showProgress(true)
-            viewModel.updateWorkouts()
-
-        } else {
-            showError(true, getString(R.string.no_internet_connection))
-        }
-
-        return binding.root
+        //binding = DataBindingUtil.inflate(inflater, R.layout.fragment_nearby, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_nearby,container, false)
+        return rootView//binding.root
     }
 
-    override fun navigateToDetails(seanceId: String) {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        initLatestWorkouts()
+        initCategories()
+        viewModel = ViewModelProviders.of(this, factory).get(NearByViewModel::class.java).apply {
+            stateLiveData().observe(this@NearByFragment, Observer {
+                render(it)
+            })
+        }
+    }
+
+    private fun render(state: NearByState) {
+        when(state) {
+            is NearByState.Idle -> { displayCategories(state.data.categories) }
+            is NearByState.LatestWorkoutsLoaded -> { displayMostRecentWorkouts(state.data.workouts) }
+        }
+    }
+
+    private fun displayCategories(categories: List<CategoryViewItem>) {
+        categoriesSection.addAll(categories)
+    }
+
+    fun navigateToDetails(seanceId: String) {
         findNavController().navigate(NearByFragmentDirections.actionTrouverUneSeanceFragmentToDetailsSeanceActivity(seanceId))
     }
 
@@ -90,58 +87,31 @@ class NearByFragment : Fragment(), Injectable, NearByAdapter.ClickListener {
         mEmptyStateTextView.text = errorMessage
     }
 
-    private fun renderList(list: ArrayList<Seance?>) {
-        showProgress(false)
-        if (list.isEmpty()) {
-            showError(true, getString(R.string.no_seance_available))
-        } else {
-            mList.adapter = NearByAdapter(activity!!, list, this)
+    private fun displayMostRecentWorkouts(workouts: List<LatestWorkoutViewItem>) {
+        mostRecentSection.addAll(workouts)
+    }
+
+    private fun initLatestWorkouts(){
+        mostRecentWorkoutsAdapter = GroupAdapter()
+        mostRecentSection = Section()
+        mostRecentWorkoutsAdapter.add(mostRecentSection)
+        mostRecentRecyclerView.apply {
+            adapter = mostRecentWorkoutsAdapter.apply {
+                setOnItemClickListener { item, view ->
+                    navigateToDetails((item as LatestWorkoutViewItem).id)
+                }
+            }
         }
     }
 
-    private fun showProgress(show: Boolean) {
-        mList.visibility = if (show) View.GONE else View.VISIBLE
-        mProgressView.visibility = if (show) View.VISIBLE else View.GONE
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.seance_filters, menu)
-
-        val searchItem = menu.findItem(R.id.action_search)
-        searchView = searchItem.actionView as SearchView
-        searchView.imeOptions = EditorInfo.IME_ACTION_DONE
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String): Boolean {
-                viewModel.search(newText)
-                val diffResult = DiffUtil.calculateDiff(WorkoutDiffUtil(viewModel.workoutsLiveData().value ?: ArrayList(), viewModel.filteredList))
-                viewModel.workoutsLiveData().value?.clear()
-                viewModel.workoutsLiveData().value?.addAll(viewModel.filteredList)
-                binding.rvSeances.adapter?.let { diffResult.dispatchUpdatesTo(it) }
-
-                return false
-            }
-        })
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_filter -> {
-                // User chose the "Settings" item, show the app settings UI...
-                Toast.makeText(activity, "déployer les filtres", Toast.LENGTH_SHORT).show()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
+    private fun initCategories(){
+        categoriesAdapter = GroupAdapter()
+        categoriesSection = Section()
+        categoriesAdapter.add(categoriesSection)
+        categoriesRecyclerView.apply {
+            setHasFixedSize(true)
+            layoutManager = GridLayoutManager(requireContext(), 2)
+            adapter = categoriesAdapter
         }
     }
 }

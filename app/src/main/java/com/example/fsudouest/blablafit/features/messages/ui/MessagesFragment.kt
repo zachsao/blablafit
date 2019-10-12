@@ -22,7 +22,7 @@ import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.OnItemClickListener
-import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.fragment_messages.*
 import kotlinx.android.synthetic.main.latest_message_item.view.*
 import org.jetbrains.anko.startActivity
@@ -36,7 +36,7 @@ class MessagesFragment : Fragment(), Injectable {
 
     private lateinit var viewModel: MessagesViewModel
 
-    private val adapter = GroupAdapter<ViewHolder>()
+    private val adapter = GroupAdapter<GroupieViewHolder>()
 
     lateinit var binding: FragmentMessagesBinding
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -79,10 +79,10 @@ class MessagesFragment : Fragment(), Injectable {
 
 }
 
-class UserViewItem(val user: User, val userId: String) : Item<ViewHolder>() {
+class UserViewItem(val user: User, val userId: String) : Item<GroupieViewHolder>() {
     override fun getLayout() = R.layout.latest_message_item
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.username_textView.text = user.nomComplet
         Glide.with(viewHolder.root.context)
                 .load(user.photoUrl)

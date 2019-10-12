@@ -20,7 +20,7 @@ import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.Item
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_conversation.*
 import kotlinx.android.synthetic.main.chat_from_item.view.*
@@ -81,7 +81,7 @@ class ConversationActivity : AppCompatActivity() {
         fun init(){
             chatRecyclerView.apply {
                 layoutManager = LinearLayoutManager(this@ConversationActivity)
-                adapter = GroupAdapter<ViewHolder>().apply {
+                adapter = GroupAdapter<GroupieViewHolder>().apply {
                     messagesSection = Section(list)
                     add(messagesSection)
                 }
@@ -111,7 +111,7 @@ class ChatFromItem(val chat: Chat): Item(){
         return R.layout.chat_from_item
     }
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.chat_from_content_textView.text = chat.message
         viewHolder.itemView.timestamp_from.text = formatTimeStamp(chat.timestamp)
         viewHolder.itemView.chat_from_content_textView.setOnClickListener {
@@ -139,7 +139,7 @@ class ChatToItem(val chat: Chat): Item(){
         return R.layout.chat_to_item
     }
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.chat_to_content_textView.text = chat.message
         viewHolder.itemView.timestamp_to.text = formatTimeStamp(chat.timestamp)
         viewHolder.itemView.chat_to_content_textView.setOnClickListener {
