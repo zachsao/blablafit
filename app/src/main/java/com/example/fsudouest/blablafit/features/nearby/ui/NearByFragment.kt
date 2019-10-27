@@ -62,7 +62,10 @@ class NearByFragment : Fragment(), Injectable {
     private fun render(state: NearByState) {
         when(state) {
             is NearByState.Idle -> { displayCategories(state.data.categories) }
-            is NearByState.LatestWorkoutsLoaded -> { displayMostRecentWorkouts(state.data.workouts) }
+            is NearByState.LatestWorkoutsLoaded -> {
+                displayMostRecentWorkouts(state.data.workouts)
+                displayCategories(state.data.categories)
+            }
         }
     }
 
@@ -111,7 +114,13 @@ class NearByFragment : Fragment(), Injectable {
         categoriesRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(requireContext(), 2)
-            adapter = categoriesAdapter
+            adapter = categoriesAdapter.apply {
+                setOnItemClickListener { item, view ->
+                    item as CategoryViewItem
+                    findNavController()
+                            .navigate(NearByFragmentDirections.actionTrouverUneSeanceFragmentToCategoryFragment(item.name))
+                }
+            }
         }
     }
 }

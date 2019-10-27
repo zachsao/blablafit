@@ -22,6 +22,9 @@
             app:exitAnim="@anim/slide_out_up"
             app:popEnterAnim="@anim/slide_in_down"
             app:popExitAnim="@anim/slide_out_down" />
+        <action
+            android:id="@+id/action_trouverUneSeanceFragment_to_categoryFragment"
+            app:destination="@id/categoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/seancesFragment"
@@ -126,4 +129,13 @@
             android:name="id"
             app:argType="string" />
     </activity>
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.example.fsudouest.blablafit.features.CategoryFragment"
+        android:label="{title}"
+        tools:layout="@layout/fragment_category" >
+        <argument
+            android:name="title"
+            app:argType="string" />
+    </fragment>
 </navigation>

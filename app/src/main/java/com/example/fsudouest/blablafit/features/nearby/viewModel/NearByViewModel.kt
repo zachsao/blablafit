@@ -24,7 +24,7 @@ class NearByViewModel @Inject constructor(private val mDatabase: FirebaseFiresto
     fun stateLiveData(): LiveData<NearByState> = stateLiveData
 
     init {
-         stateLiveData.value = NearByState.Idle(NearByData(categories = CategoryViewItems.getCategoryViewItems()))
+        stateLiveData.value = NearByState.Idle(NearByData(categories = CategoryViewItems.getCategoryViewItems()))
         updateWorkouts()
     }
 

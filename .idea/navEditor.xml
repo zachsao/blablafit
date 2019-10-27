@@ -128,6 +128,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="categoryFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-351" />
+                            <option name="y" value="403" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="detailsSeanceActivity">
                     <value>
                       <LayoutPositions>
@@ -238,6 +250,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_trouverUneSeanceFragment_to_categoryFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_trouverUneSeanceFragment_to_detailsSeanceActivity">
                               <value>
                                 <LayoutPositions />
