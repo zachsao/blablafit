@@ -1,18 +1,14 @@
 package com.example.fsudouest.blablafit.features.nearby.ui
 
 
-import android.content.Context
-import android.net.ConnectivityManager
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.di.Injectable
@@ -27,9 +23,7 @@ import javax.inject.Inject
 
 
 class NearByFragment : Fragment(), Injectable {
-
-    private lateinit var mList: RecyclerView
-    private lateinit var mEmptyStateTextView: TextView
+    
     private lateinit var mostRecentWorkoutsAdapter: GroupAdapter<GroupieViewHolder>
     private lateinit var mostRecentSection: Section
     private lateinit var categoriesAdapter: GroupAdapter<GroupieViewHolder>
@@ -57,14 +51,33 @@ class NearByFragment : Fragment(), Injectable {
                 render(it)
             })
         }
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.seance_filters, menu)
+        val searchViewItem = menu.findItem(R.id.action_search)
+        val searchView = searchViewItem.actionView as SearchView
+        searchView.queryHint = getString(R.string.searchViewHint)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                searchView.clearFocus()
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                return false
+            }
+        })
     }
 
     private fun render(state: NearByState) {
         when(state) {
-            is NearByState.Idle -> { displayCategories(state.data.categories) }
+            is NearByState.Idle -> displayCategories(state.data.categories)
             is NearByState.LatestWorkoutsLoaded -> {
-                displayMostRecentWorkouts(state.data.workouts)
+                categoriesSection.clear()
                 displayCategories(state.data.categories)
+                displayMostRecentWorkouts(state.data.workouts)
             }
         }
     }
@@ -75,19 +88,6 @@ class NearByFragment : Fragment(), Injectable {
 
     fun navigateToDetails(seanceId: String) {
         findNavController().navigate(NearByFragmentDirections.actionTrouverUneSeanceFragmentToDetailsSeanceActivity(seanceId))
-    }
-
-    private fun isOnline(): Boolean {
-        val connMgr = activity!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo = connMgr.activeNetworkInfo
-        return networkInfo != null && networkInfo.isConnected
-    }
-
-    private fun showError(show: Boolean, errorMessage: String) {
-        mList.visibility = if (show) View.GONE else View.VISIBLE
-        mEmptyStateTextView.visibility = if (show) View.VISIBLE else View.GONE
-
-        mEmptyStateTextView.text = errorMessage
     }
 
     private fun displayMostRecentWorkouts(workouts: List<LatestWorkoutViewItem>) {
@@ -113,9 +113,8 @@ class NearByFragment : Fragment(), Injectable {
         categoriesAdapter.add(categoriesSection)
         categoriesRecyclerView.apply {
             setHasFixedSize(true)
-            layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = categoriesAdapter.apply {
-                setOnItemClickListener { item, view ->
+                setOnItemClickListener { item, _ ->
                     item as CategoryViewItem
                     findNavController()
                             .navigate(NearByFragmentDirections.actionTrouverUneSeanceFragmentToCategoryFragment(item.name))
