@@ -34,8 +34,9 @@ class SplashActivity : AppCompatActivity() {
             }else {
                 val uid = user.uid
                 val hasAccountSetup = sharedPreferences.getBoolean("IsSetup:$uid",false)
-                if (hasAccountSetup) startActivity<MainActivity>()
-                else startActivity<AccountSetupActivity>()
+                // if (hasAccountSetup)
+                startActivity<MainActivity>()
+                //else startActivity<AccountSetupActivity>()
                 finish()
             }
         }
