@@ -117,7 +117,7 @@ class NearByFragment : Fragment(), Injectable {
                 setOnItemClickListener { item, _ ->
                     item as CategoryViewItem
                     findNavController()
-                            .navigate(NearByFragmentDirections.actionTrouverUneSeanceFragmentToCategoryFragment(item.name))
+                            .navigate(NearByFragmentDirections.actionTrouverUneSeanceFragmentToCategoryFragment(getString(item.name)))
                 }
             }
         }

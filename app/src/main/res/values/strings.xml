@@ -106,5 +106,19 @@
     <string name="most_recent">Most recent in your city</string>
     <string name="categories_section_title">Search by categories</string>
     <string name="empty_address_toast_message">Please enter a valid address</string>
+    <string name="full_body">Full body</string>
+    <string name="upper_body">Upper body</string>
+    <string name="legs">Legs</string>
+    <string name="chest">Chest</string>
+    <string name="back">Back</string>
+    <string name="shoulders">Shoulders</string>
+    <string name="arms">Arms</string>
+    <string name="biceps">Biceps</string>
+    <string name="triceps">Triceps</string>
+    <string name="abs">Abs - core</string>
+    <string name="cardio">Cardio</string>
+    <string name="yoga">Yoga</string>
+
+
 
 </resources>

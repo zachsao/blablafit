@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
@@ -66,13 +65,13 @@ class TypeSeanceFragment : Fragment(), Injectable {
         workouts.add(WorkoutType("Running", R.drawable.icons8_running_50))
         workouts.add(WorkoutType("Upper body", R.drawable.icons8_torso_50))
         workouts.add(WorkoutType("Jambes", R.drawable.icons8_leg_50))
-        workouts.add(WorkoutType("Bras", R.drawable.icons8_muscle_50))
+        workouts.add(WorkoutType("Bras", R.drawable.icons8_arm_50))
         workouts.add(WorkoutType("Pecs", R.drawable.icons8_chest_50))
         workouts.add(WorkoutType("Epaules", R.drawable.icons8_shoulders_50))
         workouts.add(WorkoutType("Triceps", R.drawable.icons8_triceps_50))
-        workouts.add(WorkoutType("Dos", R.drawable.icons8_bodybuilder_50))
+        workouts.add(WorkoutType("Dos", R.drawable.icons8_back_50))
         workouts.add(WorkoutType("Biceps", R.drawable.icons8_biceps_50))
-        workouts.add(WorkoutType("Abdos", R.drawable.icons8_prelum_50))
+        workouts.add(WorkoutType("Abdos", R.drawable.icons8_abs_50))
 
 
         mAdapter = WorkoutTypeAdapter(activity!!, workouts)
