@@ -16,15 +16,11 @@
         android:label="Trouver une séance"
         tools:layout="@layout/fragment_seances" >
         <action
-            android:id="@+id/action_trouverUneSeanceFragment_to_detailsSeanceActivity"
-            app:destination="@id/detailsSeanceActivity"
-            app:enterAnim="@anim/slide_in_up"
-            app:exitAnim="@anim/slide_out_up"
-            app:popEnterAnim="@anim/slide_in_down"
-            app:popExitAnim="@anim/slide_out_down" />
-        <action
             android:id="@+id/action_trouverUneSeanceFragment_to_categoryFragment"
             app:destination="@id/categoryFragment" />
+        <action
+            android:id="@+id/action_trouverUneSeanceFragment_to_detailsSeanceActivity"
+            app:destination="@id/detailsSeanceActivity" />
     </fragment>
     <fragment
         android:id="@+id/seancesFragment"
@@ -137,5 +133,8 @@
         <argument
             android:name="title"
             app:argType="string" />
+        <action
+            android:id="@+id/action_categoryFragment_to_detailsSeanceActivity"
+            app:destination="@id/detailsSeanceActivity" />
     </fragment>
 </navigation>

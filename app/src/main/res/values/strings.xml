@@ -32,6 +32,7 @@
     <string name="firebase_web_host" translatable="false">blablafit-bf234.firebaseapp.com</string>
     <string name="fui_progress_dialog_signing_up">Creating your shiny new account...</string>
     <string name="no_seance_available">Aucune séance organisée à cette date. Trouvez en une à proximité ou  créez la votre.</string>
+    <string name="no_seance_available_for_category">It seems no workout is scheduled. Try and create your own so others can join you</string>
     <string name="no_messages">Aucun messages</string>
     <string name="no_messages_detail">Vos messages s\'afficheront ici lorsque des blablafiteurs vous contacteront.</string>
     <string name="email_sign_in_button">Sign in with Email</string>

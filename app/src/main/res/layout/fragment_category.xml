@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:visibility="gone"
-            android:text="@string/no_seance_available"
+            android:text="@string/no_seance_available_for_category"
             status="@{viewModel.stateLiveData().data.error}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
