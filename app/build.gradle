@@ -26,6 +26,12 @@ android {
         }
     }
 
+    signingConfigs {
+        debug {
+            storeFile file("../external/debug.keystore")
+        }
+    }
+
     buildTypes.each {
         it.buildConfigField 'String', 'GOOGLE_PLACES_KEY', GooglePlacesApiKey
         it.buildConfigField 'String', 'MAPBOX_PLACES_KEY', MapboxAutoCompleteApiKey
