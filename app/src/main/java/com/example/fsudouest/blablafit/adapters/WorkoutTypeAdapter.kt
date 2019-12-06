@@ -1,33 +1,17 @@
 package com.example.fsudouest.blablafit.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.selection.ItemDetailsLookup
-import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.SeanceTypeItemBinding
 import com.example.fsudouest.blablafit.features.nearby.ui.CategoryViewItem
 
-class WorkoutTypeAdapter(private var mContext: Context, private var mData: List<CategoryViewItem>): RecyclerView.Adapter<WorkoutTypeAdapter.CardViewHolder>() {
-
-    lateinit var context: Context
-
-    private var tracker: SelectionTracker<Long>? = null
-
-    init {
-        setHasStableIds(true)
-    }
+class WorkoutTypeAdapter(val mData: List<CategoryViewItem>) : RecyclerView.Adapter<WorkoutTypeAdapter.CardViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
-        context = parent.context
-
-        val inflater = LayoutInflater.from(context)
-
-        val binding = DataBindingUtil.inflate<SeanceTypeItemBinding>(inflater,R.layout.seance_type_item, parent, false)
+        val binding = SeanceTypeItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return CardViewHolder(binding)
     }
@@ -38,34 +22,27 @@ class WorkoutTypeAdapter(private var mContext: Context, private var mData: List<
         holder.bind(mData[position])
     }
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
-
-
-    fun setTracker(tracker: SelectionTracker<Long>?) {
-        this.tracker = tracker
-    }
-
 
 
     inner class CardViewHolder(var binding: SeanceTypeItemBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(category: CategoryViewItem){
             binding.category = category
 
-            if(tracker!!.isSelected(adapterPosition.toLong())) {
-                binding.cardItem.background = ContextCompat.getDrawable(context,R.drawable.card_selected)
+            binding.cardItem.setOnClickListener {
+                category.isSelected = !category.isSelected
+                if (category.isSelected) {
+                    binding.cardItem.background = ContextCompat.getDrawable(binding.root.context, R.drawable.card_selected)
+                } else {
+                    binding.cardItem.background = ContextCompat.getDrawable(binding.root.context, R.drawable.card_unselected)
+                }
+            }
+
+            if (category.isSelected) {
+                binding.cardItem.background = ContextCompat.getDrawable(binding.root.context, R.drawable.card_selected)
             } else {
-                // Reset color to white if not selected
-                binding.cardItem.background = ContextCompat.getDrawable(context,R.drawable.card_unselected)
+                binding.cardItem.background = ContextCompat.getDrawable(binding.root.context, R.drawable.card_unselected)
             }
         }
-
-        fun getItemDetails(): ItemDetailsLookup.ItemDetails<Long> =
-                object: ItemDetailsLookup.ItemDetails<Long>() {
-                    override fun getSelectionKey(): Long? = itemId
-                    override fun getPosition(): Int = adapterPosition
-                }
     }
 
 

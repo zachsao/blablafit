@@ -11,7 +11,7 @@ import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.categorie_item.*
 
 
-data class CategoryViewItem(@StringRes val name: Int, @DrawableRes val iconId: Int) : BindableItem<CategorieItemBinding>() {
+data class CategoryViewItem(@StringRes val name: Int, @DrawableRes val iconId: Int, var isSelected: Boolean = false) : BindableItem<CategorieItemBinding>() {
     override fun bind(viewBinding: CategorieItemBinding, position: Int) {
         viewBinding.category = this
     }
