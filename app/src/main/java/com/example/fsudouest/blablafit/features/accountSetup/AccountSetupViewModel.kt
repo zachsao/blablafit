@@ -115,7 +115,7 @@ class AccountSetupViewModel @Inject constructor(
                 .get()
                 .addOnSuccessListener {
                     val user = it.toObject(User::class.java)
-                    data.profilePictureUri?.let { saveProfilePictureToStorage(user) }
+                    data.profilePictureUri?.let { saveProfilePictureToStorage(user) } ?: user?.let { saveUserToFirestore(it) }
                 }
                 .addOnFailureListener {
                     Timber.e(it)
