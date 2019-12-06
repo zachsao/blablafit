@@ -15,24 +15,22 @@ import com.bumptech.glide.Glide
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentMessagesBinding
 import com.example.fsudouest.blablafit.di.Injectable
-import com.example.fsudouest.blablafit.features.messages.conversation.ConversationActivity
+import com.example.fsudouest.blablafit.features.conversation.ConversationActivity
 import com.example.fsudouest.blablafit.features.messages.viewModel.MessagesViewModel
 import com.example.fsudouest.blablafit.model.User
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
-import com.xwray.groupie.OnItemClickListener
 import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.fragment_messages.*
 import kotlinx.android.synthetic.main.latest_message_item.view.*
 import org.jetbrains.anko.startActivity
-import org.jetbrains.anko.support.v4.startActivity
 import javax.inject.Inject
 
 class MessagesFragment : Fragment(), Injectable {
 
     @Inject
-    lateinit var factory: ViewModelFactory
+    lateinit var factory: ViewModelFactory<MessagesViewModel>
 
     private lateinit var viewModel: MessagesViewModel
 

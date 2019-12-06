@@ -1,6 +1,5 @@
-package com.example.fsudouest.blablafit.di
+package com.example.fsudouest.blablafit.features.home
 
-import com.example.fsudouest.blablafit.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

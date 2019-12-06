@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit.features.messages.conversation
+package com.example.fsudouest.blablafit.features.conversation
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData

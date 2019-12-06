@@ -1,20 +1,16 @@
 package com.example.fsudouest.blablafit.features.login.register
 
 
-import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.example.fsudouest.blablafit.MainActivity
-
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentRegisterBinding
 import com.example.fsudouest.blablafit.di.Injectable
@@ -25,17 +21,14 @@ import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.fragment_register.*
 import org.jetbrains.anko.clearTask
-import org.jetbrains.anko.clearTop
 import org.jetbrains.anko.newTask
-import org.jetbrains.anko.support.v4.defaultSharedPreferences
 import org.jetbrains.anko.support.v4.intentFor
-import org.jetbrains.anko.support.v4.startActivity
 import javax.inject.Inject
 
 class RegisterFragment : Fragment(), Injectable {
 
     @Inject
-    lateinit var factory: ViewModelFactory
+    lateinit var factory: ViewModelFactory<RegisterViewModel>
 
     private lateinit var viewModel: RegisterViewModel
     private lateinit var binding: FragmentRegisterBinding

@@ -3,32 +3,30 @@ package com.example.fsudouest.blablafit.features.accountSetup.fitnessLevel
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.example.fsudouest.blablafit.MainActivity
-
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.accountSetup.AccountSetupState
 import com.example.fsudouest.blablafit.features.accountSetup.AccountSetupViewModel
+import com.example.fsudouest.blablafit.features.home.MainActivity
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_level.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.newTask
 import org.jetbrains.anko.support.v4.intentFor
-import org.jetbrains.anko.support.v4.startActivity
 import javax.inject.Inject
 
 class LevelFragment : Fragment(), Injectable {
 
     @Inject
-    lateinit var factory: ViewModelFactory
+    lateinit var factory: ViewModelFactory<AccountSetupViewModel>
 
     private lateinit var viewModel: AccountSetupViewModel
 

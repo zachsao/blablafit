@@ -10,7 +10,7 @@ import androidx.navigation.navArgs
 import com.bumptech.glide.Glide
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.ActivityDetailsSeanceBinding
-import com.example.fsudouest.blablafit.features.messages.conversation.ConversationActivity
+import com.example.fsudouest.blablafit.features.conversation.ConversationActivity
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
@@ -39,7 +39,7 @@ class DetailsSeanceActivity : AppCompatActivity() {
 
     private lateinit var viewModel: DetailsViewModel
 
-    @Inject lateinit var factory: ViewModelFactory
+    @Inject lateinit var factory: ViewModelFactory<DetailsViewModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)

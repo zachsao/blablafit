@@ -31,7 +31,8 @@ class TypeSeanceFragment : Fragment(), Injectable {
     private lateinit var list: RecyclerView
 
     private lateinit var viewModel: WorkoutCreationViewModel
-    @Inject lateinit var factory: ViewModelFactory
+    @Inject
+    lateinit var factory: ViewModelFactory<WorkoutCreationViewModel>
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

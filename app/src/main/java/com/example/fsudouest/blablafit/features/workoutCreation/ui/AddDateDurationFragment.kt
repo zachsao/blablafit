@@ -41,7 +41,7 @@ class AddDateDurationFragment : Fragment(), Injectable {
 
     private lateinit var viewModel: WorkoutCreationViewModel
     @Inject
-    lateinit var factory: ViewModelFactory
+    lateinit var factory: ViewModelFactory<WorkoutCreationViewModel>
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

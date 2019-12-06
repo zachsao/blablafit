@@ -2,24 +2,19 @@ package com.example.fsudouest.blablafit.features.workoutCreation.ui
 
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.example.fsudouest.blablafit.BuildConfig
-
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentSearchLocationBinding
 import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.workoutCreation.viewModel.WorkoutCreationViewModel
-import com.example.fsudouest.blablafit.model.Seance
-import com.example.fsudouest.blablafit.model.User
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.Places
@@ -27,7 +22,6 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_search_location.*
 import org.jetbrains.anko.support.v4.toast
@@ -45,7 +39,7 @@ class SearchLocationFragment : Fragment(), Injectable {
     @Inject
     lateinit var mDatabase: FirebaseFirestore
     @Inject
-    lateinit var factory: ViewModelFactory
+    lateinit var factory: ViewModelFactory<WorkoutCreationViewModel>
     private lateinit var viewModel: WorkoutCreationViewModel
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

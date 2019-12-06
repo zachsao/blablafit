@@ -2,20 +2,16 @@ package com.example.fsudouest.blablafit.features.login
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-
-import android.os.Bundle
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.findNavController
-import com.example.fsudouest.blablafit.MainActivity
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.ActivityLogin2Binding
-
+import com.example.fsudouest.blablafit.features.home.MainActivity
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
-
-import java.util.Arrays
+import java.util.*
 
 /**
  * A login screen that offers login via email/password.

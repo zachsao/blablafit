@@ -1,6 +1,7 @@
-package com.example.fsudouest.blablafit.di
+package com.example.fsudouest.blablafit.features.workoutDetails
 
-import com.example.fsudouest.blablafit.features.workoutDetails.DetailsSeanceActivity
+import androidx.lifecycle.ViewModel
+import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -8,4 +9,7 @@ import dagger.android.ContributesAndroidInjector
 abstract class DetailsSeanceActivityModule {
     @ContributesAndroidInjector
     abstract fun contributeDetailsSeanceActivity(): DetailsSeanceActivity
+
+    @Binds
+    abstract fun bindDetailsViewModel(repoViewModel: DetailsViewModel): ViewModel
 }

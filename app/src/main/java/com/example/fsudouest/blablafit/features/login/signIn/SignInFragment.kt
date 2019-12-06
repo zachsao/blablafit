@@ -5,19 +5,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.NavHostFragment.findNavController
-import com.example.fsudouest.blablafit.MainActivity
-
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.di.Injectable
+import com.example.fsudouest.blablafit.features.home.MainActivity
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_signin_form.*
 import javax.inject.Inject
@@ -26,7 +25,7 @@ import javax.inject.Inject
 class SignInFragment : Fragment(), Injectable {
 
     @Inject
-    lateinit var factory: ViewModelFactory
+    lateinit var factory: ViewModelFactory<SignInViewModel>
     private lateinit var viewModel: SignInViewModel
 
     private lateinit var binding: com.example.fsudouest.blablafit.databinding.FragmentSigninFormBinding

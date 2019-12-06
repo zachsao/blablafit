@@ -25,7 +25,7 @@ class MyProfileFragment : Fragment(), Injectable {
     private lateinit var profile_pic: ImageView
 
     @Inject
-    lateinit var factory: ViewModelFactory
+    lateinit var factory: ViewModelFactory<ProfileViewModel>
 
     private lateinit var viewModel: ProfileViewModel
 

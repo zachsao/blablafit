@@ -3,13 +3,11 @@ package com.example.fsudouest.blablafit.features.nearby.ui
 
 import android.os.Bundle
 import android.view.*
-import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.nearby.NearByState
@@ -29,7 +27,7 @@ class NearByFragment : Fragment(), Injectable {
     private lateinit var categoriesAdapter: GroupAdapter<GroupieViewHolder>
     private lateinit var categoriesSection: Section
     @Inject
-    lateinit var factory: ViewModelFactory
+    lateinit var factory: ViewModelFactory<NearByViewModel>
 
     private lateinit var viewModel: NearByViewModel
 

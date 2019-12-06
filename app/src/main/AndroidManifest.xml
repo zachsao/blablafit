@@ -23,7 +23,7 @@
             android:name=".features.login.SignUpActivity"
             android:theme="@style/SignInTheme" />
         <activity
-            android:name=".MainActivity"
+            android:name=".features.home.MainActivity"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".features.login.LoginActivity"
@@ -34,10 +34,10 @@
         <activity
             android:name=".features.workoutDetails.DetailsSeanceActivity"
             android:label="Détails de la séance"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".features.home.MainActivity" />
         <activity
-            android:name=".features.messages.conversation.ConversationActivity"
-            android:parentActivityName=".MainActivity">
+            android:name="com.example.fsudouest.blablafit.features.conversation.ConversationActivity"
+            android:parentActivityName=".features.home.MainActivity">
             <intent-filter>
                 <action android:name="ConversationActivity" />
 

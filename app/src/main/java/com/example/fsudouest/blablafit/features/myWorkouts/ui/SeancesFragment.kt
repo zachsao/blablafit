@@ -3,7 +3,6 @@ package com.example.fsudouest.blablafit.features.myWorkouts.ui
 
 import android.app.DatePickerDialog
 import android.content.Context
-import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
@@ -47,7 +46,7 @@ class SeancesFragment : Fragment(), Injectable, NearByAdapter.ClickListener {
     lateinit var mFirebaseAuth: FirebaseAuth
 
     @Inject
-    lateinit var factory: ViewModelFactory
+    lateinit var factory: ViewModelFactory<WorkoutsViewModel>
     private lateinit var viewModel: WorkoutsViewModel
 
     private var user: FirebaseUser? = null

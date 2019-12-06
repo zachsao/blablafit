@@ -1,43 +1,49 @@
-package com.example.fsudouest.blablafit.di
+package com.example.fsudouest.blablafit.features.home
 
 import com.example.fsudouest.blablafit.features.category.CategoryFragment
+import com.example.fsudouest.blablafit.features.category.di.CategoryModule
+import com.example.fsudouest.blablafit.features.messages.di.MessagesModule
 import com.example.fsudouest.blablafit.features.messages.ui.MessagesFragment
+import com.example.fsudouest.blablafit.features.myWorkouts.di.MyWorkoutsModule
 import com.example.fsudouest.blablafit.features.myWorkouts.ui.SeancesFragment
+import com.example.fsudouest.blablafit.features.nearby.di.NearByModule
 import com.example.fsudouest.blablafit.features.nearby.ui.NearByFragment
 import com.example.fsudouest.blablafit.features.profile.MyProfileFragment
+import com.example.fsudouest.blablafit.features.profile.di.ProfileModule
+import com.example.fsudouest.blablafit.features.workoutCreation.di.WorkoutCreationModule
 import com.example.fsudouest.blablafit.features.workoutCreation.ui.*
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
 @Module
 abstract class FragmentBuildersModule {
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [MessagesModule::class])
     abstract fun contributeMessagesFragment(): MessagesFragment
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [ProfileModule::class])
     abstract fun contributeMyProfileFragment(): MyProfileFragment
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [MyWorkoutsModule::class])
     abstract fun contributeSeancesFragment(): SeancesFragment
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [NearByModule::class])
     abstract fun contributeTrouverUneSeanceFragment(): NearByFragment
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [WorkoutCreationModule::class])
     abstract fun contributeIndoorChoiceFragment(): IndoorChoiceFragment
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [WorkoutCreationModule::class])
     abstract fun contributeSearchLocationFragment(): SearchLocationFragment
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [WorkoutCreationModule::class])
     abstract fun contributeAddDateDurationFragment(): AddDateDurationFragment
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [WorkoutCreationModule::class])
     abstract fun contributeTypeSeanceFragment(): TypeSeanceFragment
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [WorkoutCreationModule::class])
     abstract fun contributeDescriptionFragment(): AddDescriptionFragment
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [CategoryModule::class])
     abstract fun contributeCategoryFragment(): CategoryFragment
 }

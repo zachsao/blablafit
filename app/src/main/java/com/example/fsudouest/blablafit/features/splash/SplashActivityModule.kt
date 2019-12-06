@@ -1,6 +1,5 @@
-package com.example.fsudouest.blablafit.di
+package com.example.fsudouest.blablafit.features.splash
 
-import com.example.fsudouest.blablafit.features.splash.SplashActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

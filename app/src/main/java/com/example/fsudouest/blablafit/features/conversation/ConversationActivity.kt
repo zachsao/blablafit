@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit.features.messages.conversation
+package com.example.fsudouest.blablafit.features.conversation
 
 
 import android.app.Activity
@@ -7,12 +7,10 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fsudouest.blablafit.R
-import com.example.fsudouest.blablafit.databinding.ActivityConversationBinding
 import com.example.fsudouest.blablafit.model.Chat
 import com.example.fsudouest.blablafit.model.User
 import com.example.fsudouest.blablafit.utils.FirestoreUtil
@@ -31,7 +29,7 @@ import javax.inject.Inject
 class ConversationActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var factory: ViewModelFactory
+    lateinit var factory: ViewModelFactory<ConversationViewModel>
 
     private lateinit var viewModel: ConversationViewModel
     private var shouldInitRecyclerView = true

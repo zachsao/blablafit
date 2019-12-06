@@ -34,7 +34,7 @@ private const val REQUEST_CODE_AUTOCOMPLETE = 1001
 class BasicInformationFragment : Fragment(), Injectable, CanSelectPhotoFromGallery {
 
     @Inject
-    lateinit var factory: ViewModelFactory
+    lateinit var factory: ViewModelFactory<AccountSetupViewModel>
     private lateinit var viewModel: AccountSetupViewModel
     private lateinit var datePickerDialog: DatePickerDialog
 

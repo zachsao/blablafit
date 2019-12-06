@@ -2,11 +2,9 @@ package com.example.fsudouest.blablafit.features.splash
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.fsudouest.blablafit.MainActivity
-import com.example.fsudouest.blablafit.features.accountSetup.AccountSetupActivity
+import com.example.fsudouest.blablafit.features.home.MainActivity
 import com.example.fsudouest.blablafit.features.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import dagger.android.AndroidInjection

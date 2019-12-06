@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit
+package com.example.fsudouest.blablafit.features.home
 
 
 import android.content.Intent
@@ -9,6 +9,7 @@ import androidx.navigation.Navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.NavigationUI.setupWithNavController
+import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.ActivityMainBinding
 import com.example.fsudouest.blablafit.features.login.LoginActivity
 import com.example.fsudouest.blablafit.utils.BottomNavigationViewHelper
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding: ActivityMainBinding = DataBindingUtil.setContentView(this,R.layout.activity_main)
+        val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
 
         mAuthStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         setupWithNavController(navigation, navController)
 
         val appBarConfiguration = AppBarConfiguration(setOf(R.id.trouverUneSeanceFragment, R.id.seancesFragment,
-                R.id.messagesFragment,R.id.myProfileFragment,R.id.indoorChoiceFragment))
+                R.id.messagesFragment, R.id.myProfileFragment, R.id.indoorChoiceFragment))
 
         NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration)
     }
