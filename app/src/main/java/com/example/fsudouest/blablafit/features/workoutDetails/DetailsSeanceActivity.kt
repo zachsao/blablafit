@@ -1,34 +1,25 @@
 package com.example.fsudouest.blablafit.features.workoutDetails
 
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
-import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.NavArgs
 import androidx.navigation.navArgs
-
 import com.bumptech.glide.Glide
-import com.example.fsudouest.blablafit.model.Seance
-import com.example.fsudouest.blablafit.model.User
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.ActivityDetailsSeanceBinding
+import com.example.fsudouest.blablafit.features.messages.conversation.ConversationActivity
+import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
 import dagger.android.AndroidInjection
-
-import java.text.SimpleDateFormat
-import java.util.Locale
-
 import de.hdodenhof.circleimageview.CircleImageView
+import org.jetbrains.anko.startActivity
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 
@@ -71,8 +62,7 @@ class DetailsSeanceActivity : AppCompatActivity() {
         viewModel.detailsLiveData().observe(this, Observer {workout ->
             renderWorkout(workout)
             binding.contactButton.setOnClickListener {
-                //navigate to conversation activity
-                //workout.idAuteur
+                startActivity<ConversationActivity>("contactName" to workout.nomAuteur, "userId" to workout.idAuteur)
             }
         })
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -82,7 +72,7 @@ class DetailsSeanceActivity : AppCompatActivity() {
         binding.seance = seance
 
         val authorProfilePicture = seance.photoAuteur
-        Glide.with(this).load(authorProfilePicture).fallback(R.drawable.userphoto).into(photo)
+        Glide.with(this).load(authorProfilePicture).placeholder(R.drawable.userphoto).into(photo)
 
         val dateFormat = SimpleDateFormat("dd/MM/yy", Locale("fr", "FR"))
         val dateChaine = dateFormat.format(seance.date)

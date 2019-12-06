@@ -1,5 +1,6 @@
 package com.example.fsudouest.blablafit.di
 
+import com.example.fsudouest.blablafit.features.category.CategoryFragment
 import com.example.fsudouest.blablafit.features.messages.ui.MessagesFragment
 import com.example.fsudouest.blablafit.features.myWorkouts.ui.SeancesFragment
 import com.example.fsudouest.blablafit.features.nearby.ui.NearByFragment
@@ -36,4 +37,7 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeDescriptionFragment(): AddDescriptionFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeCategoryFragment(): CategoryFragment
 }

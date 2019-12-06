@@ -14,8 +14,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
-
+private const val MOST_RECENT_LIMIT = 10L
 class NearByViewModel @Inject constructor(private val mDatabase: FirebaseFirestore) : ViewModel() {
+
 
     private val stateLiveData = MutableLiveData<NearByState>()
 
@@ -29,8 +30,8 @@ class NearByViewModel @Inject constructor(private val mDatabase: FirebaseFiresto
     }
 
     fun updateWorkouts() {
-        val ref = mDatabase.collection("workouts")
-        ref.get()
+        mDatabase.collection("workouts").limit(MOST_RECENT_LIMIT)
+                .get()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val results = task.result!!.documents

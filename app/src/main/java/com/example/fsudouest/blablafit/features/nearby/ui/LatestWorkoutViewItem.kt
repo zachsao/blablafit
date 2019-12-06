@@ -15,18 +15,8 @@ data class LatestWorkoutViewItem(
         val time: String = ""
 ): BindableItem<MostRecentItemBinding>() {
     override fun bind(viewBinding: MostRecentItemBinding, position: Int) {
-        viewBinding.title.text = title
-        viewBinding.address.text = address
-        viewBinding.placesAvailable.text = placesAvailable
-        viewBinding.time.text = time
-        viewBinding.authorName.text = authorName
-
-        if (!authorPhotoUrl.isNullOrEmpty()) {
-            Glide.with(viewBinding.root.context)
-                    .load(authorPhotoUrl)
-                    .fallback(R.drawable.userphoto)
-                    .into(viewBinding.authorPhoto)
-        }
+        viewBinding.workout = this
+        viewBinding.executePendingBindings()
     }
 
     override fun getLayout(): Int = R.layout.most_recent_item
