@@ -24,9 +24,10 @@ import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.utils.MyLookup
 import com.example.fsudouest.blablafit.databinding.FragmentTypeSeanceBinding
 import com.example.fsudouest.blablafit.di.Injectable
+import com.example.fsudouest.blablafit.features.nearby.ui.CategoryViewItem
+import com.example.fsudouest.blablafit.features.nearby.ui.CategoryViewItems
 import com.example.fsudouest.blablafit.features.workoutCreation.viewModel.WorkoutCreationViewModel
 import com.example.fsudouest.blablafit.model.Seance
-import com.example.fsudouest.blablafit.model.WorkoutType
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import javax.inject.Inject
 
@@ -34,7 +35,7 @@ import javax.inject.Inject
 class TypeSeanceFragment : Fragment(), Injectable {
 
     private lateinit var mAdapter: WorkoutTypeAdapter
-    private lateinit var workouts: ArrayList<WorkoutType>
+    private lateinit var categories: List<CategoryViewItem>
     private lateinit var list: RecyclerView
 
     private var tracker: SelectionTracker<Long>? = null
@@ -59,22 +60,8 @@ class TypeSeanceFragment : Fragment(), Injectable {
 
         list = binding.gridRecyclerView
 
-        workouts = ArrayList()
-        workouts.add(WorkoutType("Full body", R.drawable.icons8_weightlifting_50))
-        workouts.add(WorkoutType("Yoga", R.drawable.icons8_yoga_50))
-        workouts.add(WorkoutType("Running", R.drawable.icons8_running_50))
-        workouts.add(WorkoutType("Upper body", R.drawable.icons8_torso_50))
-        workouts.add(WorkoutType("Jambes", R.drawable.icons8_leg_50))
-        workouts.add(WorkoutType("Bras", R.drawable.icons8_arm_50))
-        workouts.add(WorkoutType("Pecs", R.drawable.icons8_chest_50))
-        workouts.add(WorkoutType("Epaules", R.drawable.icons8_shoulders_50))
-        workouts.add(WorkoutType("Triceps", R.drawable.icons8_triceps_50))
-        workouts.add(WorkoutType("Dos", R.drawable.icons8_back_50))
-        workouts.add(WorkoutType("Biceps", R.drawable.icons8_biceps_50))
-        workouts.add(WorkoutType("Abdos", R.drawable.icons8_abs_50))
-
-
-        mAdapter = WorkoutTypeAdapter(activity!!, workouts)
+        categories = CategoryViewItems.getCategoryViewItems()
+        mAdapter = WorkoutTypeAdapter(activity!!, categories)
 
 
 
@@ -101,7 +88,7 @@ class TypeSeanceFragment : Fragment(), Injectable {
                 Toast.makeText(activity, "Veuillez séléctionner au moins un élément", LENGTH_SHORT).show()
             } else {
                 val workoutTitle = tracker!!.selection.joinToString(separator = " - ") { index ->
-                    workouts[index.toInt()].title
+                    getString(categories[index.toInt()].name)
                 }
                 val workout = Seance(workoutTitle)
                 viewModel.addWorkout(workout)

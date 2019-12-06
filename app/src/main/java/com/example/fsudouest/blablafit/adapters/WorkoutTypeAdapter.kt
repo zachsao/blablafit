@@ -8,12 +8,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.selection.ItemDetailsLookup
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.fsudouest.blablafit.R
-import com.example.fsudouest.blablafit.model.WorkoutType
 import com.example.fsudouest.blablafit.databinding.SeanceTypeItemBinding
+import com.example.fsudouest.blablafit.features.nearby.ui.CategoryViewItem
 
-class WorkoutTypeAdapter(private var mContext: Context, private var mData: ArrayList<WorkoutType>): RecyclerView.Adapter<WorkoutTypeAdapter.CardViewHolder>() {
+class WorkoutTypeAdapter(private var mContext: Context, private var mData: List<CategoryViewItem>): RecyclerView.Adapter<WorkoutTypeAdapter.CardViewHolder>() {
 
     lateinit var context: Context
 
@@ -23,7 +22,7 @@ class WorkoutTypeAdapter(private var mContext: Context, private var mData: Array
         setHasStableIds(true)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkoutTypeAdapter.CardViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
         context = parent.context
 
         val inflater = LayoutInflater.from(context)
@@ -35,8 +34,8 @@ class WorkoutTypeAdapter(private var mContext: Context, private var mData: Array
 
     override fun getItemCount() = mData.size
 
-    override fun onBindViewHolder(holder: WorkoutTypeAdapter.CardViewHolder, position: Int) {
-        holder.bind(position)
+    override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
+        holder.bind(mData[position])
     }
 
     override fun getItemId(position: Int): Long {
@@ -51,12 +50,10 @@ class WorkoutTypeAdapter(private var mContext: Context, private var mData: Array
 
 
     inner class CardViewHolder(var binding: SeanceTypeItemBinding): RecyclerView.ViewHolder(binding.root) {
+        fun bind(category: CategoryViewItem){
+            binding.category = category
 
-        fun bind(position: Int){
-            binding.workoutTypeTv.text = mData[position].title
-            Glide.with(context).load(mData[position].iconId).into(binding.workoutIcon)
-
-            if(tracker!!.isSelected(position.toLong())) {
+            if(tracker!!.isSelected(adapterPosition.toLong())) {
                 binding.cardItem.background = ContextCompat.getDrawable(context,R.drawable.card_selected)
             } else {
                 // Reset color to white if not selected
