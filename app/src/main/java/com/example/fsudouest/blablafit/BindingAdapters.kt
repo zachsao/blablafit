@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
+import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -32,4 +33,12 @@ fun bindStatus(textView: TextView, text: String?){
 @BindingAdapter("resIcon")
 fun bindResIcon(imageView: ImageView, @DrawableRes icon: Int) {
     Glide.with(imageView.context).load(icon).into(imageView)
+}
+
+@BindingAdapter("imgUrl")
+fun bindImage(imageView: ImageView, imageUrl: String?){
+    Glide.with(imageView.context)
+            .load(imageUrl)
+            .placeholder(R.drawable.userphoto)
+            .into(imageView)
 }

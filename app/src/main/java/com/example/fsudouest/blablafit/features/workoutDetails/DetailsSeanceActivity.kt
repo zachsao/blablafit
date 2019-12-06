@@ -82,7 +82,7 @@ class DetailsSeanceActivity : AppCompatActivity() {
         binding.seance = seance
 
         val authorProfilePicture = seance.photoAuteur
-        Glide.with(this).load(authorProfilePicture).fallback(R.drawable.userphoto).into(photo)
+        Glide.with(this).load(authorProfilePicture).placeholder(R.drawable.userphoto).into(photo)
 
         val dateFormat = SimpleDateFormat("dd/MM/yy", Locale("fr", "FR"))
         val dateChaine = dateFormat.format(seance.date)
