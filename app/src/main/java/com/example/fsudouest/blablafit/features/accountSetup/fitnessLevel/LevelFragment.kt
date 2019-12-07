@@ -1,7 +1,6 @@
 package com.example.fsudouest.blablafit.features.accountSetup.fitnessLevel
 
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -38,8 +37,6 @@ class LevelFragment : Fragment(), Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val sharedPreferences = activity?.getSharedPreferences("Default", Context.MODE_PRIVATE)
-
         viewModel = activity?.run {
             ViewModelProviders.of(this, factory)[AccountSetupViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
@@ -47,7 +44,6 @@ class LevelFragment : Fragment(), Injectable {
             when (state){
                 is AccountSetupState.LevelUpdated -> selectLevel(state.data.level)
                 is AccountSetupState.Success -> {
-                    viewModel.completeSetup(sharedPreferences)
                     activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                     startActivity(intentFor<MainActivity>().newTask().clearTask())
                 }
@@ -80,17 +76,17 @@ class LevelFragment : Fragment(), Injectable {
         when (level) {
             FitnessLevel.Beginner -> {
                 select(beginner)
-                unselect(intermediate)
-                unselect(advanced)
+                unSelect(intermediate)
+                unSelect(advanced)
             }
             FitnessLevel.Intermediate -> {
-                unselect(beginner)
+                unSelect(beginner)
                 select(intermediate)
-                unselect(advanced)
+                unSelect(advanced)
             }
             FitnessLevel.Advanced -> {
-                unselect(beginner)
-                unselect(intermediate)
+                unSelect(beginner)
+                unSelect(intermediate)
                 select(advanced)
             }
         }
@@ -102,11 +98,11 @@ class LevelFragment : Fragment(), Injectable {
         advanced.setOnClickListener{ viewModel.updateLevel(FitnessLevel.Advanced)}
     }
 
-    fun select(view: View){
+    private fun select(view: View){
         view.background = activity?.getDrawable(R.drawable.card_selected)
     }
 
-    fun unselect(view: View){
+    private fun unSelect(view: View){
         view.background = activity?.getDrawable(R.drawable.card_unselected)
     }
 }

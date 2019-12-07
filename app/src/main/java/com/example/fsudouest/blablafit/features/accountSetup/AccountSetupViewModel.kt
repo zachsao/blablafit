@@ -1,8 +1,6 @@
 package com.example.fsudouest.blablafit.features.accountSetup
 
-import android.content.SharedPreferences
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,7 +8,6 @@ import com.example.fsudouest.blablafit.features.accountSetup.basicinformation.Va
 import com.example.fsudouest.blablafit.features.accountSetup.fitnessLevel.FitnessLevel
 import com.example.fsudouest.blablafit.model.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import timber.log.Timber
@@ -18,7 +15,7 @@ import javax.inject.Inject
 
 class AccountSetupViewModel @Inject constructor(
         private val firestore: FirebaseFirestore,
-        private val auth: FirebaseAuth,
+        auth: FirebaseAuth,
         private val storage: FirebaseStorage
 ): ViewModel() {
 
@@ -128,7 +125,8 @@ class AccountSetupViewModel @Inject constructor(
                 birthday = data.birthday,
                 city = data.city,
                 gender = data.gender,
-                fitnessLevel = data.level
+                fitnessLevel = data.level,
+                setup = true
         )
         firestore.collection("users").document(uid)
                 .set(updatedUser)
@@ -138,9 +136,5 @@ class AccountSetupViewModel @Inject constructor(
                 .addOnFailureListener {
                     Timber.e(it)
                 }
-    }
-
-    fun completeSetup(prefs: SharedPreferences?) {
-        prefs?.edit()?.putBoolean("IsSetup:${auth.currentUser?.uid}", true)?.apply()
     }
 }

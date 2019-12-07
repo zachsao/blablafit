@@ -11,5 +11,6 @@ data class User(
         val city: String = "",
         val birthday: String = "",
         val gender: Boolean = true,
-        val fitnessLevel: FitnessLevel = FitnessLevel.Beginner
+        val fitnessLevel: FitnessLevel = FitnessLevel.Beginner,
+        val setup: Boolean = false
 )
