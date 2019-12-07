@@ -25,15 +25,13 @@ class WorkoutsViewModel @Inject constructor(private val mDatabase: FirebaseFires
                 .whereEqualTo("idAuteur", currentUser?.uid)
                 .whereGreaterThanOrEqualTo("date", debutJournee)
                 .whereLessThanOrEqualTo("date", finJournee)
-                .get()
-                .addOnCompleteListener { task ->
-                    when (task.isSuccessful) {
-                        true -> {
-                            workoutsLiveData.value = task.result!!.documents.map { it.toObject(Seance::class.java) } as ArrayList
-                        }
-                        else -> {
-                            Log.e("WorkoutsViewModel", task.exception?.message)
-                        }
+                .addSnapshotListener { snapshot, exception ->
+                    if (exception != null) {
+                        Timber.e(exception)
+                        return@addSnapshotListener
+                    }else {
+                        val workouts = snapshot!!.documents.map { it.toObject(Seance::class.java) }
+                        workoutsLiveData.value = workouts as ArrayList
                     }
                 }
     }
