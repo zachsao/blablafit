@@ -13,7 +13,6 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.fsudouest.blablafit.adapters.WorkoutTypeAdapter
 import com.example.fsudouest.blablafit.databinding.FragmentTypeSeanceBinding
 import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.nearby.ui.CategoryViewItem

@@ -1,12 +1,10 @@
 package com.example.fsudouest.blablafit.features.myWorkouts.viewModel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fsudouest.blablafit.model.Seance
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Source
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -40,7 +38,7 @@ class WorkoutsViewModel @Inject constructor(private val mDatabase: FirebaseFires
         val ref = mDatabase.collection("workouts")
         ref.document(workoutId)
                 .delete()
-                .addOnSuccessListener { Log.d("Seances Fragment", "DocumentSnapshot successfully deleted!") }
-                .addOnFailureListener { e -> Log.e("Seances Fragment", "ValidationError deleting document", e) }
+                .addOnSuccessListener { Timber.d("DocumentSnapshot successfully deleted!") }
+                .addOnFailureListener { e -> Timber.e(e) }
     }
 }

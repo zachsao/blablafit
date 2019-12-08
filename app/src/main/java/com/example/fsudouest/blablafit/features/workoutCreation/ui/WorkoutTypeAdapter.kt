@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit.adapters
+package com.example.fsudouest.blablafit.features.workoutCreation.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

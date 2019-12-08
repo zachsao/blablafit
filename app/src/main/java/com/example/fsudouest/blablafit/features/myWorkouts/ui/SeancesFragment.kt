@@ -5,7 +5,6 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +19,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fsudouest.blablafit.R
-import com.example.fsudouest.blablafit.adapters.SeanceAdapter
 import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.myWorkouts.viewModel.WorkoutsViewModel
 import com.example.fsudouest.blablafit.features.nearby.ui.NearByAdapter
@@ -28,9 +26,8 @@ import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.utils.SwipeToDeleteCallback
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -43,13 +40,8 @@ class SeancesFragment : Fragment(), Injectable, NearByAdapter.ClickListener {
     private lateinit var mProgressView: View
 
     @Inject
-    lateinit var mFirebaseAuth: FirebaseAuth
-
-    @Inject
     lateinit var factory: ViewModelFactory<WorkoutsViewModel>
     private lateinit var viewModel: WorkoutsViewModel
-
-    private var user: FirebaseUser? = null
 
     private var seances = ArrayList<Seance?>()
 
@@ -61,16 +53,13 @@ class SeancesFragment : Fragment(), Injectable, NearByAdapter.ClickListener {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_seances, container, false)
 
-
-        user = mFirebaseAuth.currentUser
-
         mEmptyStateTextView = binding.emptyStateTextView
         mProgressView = binding.seancesProgress
         mList = binding.rvSeances
 
         viewModel = ViewModelProviders.of(this, factory).get(WorkoutsViewModel::class.java).apply {
             workoutsLiveData().observe(this@SeancesFragment, androidx.lifecycle.Observer {
-                Log.i("SeanceFragment", "Observing workouts")
+                Timber.i("Observing workouts")
                 mAdapter = SeanceAdapter(it, this@SeancesFragment)
                 displayList(it)
                 seances = it
@@ -105,7 +94,7 @@ class SeancesFragment : Fragment(), Injectable, NearByAdapter.ClickListener {
         }, year, currentMonth, day)
 
         // If there is a network connection, fetch data
-        if (isOnline() && user != null) {
+        if (isOnline()) {
             showProgress(true)
             binding.dateSelectionButton.setOnClickListener {
                 datePickerDialog.show()
@@ -182,13 +171,11 @@ class SeancesFragment : Fragment(), Injectable, NearByAdapter.ClickListener {
             anchorView = activity!!.bottom_navigation
             addCallback(object : Snackbar.Callback() {
                 override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                    Log.d("Seances Fragment", "Snackbar dismissed")
                     if (event != DISMISS_EVENT_ACTION)
                         viewModel.deleteWorkout(deletedItem.id)
                 }
             })
             setAction("ANNULER") {
-                // undo is selected, restore the deleted item
                 if (deletedIndex == 0) hideError()
                 mAdapter.restoreItem(deletedItem, deletedIndex)
             }

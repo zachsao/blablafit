@@ -10,8 +10,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        >
+        android:layout_margin="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -120,8 +119,9 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:id="@+id/author_profile_picture"
-                        android:src="@drawable/userphoto"
-                        android:layout_marginLeft="8dp"/>
+                        imgUrl="@{seance.photoAuteur}"
+                        android:layout_marginStart="8dp"
+                        tools:src="@drawable/userphoto"/>
 
                 </LinearLayout>
 
