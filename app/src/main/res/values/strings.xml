@@ -119,6 +119,8 @@
     <string name="abs">Abs - core</string>
     <string name="cardio">Cardio</string>
     <string name="yoga">Yoga</string>
+    <string name="description_hint">e.g : Pull ups - Bench press - Dead lift - Squats</string>
+    <string name="no_description">No workout description provided.</string>
 
 
 

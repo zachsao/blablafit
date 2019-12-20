@@ -291,7 +291,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="64dp"
-                android:text="Une brève description de la séance qui indique les exercices prévus, sans entrer dans les détails du nombre de séries et de répétitions"
+                android:text="@string/no_description"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
