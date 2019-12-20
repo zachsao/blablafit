@@ -1,8 +1,10 @@
 package com.example.fsudouest.blablafit.features.workoutDetails
 
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -17,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import dagger.android.AndroidInjection
 import de.hdodenhof.circleimageview.CircleImageView
+import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.startActivity
 import java.text.SimpleDateFormat
 import java.util.*
@@ -86,14 +89,15 @@ class DetailsSeanceActivity : AppCompatActivity() {
         when {
             hasAlreadyJoined(seance) -> {
                 binding.participateButton.text = "Unjoin workout"
-                binding.participateButton.background = getDrawable(R.drawable.round_corner_red)
+                binding.participateButton.backgroundColor = ContextCompat.getColor(this, R.color.dark_red)
                 binding.participateButton.setOnClickListener {
                     viewModel.unjoinWorkout(seance,user, this)
                 }
             }
             currentUserIsWorkoutAuthor(seance) -> {
+                binding.buttonsLayout.visibility = View.GONE
                 binding.participateButton.text = "Delete workout"
-                binding.participateButton.background = getDrawable(R.drawable.round_corner_red)
+                binding.participateButton.backgroundColor = ContextCompat.getColor(this, R.color.dark_red)
                 binding.participateButton.setOnClickListener {
                     viewModel.deleteWorkout(seance, this)
                 }
