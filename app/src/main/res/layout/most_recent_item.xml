@@ -75,7 +75,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:ellipsize="end"
-                    android:text="@{workout.placesAvailable}"
+                    app:placesAvailable="@{workout.placesAvailable}"
                     android:fontFamily="@font/roboto_thin"
                     android:maxLines="1"
                     android:textColor="@color/black"

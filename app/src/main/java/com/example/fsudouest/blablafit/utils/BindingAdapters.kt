@@ -42,3 +42,10 @@ fun bindImage(imageView: ImageView, imageUrl: String?){
             .placeholder(R.drawable.userphoto)
             .into(imageView)
 }
+
+@BindingAdapter("placesAvailable")
+fun bindText(textView: TextView, available: Int){
+    textView.apply {
+        text = resources.getQuantityString(R.plurals.numberOfPlacesAvailable, available, available)
+    }
+}

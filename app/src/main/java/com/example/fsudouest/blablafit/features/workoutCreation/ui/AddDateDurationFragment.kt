@@ -85,7 +85,7 @@ class AddDateDurationFragment : Fragment(), Injectable {
 
         binding.nextStepButton.setOnClickListener {
             viewModel.workoutLiveData.value?.duree = duration_button.text.toString()
-            viewModel.workoutLiveData.value?.maxParticipants = resources.getQuantityString(R.plurals.numberOfPlacesAvailable, count, count)
+            viewModel.workoutLiveData.value?.maxParticipants = count
             Navigation.findNavController(it)
                     .navigate(AddDateDurationFragmentDirections
                             .actionAddDateDurationFragmentToSearchLocationFragment(args.choice))

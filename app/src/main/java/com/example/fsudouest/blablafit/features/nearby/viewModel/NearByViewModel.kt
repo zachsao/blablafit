@@ -53,7 +53,7 @@ class NearByViewModel @Inject constructor(private val mDatabase: FirebaseFiresto
                 id = workout.id,
                 title = workout.titre,
                 address = workout.lieu,
-                placesAvailable = workout.maxParticipants,
+                placesAvailable = workout.maxParticipants - workout.participants.size,
                 authorName = workout.nomAuteur,
                 authorPhotoUrl = workout.photoAuteur,
                 time = timeFormat.format(workout.date)

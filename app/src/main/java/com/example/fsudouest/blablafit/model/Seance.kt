@@ -8,7 +8,7 @@ data class Seance(
         var lieu: String = "",
         var description: String = "",
         var date: Date = Date(),
-        var maxParticipants: String = "",
+        var maxParticipants: Int = 0,
         var duree: String = "",
         var idAuteur: String = "",
         var id: String = "",
