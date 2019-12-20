@@ -86,6 +86,8 @@ class DetailsSeanceActivity : AppCompatActivity() {
         date.text = dateChaine
         heure.text = heureChaine
 
+        val isMaxedOut = seance.maxParticipants - seance.participants.size == 0
+
         when {
             hasAlreadyJoined(seance) -> {
                 binding.participateButton.text = "Unjoin workout"
@@ -100,6 +102,12 @@ class DetailsSeanceActivity : AppCompatActivity() {
                 binding.participateButton.backgroundColor = ContextCompat.getColor(this, R.color.dark_red)
                 binding.participateButton.setOnClickListener {
                     viewModel.deleteWorkout(seance, this)
+                }
+            }
+            isMaxedOut -> {
+                binding.participateButton.apply {
+                    text = "Workout is full"
+                    isEnabled = false
                 }
             }
             else -> binding.participateButton.setOnClickListener { viewModel.joinWorkout(seance, user, this) }
