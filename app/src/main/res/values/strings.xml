@@ -43,7 +43,7 @@
     <string name="update_profile_dialog_title">Mise à jour du profil</string>
     <string name="update_photo_dialog_message">Voulez-vous mettre à jour votre photo de profil ?</string>
     <string name="cancel">Annuler</string>
-    <string name="contact">Contacter</string>
+    <string name="contact">Contact</string>
     <string name="participate">je participe</string>
     <string name="workout_title">Type de séance:</string>
     <string name="workout_duration">Durée :</string>
@@ -121,7 +121,9 @@
     <string name="yoga">Yoga</string>
     <string name="description_hint">e.g : Pull ups - Bench press - Dead lift - Squats</string>
     <string name="no_description">No workout description provided.</string>
-
+    <string name="user_profile">see profile</string>
+    <string name="join">join workout</string>
+    <string name="description_title">Workout description:</string>
 
 
 </resources>

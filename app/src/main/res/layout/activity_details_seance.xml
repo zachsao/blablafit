@@ -91,23 +91,24 @@
                             android:id="@+id/contactButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="16dp"
+                            android:layout_marginEnd="16dp"
                             android:layout_weight="1"
                             android:background="@drawable/element_outline"
-                            android:drawableRight="@drawable/ic_message_dark"
+                            android:drawableEnd="@drawable/ic_message_white"
                             android:drawablePadding="8dp"
                             android:fontFamily="@font/roboto"
-                            android:text="Contacter" />
+                            android:text="@string/contact" />
 
                         <Button
                             android:id="@+id/button4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="16dp"
+                            android:layout_marginStart="16dp"
                             android:layout_weight="1"
+                            android:enabled="false"
                             android:background="@drawable/element_outline"
                             android:fontFamily="@font/roboto"
-                            android:text="Voir le profil" />
+                            android:text="@string/user_profile" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -206,12 +207,12 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
                         android:fontFamily="@font/roboto"
-                        android:text="@{`Organisée par ` + seance.nomAuteur}"
+                        android:text="@{`Created by ` + seance.nomAuteur}"
                         android:textSize="9sp"
                         app:layout_constraintEnd_toStartOf="@+id/circleImageView"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/imageView"
-                        tools:text="Proposée par Zach Sao" />
+                        tools:text="Created by Zach Sao" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -235,7 +236,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/roboto"
-                            android:text="4.5 / 5 - 10 avis"
+                            android:text="4.5 / 5 - 10 reviews"
                             android:textSize="9sp" />
                     </LinearLayout>
 
@@ -278,9 +279,9 @@
                 android:id="@+id/textView12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:fontFamily="@font/roboto"
-                android:text="Descriptif de la séance :"
+                android:text="@string/description_title"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
@@ -288,9 +289,9 @@
                 android:id="@+id/workout_description_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginRight="64dp"
+                android:layout_marginEnd="64dp"
                 android:text="@string/no_description"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
@@ -307,7 +308,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    tools:text= "1 place restante"
+                    tools:text= "1 place available"
                     app:placesAvailable="@{seance.maxParticipants - seance.participants.size()}"
                     android:textColor="@color/black" />
             </LinearLayout>
@@ -319,7 +320,7 @@
                 android:layout_gravity="bottom|center_horizontal"
                 android:layout_marginBottom="32dp"
                 android:fontFamily="@font/roboto"
-                android:text="Participer"
+                android:text="@string/join"
                 android:textColor="@color/white" />
         </LinearLayout>
     </ScrollView>
