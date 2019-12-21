@@ -9,28 +9,27 @@ import com.example.fsudouest.blablafit.features.nearby.ui.CategoryViewItems
 import com.example.fsudouest.blablafit.features.nearby.ui.LatestWorkoutViewItem
 import com.example.fsudouest.blablafit.model.Seance
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
+
 private const val MOST_RECENT_LIMIT = 10L
 class NearByViewModel @Inject constructor(private val mDatabase: FirebaseFirestore) : ViewModel() {
-
-
     private val stateLiveData = MutableLiveData<NearByState>()
 
-    val filteredList = ArrayList<Seance?>()
-    private val fullList = ArrayList<Seance?>()
     fun stateLiveData(): LiveData<NearByState> = stateLiveData
 
     init {
         stateLiveData.value = NearByState.Idle(NearByData(categories = CategoryViewItems.getCategoryViewItems()))
-        updateWorkouts()
+        getLatestWorkouts()
     }
 
-    fun updateWorkouts() {
-        mDatabase.collection("workouts").limit(MOST_RECENT_LIMIT)
+    private fun getLatestWorkouts() {
+        mDatabase.collection("workouts")
+                .orderBy("date", Query.Direction.DESCENDING)
+                .limit(MOST_RECENT_LIMIT)
                 .get()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
@@ -43,8 +42,7 @@ class NearByViewModel @Inject constructor(private val mDatabase: FirebaseFiresto
                     }
                 }
     }
-
-
+    
     private fun previousStateData() = stateLiveData.value?.data ?: NearByData()
 
     private fun modelToViewItem(workout: Seance): LatestWorkoutViewItem {
@@ -58,11 +56,5 @@ class NearByViewModel @Inject constructor(private val mDatabase: FirebaseFiresto
                 authorPhotoUrl = workout.photoAuteur,
                 time = timeFormat.format(workout.date)
         )
-    }
-
-    fun search(query: String) {
-        val wanted = fullList.filter { workout -> workout!!.titre.toLowerCase().contains(query) } as ArrayList<Seance?>
-        filteredList.clear()
-        filteredList.addAll(wanted)
     }
 }
