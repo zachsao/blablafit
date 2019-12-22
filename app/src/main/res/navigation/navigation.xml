@@ -16,9 +16,6 @@
         android:label="Trouver une séance"
         tools:layout="@layout/fragment_seances" >
         <action
-            android:id="@+id/action_trouverUneSeanceFragment_to_categoryFragment"
-            app:destination="@id/categoryFragment" />
-        <action
             android:id="@+id/action_trouverUneSeanceFragment_to_detailsSeanceActivity"
             app:destination="@id/detailsSeanceActivity" />
     </fragment>
@@ -125,16 +122,4 @@
             android:name="id"
             app:argType="string" />
     </activity>
-    <fragment
-        android:id="@+id/categoryFragment"
-        android:name="com.example.fsudouest.blablafit.features.category.CategoryFragment"
-        android:label="{title}"
-        tools:layout="@layout/fragment_category" >
-        <argument
-            android:name="title"
-            app:argType="string" />
-        <action
-            android:id="@+id/action_categoryFragment_to_detailsSeanceActivity"
-            app:destination="@id/detailsSeanceActivity" />
-    </fragment>
 </navigation>
