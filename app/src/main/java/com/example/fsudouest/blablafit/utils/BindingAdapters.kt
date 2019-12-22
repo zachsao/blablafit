@@ -8,7 +8,7 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.fsudouest.blablafit.R
-import com.example.fsudouest.blablafit.features.category.WorkoutViewItem
+import com.example.fsudouest.blablafit.features.nearby.ui.WorkoutViewItem
 import com.xwray.groupie.GroupAdapter
 
 @BindingAdapter("listData")

@@ -1,5 +1,6 @@
 package com.example.fsudouest.blablafit.features.nearby
 
+import com.example.fsudouest.blablafit.features.nearby.ui.WorkoutViewItem
 import com.example.fsudouest.blablafit.features.nearby.ui.CategoryViewItem
 import com.example.fsudouest.blablafit.features.nearby.ui.LatestWorkoutViewItem
 
@@ -9,9 +10,12 @@ sealed class NearByState {
     data class Idle(override val data: NearByData): NearByState()
     data class Loading(override val data: NearByData): NearByState()
     data class LatestWorkoutsLoaded(override val data: NearByData): NearByState()
+    data class ResultsLoaded(override val data: NearByData): NearByState()
 }
 
 data class NearByData(
-        val workouts: List<LatestWorkoutViewItem> = emptyList(),
-        val categories: List<CategoryViewItem> = emptyList()
+        val latestWorkouts: List<LatestWorkoutViewItem?> = emptyList(),
+        val categories: List<CategoryViewItem> = emptyList(),
+        val searchResults: List<WorkoutViewItem> = emptyList(),
+        val allWorkouts: List<WorkoutViewItem> = emptyList()
 )

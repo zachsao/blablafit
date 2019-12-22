@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit.features.category
+package com.example.fsudouest.blablafit.features.nearby.ui
 
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.SeanceItem2Binding

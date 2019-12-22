@@ -3,6 +3,7 @@ package com.example.fsudouest.blablafit.features.category
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.fsudouest.blablafit.features.nearby.ui.WorkoutViewItem
 import com.example.fsudouest.blablafit.model.Seance
 import com.google.firebase.firestore.FirebaseFirestore
 import timber.log.Timber

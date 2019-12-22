@@ -1,5 +1,7 @@
 package com.example.fsudouest.blablafit.features.category
 
+import com.example.fsudouest.blablafit.features.nearby.ui.WorkoutViewItem
+
 sealed class CategoryState {
     abstract val data: CategoryData
 

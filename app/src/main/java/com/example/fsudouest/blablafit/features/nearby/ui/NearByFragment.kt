@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.nearby.NearByState
@@ -31,12 +32,11 @@ class NearByFragment : Fragment(), Injectable {
 
     private lateinit var viewModel: NearByViewModel
 
+    private lateinit var searchView: SearchView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        //binding = DataBindingUtil.inflate(inflater, R.layout.fragment_nearby, container, false)
-        val rootView = inflater.inflate(R.layout.fragment_nearby,container, false)
-        return rootView//binding.root
+        return inflater.inflate(R.layout.fragment_nearby, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -55,7 +55,7 @@ class NearByFragment : Fragment(), Injectable {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.seance_filters, menu)
         val searchViewItem = menu.findItem(R.id.action_search)
-        val searchView = searchViewItem.actionView as SearchView
+        searchView = searchViewItem.actionView as SearchView
         searchView.queryHint = getString(R.string.searchViewHint)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
@@ -64,6 +64,7 @@ class NearByFragment : Fragment(), Injectable {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
+                viewModel.searchWorkouts(newText)
                 return false
             }
         })
@@ -75,20 +76,32 @@ class NearByFragment : Fragment(), Injectable {
             is NearByState.LatestWorkoutsLoaded -> {
                 categoriesSection.clear()
                 displayCategories(state.data.categories)
-                displayMostRecentWorkouts(state.data.workouts)
+                displayMostRecentWorkouts(state.data.latestWorkouts)
+            }
+            is NearByState.Loading -> {
+                categoriesRecyclerView.visibility = View.GONE
+                // categorySectionTitle.visibility = View.GONE
+                progressBar.visibility = View.VISIBLE
+            }
+            is NearByState.ResultsLoaded -> {
+                categoriesRecyclerView.visibility = View.VISIBLE
+                // categorySectionTitle.visibility = View.VISIBLE
+                progressBar.visibility = View.GONE
+                categoriesSection.update(state.data.searchResults)
             }
         }
     }
 
     private fun displayCategories(categories: List<CategoryViewItem>) {
-        categoriesSection.addAll(categories)
+        categoriesSection.clear()
+        categoriesSection.update(categories)
     }
 
     fun navigateToDetails(seanceId: String) {
         findNavController().navigate(NearByFragmentDirections.actionTrouverUneSeanceFragmentToDetailsSeanceActivity(seanceId))
     }
 
-    private fun displayMostRecentWorkouts(workouts: List<LatestWorkoutViewItem>) {
+    private fun displayMostRecentWorkouts(workouts: List<LatestWorkoutViewItem?>) {
         mostRecentSection.addAll(workouts)
     }
 
@@ -110,14 +123,18 @@ class NearByFragment : Fragment(), Injectable {
         categoriesSection = Section()
         categoriesAdapter.add(categoriesSection)
         categoriesRecyclerView.apply {
-            setHasFixedSize(true)
             adapter = categoriesAdapter.apply {
                 setOnItemClickListener { item, _ ->
-                    item as CategoryViewItem
-                    findNavController()
-                            .navigate(NearByFragmentDirections.actionTrouverUneSeanceFragmentToCategoryFragment(getString(item.name)))
+                    when (item) {
+                        is CategoryViewItem -> {
+                            searchView.isIconified = false
+                            searchView.setQuery(getString(item.name), false)
+                        }
+                        is WorkoutViewItem -> navigateToDetails(item.seance.id)
+                    }
                 }
             }
+            addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
         }
     }
 }

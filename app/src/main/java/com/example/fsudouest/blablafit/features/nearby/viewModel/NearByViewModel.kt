@@ -3,6 +3,7 @@ package com.example.fsudouest.blablafit.features.nearby.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.fsudouest.blablafit.features.nearby.ui.WorkoutViewItem
 import com.example.fsudouest.blablafit.features.nearby.NearByData
 import com.example.fsudouest.blablafit.features.nearby.NearByState
 import com.example.fsudouest.blablafit.features.nearby.ui.CategoryViewItems
@@ -29,23 +30,25 @@ class NearByViewModel @Inject constructor(private val mDatabase: FirebaseFiresto
     private fun getLatestWorkouts() {
         mDatabase.collection("workouts")
                 .orderBy("date", Query.Direction.DESCENDING)
-                .limit(MOST_RECENT_LIMIT)
                 .get()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val results = task.result!!.documents
-                                .map { it.toObject(Seance::class.java) }
-                                .map { seance -> seance?.let { modelToViewItem(it) } ?: LatestWorkoutViewItem() }
-                        stateLiveData.value = NearByState.LatestWorkoutsLoaded(previousStateData().copy(workouts = results))
-                    } else {
-                        Timber.e(task.exception)
-                    }
+                .addOnSuccessListener { snapshot ->
+                    val results = snapshot.documents.map { it.toObject(Seance::class.java) }
+
+                    val latestWorkouts = results
+                            .mapNotNull { seance -> seance?.let { modelToLatestWorkoutViewItem(it) } }
+                            .filterIndexed { index, _ -> index < MOST_RECENT_LIMIT }
+
+                    val allWorkouts = results
+                            .mapNotNull { seance -> seance?.let { WorkoutViewItem(it) } }
+
+                    stateLiveData.value = NearByState.LatestWorkoutsLoaded(previousStateData().copy(latestWorkouts = latestWorkouts, allWorkouts = allWorkouts))
                 }
+                .addOnFailureListener { Timber.e(it) }
     }
-    
+
     private fun previousStateData() = stateLiveData.value?.data ?: NearByData()
 
-    private fun modelToViewItem(workout: Seance): LatestWorkoutViewItem {
+    private fun modelToLatestWorkoutViewItem(workout: Seance): LatestWorkoutViewItem {
         val timeFormat = SimpleDateFormat("hh:mm a", Locale.CANADA)
         return LatestWorkoutViewItem(
                 id = workout.id,
@@ -56,5 +59,13 @@ class NearByViewModel @Inject constructor(private val mDatabase: FirebaseFiresto
                 authorPhotoUrl = workout.photoAuteur,
                 time = timeFormat.format(workout.date)
         )
+    }
+
+    fun searchWorkouts(search: String) {
+        if (search.isNotBlank()) {
+            stateLiveData.value =
+                    NearByState.ResultsLoaded(previousStateData().copy(
+                            searchResults = previousStateData().allWorkouts.filter { it.seance.titre.contains(search, true) }))
+        } else stateLiveData.value = NearByState.Idle(previousStateData())
     }
 }
