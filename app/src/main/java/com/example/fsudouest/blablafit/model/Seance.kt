@@ -16,3 +16,5 @@ data class Seance(
         var nomAuteur: String = "",
         var photoAuteur: String? = null
 ) : Serializable
+
+enum class RequestStatus { PENDING, GRANTED, DENIED }

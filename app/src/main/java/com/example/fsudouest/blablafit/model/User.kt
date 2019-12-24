@@ -12,5 +12,6 @@ data class User(
         val birthday: String = "",
         val gender: Boolean = true,
         val fitnessLevel: FitnessLevel = FitnessLevel.Beginner,
-        val setup: Boolean = false
+        val setup: Boolean = false,
+        val uid: String = ""
 )

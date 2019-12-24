@@ -13,19 +13,22 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/browser_actions_bg_grey">
+        android:fillViewport="true">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/browser_actions_bg_grey"
             android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/authorInfoCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                app:cardCornerRadius="10dp">
+                app:cardCornerRadius="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/relativeLayout2"
@@ -105,8 +108,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
                             android:layout_weight="1"
-                            android:enabled="false"
                             android:background="@drawable/element_outline"
+                            android:enabled="false"
                             android:fontFamily="@font/roboto"
                             android:text="@string/user_profile" />
                     </LinearLayout>
@@ -245,10 +248,14 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/locationInfoCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                app:cardCornerRadius="15dp">
+                app:cardCornerRadius="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/authorInfoCard">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -261,9 +268,9 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="16dp"
                         android:layout_weight="2"
-                        tools:text="Pro Gym, 4500 Rue Hochelaga, Montréal, QC H1V 3N8, Canada"
+                        android:text="@{seance.lieu}"
                         android:textColor="@color/black"
-                        android:text="@{seance.lieu}"/>
+                        tools:text="Pro Gym, 4500 Rue Hochelaga, Montréal, QC H1V 3N8, Canada" />
 
                     <ImageView
                         android:id="@+id/imageView7"
@@ -276,14 +283,18 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:id="@+id/textView12"
-                android:layout_width="wrap_content"
+                android:id="@+id/descriptionTitle"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/roboto"
                 android:text="@string/description_title"
                 android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/locationInfoCard" />
 
             <TextView
                 android:id="@+id/workout_description_textview"
@@ -291,39 +302,63 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="64dp"
+                android:layout_marginEnd="32dp"
                 android:text="@string/no_description"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/descriptionTitle" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/workout_participants_textview"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal"
-                android:padding="16dp">
-
-                <TextView
-                    android:id="@+id/workout_participants_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    tools:text= "1 place available"
-                    app:placesAvailable="@{seance.maxParticipants - seance.participants.size()}"
-                    android:textColor="@color/black" />
-            </LinearLayout>
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/workout_description_textview"
+                app:placesAvailable="@{seance.maxParticipants - seance.participants.size()}"
+                tools:text="1 place available" />
 
             <Button
                 android:id="@+id/participate_button"
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
-                android:layout_marginBottom="32dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:fontFamily="@font/roboto"
                 android:text="@string/join"
-                android:textColor="@color/white" />
-        </LinearLayout>
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toStartOf="@+id/requestsButton"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/workout_participants_textview" />
+
+            <Button
+                android:id="@+id/requestsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto"
+                android:text="@string/requests"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/participate_button"
+                app:layout_constraintTop_toBottomOf="@+id/workout_participants_textview"
+                tools:text="requests"
+                tools:visibility="visible" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
-
 </layout>

@@ -6,6 +6,7 @@ import com.example.fsudouest.blablafit.features.home.MainActivityModule
 import com.example.fsudouest.blablafit.features.login.SignUpActivityModule
 import com.example.fsudouest.blablafit.features.splash.SplashActivityModule
 import com.example.fsudouest.blablafit.features.workoutDetails.DetailsSeanceActivityModule
+import com.example.fsudouest.blablafit.features.workoutDetails.workoutRequests.RequestsModule
 import dagger.Module
 
 @Module(includes = [
@@ -14,6 +15,7 @@ import dagger.Module
     SignUpActivityModule::class,
     ConversationActivityModule::class,
     SplashActivityModule::class,
-    AccountSetupModule::class]
+    AccountSetupModule::class,
+    RequestsModule::class]
 )
 class ActivityModule

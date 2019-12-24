@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.fsudouest.blablafit">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:name=".BlablaFitApp"
         android:allowBackup="true"
@@ -24,22 +27,31 @@
             android:theme="@style/SignInTheme" />
         <activity
             android:name=".features.home.MainActivity"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".features.login.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/SignInTheme" />
-        <activity android:name=".features.accountSetup.AccountSetupActivity"
-            android:theme="@style/SignInTheme"/>
+        <activity
+            android:name=".features.accountSetup.AccountSetupActivity"
+            android:theme="@style/SignInTheme" />
         <activity
             android:name=".features.workoutDetails.DetailsSeanceActivity"
             android:label="Détails de la séance"
             android:parentActivityName=".features.home.MainActivity" />
         <activity
-            android:name="com.example.fsudouest.blablafit.features.conversation.ConversationActivity"
+            android:name=".features.conversation.ConversationActivity"
             android:parentActivityName=".features.home.MainActivity">
             <intent-filter>
                 <action android:name="ConversationActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".features.workoutDetails.workoutRequests.RequestsActivity">
+            <intent-filter>
+                <action android:name="RequestsActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -48,13 +60,13 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_fitness_center_black" />
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
         <service
             android:name=".service.MyFirebaseMessagingService"
             android:exported="false">
@@ -63,8 +75,5 @@
             </intent-filter>
         </service>
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 </manifest>

@@ -37,7 +37,7 @@ class RegisterViewModel @Inject constructor(private val mDatabase: FirebaseFires
                         // Sign in success, update UI with the signed-in user's information
                         val currentUser = auth.currentUser
                         Log.d("RegisterViewModel", "successfully created user with id: ${currentUser?.uid}")
-                        if (currentUser != null) saveUserToFirestore(currentUser.uid, user)
+                        if (currentUser != null) saveUserToFirestore(currentUser.uid, user.copy(uid = currentUser.uid))
                         // updateUI(user)
                     } else {
                         // If sign in fails, display a message to the user.

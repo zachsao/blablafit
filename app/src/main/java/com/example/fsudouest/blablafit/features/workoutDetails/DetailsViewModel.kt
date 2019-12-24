@@ -9,6 +9,7 @@ import com.example.fsudouest.blablafit.model.User
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import timber.log.Timber
 import javax.inject.Inject
 
 class DetailsViewModel @Inject constructor(private val mDatabase: FirebaseFirestore): ViewModel() {
@@ -32,31 +33,29 @@ class DetailsViewModel @Inject constructor(private val mDatabase: FirebaseFirest
     }
 
     fun joinWorkout(seance: Seance, user: FirebaseUser?, activity: Activity) {
-        mDatabase.collection("workouts")
+        workoutsRef
                 .document(seance.id)
                 .update("participants", FieldValue.arrayUnion(user?.email))
                 .addOnSuccessListener {
-                    Log.i("Participer", "Nouveau participant : ${user?.displayName}")
                     activity.finish()
                 }.addOnFailureListener {
-                    Log.e("Participer", it.message)
+                    Timber.e(it)
                 }
     }
 
     fun unjoinWorkout(seance: Seance, user: FirebaseUser?, activity: Activity){
-        mDatabase.collection("workouts")
+        workoutsRef
                 .document(seance.id)
                 .update("participants", FieldValue.arrayRemove(user?.email))
                 .addOnSuccessListener {
-                    Log.i("Participer", "${user?.displayName} s'est désinscrit de la séance :(")
                     activity.finish()
                 }.addOnFailureListener {
-                    Log.e("Participer", it.message)
+                    Timber.e(it)
                 }
     }
 
     fun deleteWorkout(seance: Seance, activity: Activity){
-        mDatabase.collection("workouts")
+        workoutsRef
                 .document(seance.id)
                 .delete()
                 .addOnSuccessListener {
