@@ -77,7 +77,10 @@ class SignInFragment : Fragment(), Injectable {
         when (state) {
             is SignInState.ValidationError -> displayErrors(state.data.errors)
             is SignInState.Failure -> displayDialog(state.message)
-            is SignInState.Success -> goToMainActivity()
+            is SignInState.Success -> {
+                viewModel.setRegistrationToken()
+                goToMainActivity()
+            }
         }
     }
 

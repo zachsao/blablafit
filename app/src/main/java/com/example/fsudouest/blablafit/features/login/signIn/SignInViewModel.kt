@@ -1,12 +1,14 @@
 package com.example.fsudouest.blablafit.features.login.signIn
 
-import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fsudouest.blablafit.R
+import com.example.fsudouest.blablafit.service.MyFirebaseMessagingService
+import com.example.fsudouest.blablafit.utils.FirestoreUtil
 import com.google.firebase.auth.FirebaseAuth
+import timber.log.Timber
 import javax.inject.Inject
 
 private const val TAG = "SignInViewModel"
@@ -28,11 +30,11 @@ class SignInViewModel @Inject constructor(private val firebaseAuth: FirebaseAuth
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 // Sign in success, update UI with the signed-in user's information
-                                Log.d(TAG, "createUserWithEmail:success")
+                                Timber.d("createUserWithEmail:success")
                                 stateLiveData.value = SignInState.Success(it.copy(errors = listOf()))
                             } else {
                                 // If sign in fails, display a message to the user.
-                                Log.e(TAG, "createUserWithEmail:failure", task.exception)
+                                Timber.e(task.exception)
                                 stateLiveData.value = SignInState.Failure(it.copy(errors = listOf()), task.exception?.message ?: "")
                             }
                         }
@@ -63,5 +65,11 @@ class SignInViewModel @Inject constructor(private val firebaseAuth: FirebaseAuth
     fun passwordChanged(newText: String) {
         val data = stateLiveData.value?.data
         data?.let { stateLiveData.value = SignInState.TextChanged(data.copy(password = newText)) }
+    }
+
+    fun setRegistrationToken() {
+        FirestoreUtil.getRegistrationToken { newRegistrationToken ->
+            MyFirebaseMessagingService.addTokenToFirestore(newRegistrationToken)
+        }
     }
 }

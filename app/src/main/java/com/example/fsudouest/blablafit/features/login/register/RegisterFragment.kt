@@ -44,12 +44,12 @@ class RegisterFragment : Fragment(), Injectable {
             })
             registerStatusLiveData().observe(this@RegisterFragment, Observer { isRegistered ->
                 if (isRegistered) {
-                    startActivity(intentFor<AccountSetupActivity>(
-                            "userName" to binding.nameEdit.text.toString()
-                    ).newTask().clearTask())
                     FirestoreUtil.getRegistrationToken { newRegistrationToken ->
                         MyFirebaseMessagingService.addTokenToFirestore(newRegistrationToken)
                     }
+                    startActivity(intentFor<AccountSetupActivity>(
+                            "userName" to binding.nameEdit.text.toString()
+                    ).newTask().clearTask())
                 }
             })
         }

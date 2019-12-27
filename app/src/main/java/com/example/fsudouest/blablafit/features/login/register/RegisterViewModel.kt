@@ -1,6 +1,5 @@
 package com.example.fsudouest.blablafit.features.login.register
 
-import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,6 +8,7 @@ import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -34,15 +34,11 @@ class RegisterViewModel @Inject constructor(private val mDatabase: FirebaseFires
         auth.createUserWithEmailAndPassword(data.email, data.password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
                         val currentUser = auth.currentUser
-                        Log.d("RegisterViewModel", "successfully created user with id: ${currentUser?.uid}")
+                        Timber.d("RegisterViewModel: successfully created user with id: ${currentUser?.uid}")
                         if (currentUser != null) saveUserToFirestore(currentUser.uid, user.copy(uid = currentUser.uid))
-                        // updateUI(user)
                     } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w("RegisterViewModel", "createUserWithEmail:failure", task.exception)
-                        // updateUI(null)
+                        Timber.e(task.exception)
                         return@addOnCompleteListener
                     }
                 }
@@ -54,10 +50,10 @@ class RegisterViewModel @Inject constructor(private val mDatabase: FirebaseFires
                 .set(user)
                 .addOnSuccessListener {
                     registerSuccessLiveData.value = true
-                    Log.d("RegisterViewModel", "saved document successfully")
+                    Timber.d("saved document successfully")
                 }
                 .addOnFailureListener {
-                    Log.d("RegisterViewModel", "failed to saved document : $it")
+                    Timber.d("RegisterViewModel: failed to save document : $it")
                 }
     }
 
