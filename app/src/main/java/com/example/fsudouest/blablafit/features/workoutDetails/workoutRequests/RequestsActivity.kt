@@ -3,6 +3,7 @@ package com.example.fsudouest.blablafit.features.workoutDetails.workoutRequests
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.fsudouest.blablafit.R
@@ -35,12 +36,16 @@ class RequestsActivity : AppCompatActivity() {
 
         val participants = intent.getStringExtra("participants")
                 .split(",")
-                .map { it.replace("{","").replace("}","").substringBefore('=') }
+                .map { it.replace("{","").replace("}","") }
+                .map { Pair(it.substringBefore('='), RequestStatus.valueOf(it.substringAfter("="))) }
+                .toMap()
+
+        val workoutId = intent.getStringExtra("workoutId")
 
 
         initRecyclerView()
 
-        viewModel.init(participants)
+        viewModel.init(participants, workoutId)
         viewModel.stateLiveData().observe(this, Observer { state ->
             render(state)
         })
@@ -62,6 +67,14 @@ class RequestsActivity : AppCompatActivity() {
             is RequestsState.ItemsEmpty -> {
                 showProgress(false)
                 showEmptyText(true)
+            }
+            is RequestsState.RequestStatusUpdating -> {
+                section.update(state.data.requests)
+                window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            }
+            is RequestsState.RequestStatusUpdated -> {
+                section.update(state.data.requests)
+                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
             }
 
         }

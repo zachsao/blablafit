@@ -120,6 +120,7 @@ class DetailsSeanceActivity : AppCompatActivity() {
     private fun goToRequests(workout: Seance) {
         val intent = Intent(this, RequestsActivity::class.java).apply {
             putExtra("participants", workout.participants.toString())
+            putExtra("workoutId", workout.id)
         }
         startActivity(intent)
     }
