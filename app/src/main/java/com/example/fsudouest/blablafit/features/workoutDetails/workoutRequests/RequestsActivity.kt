@@ -6,6 +6,7 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.fsudouest.blablafit.R
+import com.example.fsudouest.blablafit.model.RequestStatus
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
@@ -30,7 +31,10 @@ class RequestsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_requests)
 
-        val participants = intent.getStringExtra("participants").split(",")
+        val participants = intent.getStringExtra("participants")
+                .split(",")
+                .map { it.replace("{","").replace("}","").substringBefore('=') }
+
 
         initRecyclerView()
 

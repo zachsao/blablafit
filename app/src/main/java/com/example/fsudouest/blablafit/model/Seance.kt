@@ -12,7 +12,7 @@ data class Seance(
         var duree: String = "",
         var idAuteur: String = "",
         var id: String = "",
-        var participants: List<String> = emptyList(),
+        var participants: Map<String, RequestStatus> = emptyMap(),
         var nomAuteur: String = "",
         var photoAuteur: String? = null
 ) : Serializable
