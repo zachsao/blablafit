@@ -124,7 +124,7 @@
     <string name="user_profile">see profile</string>
     <string name="join">join workout</string>
     <string name="description_title">Workout description:</string>
-    <string name="requests">requests</string>
+    <string name="requests">Requests</string>
     <string name="request_activity_title">Manage Requests</string>
     <string name="accept">Accept</string>
     <string name="decline">Decline</string>

@@ -31,6 +31,8 @@ class RequestsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_requests)
 
+        supportActionBar?.title = getString(R.string.requests)
+
         val participants = intent.getStringExtra("participants")
                 .split(",")
                 .map { it.replace("{","").replace("}","").substringBefore('=') }
