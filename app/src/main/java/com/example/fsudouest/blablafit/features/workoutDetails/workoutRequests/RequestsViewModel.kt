@@ -72,7 +72,7 @@ class RequestsViewModel @Inject constructor(val firestore: FirebaseFirestore) : 
             participants[previousData().requests[position].email] = RequestStatus.GRANTED
 
             val update = previousData().requests.mapIndexed { index, requestViewItem ->
-                if (index == position) requestViewItem.copy(isStatusUpdating =  true) else requestViewItem
+                if (index == position) requestViewItem.copy(isStatusUpdating = true) else requestViewItem
             }
             stateLiveData.value = RequestsState.RequestStatusUpdating(previousData().copy(requests = update))
             firestore.collection("workouts").document(workoutId)
@@ -92,10 +92,28 @@ class RequestsViewModel @Inject constructor(val firestore: FirebaseFirestore) : 
         }
     }
     private fun declineRequest(position: Int){
-        val update = previousData().requests.mapIndexed { index, requestViewItem ->
-            if (index == position) requestViewItem.copy(isStatusUpdating =  false) else requestViewItem
-        }
+        workout?.let {
+            val participants = it.participants.toMutableMap().minus(previousData().requests[position].email)
 
-        stateLiveData.value = RequestsState.RequestStatusUpdated(previousData().copy(requests = update))
+            val update = previousData().requests.mapIndexed { index, requestViewItem ->
+                if (index == position) requestViewItem.copy(isStatusUpdating = true) else requestViewItem
+            }
+
+            stateLiveData.value = RequestsState.RequestStatusUpdating(previousData().copy(requests = update))
+
+            firestore.collection("workouts").document(workoutId)
+                    .set(it.copy(participants = participants), SetOptions.mergeFields("participants"))
+                    .addOnSuccessListener {
+                        val update2 = previousData().requests.toMutableList().apply { removeAt(position) }
+                        stateLiveData.value = if (update2.isEmpty()) RequestsState.ItemsEmpty(previousData().copy(requests = update2))
+                            else RequestsState.RequestStatusUpdated(previousData().copy(requests = update2))
+                    }.addOnFailureListener {
+                        val update2 = previousData().requests.mapIndexed { index, requestViewItem ->
+                            if (index == position) requestViewItem.copy(isStatusUpdating =  false) else requestViewItem
+                        }
+                        stateLiveData.value = RequestsState.RequestStatusUpdated(previousData().copy(requests = update2))
+                    }
+
+        }
     }
 }
