@@ -15,6 +15,7 @@ import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.ActivityDetailsSeanceBinding
 import com.example.fsudouest.blablafit.features.conversation.ConversationActivity
 import com.example.fsudouest.blablafit.features.workoutDetails.workoutRequests.RequestsActivity
+import com.example.fsudouest.blablafit.model.RequestStatus
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
@@ -113,7 +114,13 @@ class DetailsSeanceActivity : AppCompatActivity() {
                     isEnabled = false
                 }
             }
-            else -> binding.participateButton.setOnClickListener { viewModel.joinWorkout(seance, user, this) }
+            requestSent(seance) -> {
+                binding.participateButton.apply {
+                    text = "Request sent"
+                    isEnabled = false
+                }
+            }
+            else -> binding.participateButton.setOnClickListener { viewModel.joinWorkout(seance, user) }
         }
     }
 
@@ -130,7 +137,11 @@ class DetailsSeanceActivity : AppCompatActivity() {
     }
 
     private fun hasAlreadyJoined(seance: Seance): Boolean{
-        return seance.participants.contains(user?.email)
+        return seance.participants.containsKey(user?.email) && seance.participants[user?.email] == RequestStatus.GRANTED
+    }
+
+    private fun requestSent(seance: Seance): Boolean {
+        return seance.participants.containsKey(user?.email) && seance.participants[user?.email] == RequestStatus.PENDING
     }
 
     override fun onSupportNavigateUp(): Boolean {

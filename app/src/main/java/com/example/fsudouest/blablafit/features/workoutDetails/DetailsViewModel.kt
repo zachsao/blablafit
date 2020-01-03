@@ -14,7 +14,7 @@ import com.google.firebase.firestore.SetOptions
 import timber.log.Timber
 import javax.inject.Inject
 
-class DetailsViewModel @Inject constructor(private val mDatabase: FirebaseFirestore): ViewModel() {
+class DetailsViewModel @Inject constructor(mDatabase: FirebaseFirestore): ViewModel() {
 
     private val workoutsRef = mDatabase.collection("workouts")
     private val detailsLiveData = MutableLiveData<Seance>()
@@ -34,7 +34,7 @@ class DetailsViewModel @Inject constructor(private val mDatabase: FirebaseFirest
                 }
     }
 
-    fun joinWorkout(seance: Seance, user: FirebaseUser?, activity: Activity) {
+    fun joinWorkout(seance: Seance, user: FirebaseUser?) {
         val previousParticipants = detailsLiveData.value?.participants ?: emptyMap()
         user?.email?.let {
             val workout = detailsLiveData.value!!.copy(participants = previousParticipants.plus(Pair(it,RequestStatus.PENDING)))
@@ -42,7 +42,7 @@ class DetailsViewModel @Inject constructor(private val mDatabase: FirebaseFirest
                     .document(seance.id)
                     .set(workout, SetOptions.mergeFields("participants"))
                     .addOnSuccessListener {
-                        activity.finish()
+                        detailsLiveData.value = workout
                     }.addOnFailureListener {
                         Timber.e(it)
                     }
