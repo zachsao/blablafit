@@ -18,6 +18,7 @@ import com.example.fsudouest.blablafit.features.workoutCreation.viewModel.Workou
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
@@ -61,7 +62,7 @@ class SearchLocationFragment : Fragment(), Injectable {
 
         autocompleteFragment = childFragmentManager.findFragmentById(R.id.place_autocomplete_fragment) as AutocompleteSupportFragment
         // Specify the types of place data to return.
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.NAME, Place.Field.ADDRESS))
+        autocompleteFragment.setPlaceFields(listOf(Place.Field.NAME, Place.Field.ADDRESS))
         autocompleteFragment.setHint(getString(R.string.searchViewHint))
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {

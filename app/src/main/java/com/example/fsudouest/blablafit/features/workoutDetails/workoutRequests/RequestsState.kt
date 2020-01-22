@@ -23,7 +23,7 @@ data class RequestsData(
 )
 
 data class RequestViewItem(
-        val email: String,
+        val uid: String,
         val pictureUrl: String,
         val userName: String,
         val fitnessLevel: String,

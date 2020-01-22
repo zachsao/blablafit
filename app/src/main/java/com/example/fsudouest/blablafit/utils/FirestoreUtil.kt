@@ -28,7 +28,7 @@ object FirestoreUtil {
     }
 
     fun setFCMRegistrationToken(registrationToken: String){
-        currentUserDocRef.update(mapOf("registrationToken" to registrationToken))
+        currentUserDocRef.update("registrationToken", registrationToken)
     }
 
     fun getCurrentUser(onComplete: (User) -> Unit){

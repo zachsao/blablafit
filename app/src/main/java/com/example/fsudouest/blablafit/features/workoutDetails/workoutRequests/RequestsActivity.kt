@@ -34,8 +34,8 @@ class RequestsActivity : AppCompatActivity() {
 
         supportActionBar?.title = getString(R.string.requests)
 
-        val participants = intent.getStringExtra("participants").split(",")
-                .map { it.replace("{","").replace("}","") }
+        val participants = intent.getStringExtra("participants").split(",","{","}", " ")
+                //.map { it.replace("{","").replace("}","") }
                 .filter { it.isNotBlank() }
                 .map { Pair(it.substringBefore('='), RequestStatus.valueOf(it.substringAfter("="))) }
                 .toMap()

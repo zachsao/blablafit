@@ -91,7 +91,7 @@ class DetailsSeanceActivity : AppCompatActivity() {
                 binding.participateButton.text = "Unjoin workout"
                 binding.participateButton.backgroundColor = ContextCompat.getColor(this, R.color.dark_red)
                 binding.participateButton.setOnClickListener {
-                    viewModel.unjoinWorkout(seance,user, this)
+                    viewModel.unjoinWorkout(seance) { finish() }
                 }
             }
             currentUserIsWorkoutAuthor(seance) -> {
@@ -120,7 +120,7 @@ class DetailsSeanceActivity : AppCompatActivity() {
                     isEnabled = false
                 }
             }
-            else -> binding.participateButton.setOnClickListener { viewModel.joinWorkout(seance, user) }
+            else -> binding.participateButton.setOnClickListener { viewModel.joinWorkout(seance) }
         }
     }
 
@@ -137,11 +137,11 @@ class DetailsSeanceActivity : AppCompatActivity() {
     }
 
     private fun hasAlreadyJoined(seance: Seance): Boolean{
-        return seance.participants.containsKey(user?.email) && seance.participants[user?.email] == RequestStatus.GRANTED
+        return seance.participants.containsKey(user?.uid) && seance.participants[user?.uid] == RequestStatus.GRANTED
     }
 
     private fun requestSent(seance: Seance): Boolean {
-        return seance.participants.containsKey(user?.email) && seance.participants[user?.email] == RequestStatus.PENDING
+        return seance.participants.containsKey(user?.uid) && seance.participants[user?.uid] == RequestStatus.PENDING
     }
 
     override fun onSupportNavigateUp(): Boolean {

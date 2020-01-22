@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.fsudouest.blablafit.model.RequestStatus
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.model.User
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import timber.log.Timber
@@ -25,7 +26,7 @@ class RequestsViewModel @Inject constructor(val firestore: FirebaseFirestore) : 
 
     fun init(participants: Map<String, RequestStatus>, workoutId: String){
         RequestsState.Loading(previousData())
-
+        Timber.d("init requests")
         this.workoutId = workoutId
         firestore.collection("workouts").document(workoutId)
                 .get()
@@ -36,12 +37,18 @@ class RequestsViewModel @Inject constructor(val firestore: FirebaseFirestore) : 
         if (participants.isEmpty()) stateLiveData.value = RequestsState.ItemsEmpty(previousData())
         else {
             firestore.collection("users")
-                    .whereIn("email", participants.map { it.key }.toList())
+                    .whereIn("uid", participants.map { it.key })
                     .get()
                     .addOnSuccessListener {snapshot ->
                         val requests = snapshot.documents
                                 .mapNotNull { it.toObject(User::class.java) }
-                                .mapIndexed { index, user -> user.toRequestViewItem(index, participants.filterKeys { it == user.email }.map { it.value }.first()) }
+                                .mapIndexed { index, user ->
+                                    val status = participants
+                                            .filterKeys { it == user.uid }
+                                            .map { it.value }
+                                            .first()
+                                    user.toRequestViewItem(index, status)
+                                }
 
                         stateLiveData.value = if (requests.isNotEmpty()) RequestsState.ItemsUpdated(previousData().copy(requests = requests))
                         else RequestsState.ItemsEmpty(previousData())
@@ -56,7 +63,7 @@ class RequestsViewModel @Inject constructor(val firestore: FirebaseFirestore) : 
     private fun previousData() = stateLiveData.value?.data ?: RequestsData()
 
     private fun User.toRequestViewItem(position: Int, requestStatus: RequestStatus) = RequestViewItem(
-            email,
+            uid,
             photoUrl,
             nomComplet,
             fitnessLevel.toString(),
@@ -68,15 +75,12 @@ class RequestsViewModel @Inject constructor(val firestore: FirebaseFirestore) : 
     private fun acceptRequest(position: Int) {
         workout?.let {
 
-            val participants = it.participants.toMutableMap()
-            participants[previousData().requests[position].email] = RequestStatus.GRANTED
-
             val update = previousData().requests.mapIndexed { index, requestViewItem ->
                 if (index == position) requestViewItem.copy(isStatusUpdating = true) else requestViewItem
             }
             stateLiveData.value = RequestsState.RequestStatusUpdating(previousData().copy(requests = update))
             firestore.collection("workouts").document(workoutId)
-                    .set(it.copy(participants = participants), SetOptions.mergeFields("participants"))
+                    .update("participants.${previousData().requests[position].uid}", RequestStatus.GRANTED)
                     .addOnSuccessListener {
                         val update2 = previousData().requests.mapIndexed { index, requestViewItem ->
                             if (index == position) requestViewItem.copy(isStatusUpdating =  false, isGranted = true) else requestViewItem
@@ -93,7 +97,6 @@ class RequestsViewModel @Inject constructor(val firestore: FirebaseFirestore) : 
     }
     private fun declineRequest(position: Int){
         workout?.let {
-            val participants = it.participants.toMutableMap().minus(previousData().requests[position].email)
 
             val update = previousData().requests.mapIndexed { index, requestViewItem ->
                 if (index == position) requestViewItem.copy(isStatusUpdating = true) else requestViewItem
@@ -102,7 +105,7 @@ class RequestsViewModel @Inject constructor(val firestore: FirebaseFirestore) : 
             stateLiveData.value = RequestsState.RequestStatusUpdating(previousData().copy(requests = update))
 
             firestore.collection("workouts").document(workoutId)
-                    .set(it.copy(participants = participants), SetOptions.mergeFields("participants"))
+                    .update("participants.${previousData().requests[position].uid}", FieldValue.delete())
                     .addOnSuccessListener {
                         val update2 = previousData().requests.toMutableList().apply { removeAt(position) }
                         stateLiveData.value = if (update2.isEmpty()) RequestsState.ItemsEmpty(previousData().copy(requests = update2))
