@@ -16,7 +16,6 @@ import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.myWorkouts.MyWorkoutsState
 import com.example.fsudouest.blablafit.features.myWorkouts.viewModel.WorkoutsViewModel
-import com.example.fsudouest.blablafit.features.nearby.ui.NearByAdapter
 import com.example.fsudouest.blablafit.features.nearby.ui.WorkoutViewItem
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.xwray.groupie.GroupAdapter
@@ -25,7 +24,7 @@ import com.xwray.groupie.Section
 import org.jetbrains.anko.image
 import javax.inject.Inject
 
-class SeancesFragment : Fragment(), Injectable, NearByAdapter.ClickListener {
+class SeancesFragment : Fragment(), Injectable {
 
     @Inject
     lateinit var factory: ViewModelFactory<WorkoutsViewModel>
@@ -54,6 +53,7 @@ class SeancesFragment : Fragment(), Injectable, NearByAdapter.ClickListener {
         binding.rvSeances.apply {
             adapter = GroupAdapter<GroupieViewHolder>().apply {
                 add(section)
+                // addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
                 setOnItemClickListener { item, view ->
                     item as WorkoutViewItem
                     navigateToDetails(item.seance.id)
@@ -102,7 +102,7 @@ class SeancesFragment : Fragment(), Injectable, NearByAdapter.ClickListener {
         binding.seancesProgress.visibility = if (show) View.VISIBLE else View.GONE
     }
 
-    override fun navigateToDetails(seanceId: String) {
+    private fun navigateToDetails(seanceId: String) {
         findNavController().navigate(SeancesFragmentDirections.actionSeancesFragmentToDetailsSeanceActivity(seanceId))
     }
 }

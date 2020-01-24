@@ -9,6 +9,7 @@ import com.example.fsudouest.blablafit.features.nearby.NearByState
 import com.example.fsudouest.blablafit.features.nearby.ui.CategoryViewItems
 import com.example.fsudouest.blablafit.features.nearby.ui.LatestWorkoutViewItem
 import com.example.fsudouest.blablafit.model.Seance
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import timber.log.Timber
@@ -17,7 +18,7 @@ import java.util.*
 import javax.inject.Inject
 
 private const val MOST_RECENT_LIMIT = 10L
-class NearByViewModel @Inject constructor(private val mDatabase: FirebaseFirestore) : ViewModel() {
+class NearByViewModel @Inject constructor(private val mDatabase: FirebaseFirestore, private val auth: FirebaseAuth) : ViewModel() {
     private val stateLiveData = MutableLiveData<NearByState>()
 
     fun stateLiveData(): LiveData<NearByState> = stateLiveData
@@ -32,14 +33,15 @@ class NearByViewModel @Inject constructor(private val mDatabase: FirebaseFiresto
                 .orderBy("date", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener { snapshot ->
-                    val results = snapshot.documents.map { it.toObject(Seance::class.java) }
+                    val results = snapshot.documents.mapNotNull { it.toObject(Seance::class.java) }
+                            .filter { it.idAuteur != auth.currentUser?.uid }
 
                     val latestWorkouts = results
-                            .mapNotNull { seance -> seance?.let { modelToLatestWorkoutViewItem(it) } }
+                            .map { seance -> modelToLatestWorkoutViewItem(seance) }
                             .filterIndexed { index, _ -> index < MOST_RECENT_LIMIT }
 
                     val allWorkouts = results
-                            .mapNotNull { seance -> seance?.let { WorkoutViewItem(it) } }
+                            .map { seance -> WorkoutViewItem(seance) }
 
                     stateLiveData.value = NearByState.LatestWorkoutsLoaded(previousStateData().copy(latestWorkouts = latestWorkouts, allWorkouts = allWorkouts))
                 }

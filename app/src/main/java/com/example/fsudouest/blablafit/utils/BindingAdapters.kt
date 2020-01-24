@@ -10,6 +10,9 @@ import com.bumptech.glide.Glide
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.features.nearby.ui.WorkoutViewItem
 import com.xwray.groupie.GroupAdapter
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 @BindingAdapter("listData")
 fun bindRecyclerView(recyclerView: RecyclerView, data: List<WorkoutViewItem>) {
@@ -47,5 +50,24 @@ fun bindImage(imageView: ImageView, imageUrl: String?){
 fun bindText(textView: TextView, available: Int){
     textView.apply {
         text = resources.getQuantityString(R.plurals.numberOfPlacesAvailable, available, available)
+    }
+}
+
+@BindingAdapter("formattedDate")
+fun bindWorkoutDate(textView: TextView, date: Date){
+    val dateString = DateFormat.getDateInstance(DateFormat.SHORT).format(date)
+    textView.text = dateString
+}
+
+@BindingAdapter("formattedTime")
+fun bindWorkoutTime(textView: TextView, date: Date){
+    val dateString = DateFormat.getTimeInstance(DateFormat.SHORT).format(date)
+    textView.text = dateString
+}
+
+@BindingAdapter("title", "placesAvailable")
+fun bindTitle(textView: TextView, title: String, available: Int){
+    textView.apply {
+        text = "$title - ${resources.getQuantityString(R.plurals.numberOfPlacesAvailable, available, available)}"
     }
 }

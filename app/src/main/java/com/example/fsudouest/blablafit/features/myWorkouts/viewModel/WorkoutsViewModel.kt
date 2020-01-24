@@ -8,12 +8,10 @@ import com.example.fsudouest.blablafit.features.myWorkouts.MyWorkoutsState
 import com.example.fsudouest.blablafit.features.nearby.ui.WorkoutViewItem
 import com.example.fsudouest.blablafit.model.RequestStatus
 import com.example.fsudouest.blablafit.model.Seance
-import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import timber.log.Timber
 import java.lang.IllegalStateException
-import java.util.*
 import javax.inject.Inject
 
 class WorkoutsViewModel @Inject constructor(private val mDatabase: FirebaseFirestore, auth: FirebaseAuth) : ViewModel() {

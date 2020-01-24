@@ -1,7 +1,7 @@
 <resources>
     <plurals name="numberOfPlacesAvailable">
-        <item quantity="one">%d place disponible</item>
-        <item quantity="other">%d places disponibles</item>
+        <item quantity="one">%d place available</item>
+        <item quantity="other">%d places available</item>
     </plurals>
 
     <!-- TODO: Remove or change this placeholder text -->

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -7,126 +8,145 @@
             name="seance"
             type="com.example.fsudouest.blablafit.model.Seance"/>
     </data>
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:id="@+id/parentLayout"
-            android:weightSum="100">
+            android:padding="8dp">
 
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_weight="20"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:textColor="@color/black"
+                formattedDate="@{seance.date}"
+                app:layout_constraintBottom_toTopOf="@+id/tv_heure"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="Lun. 15 Oct." />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/item_image"
-                    android:src="@drawable/weights"
-                    android:scaleType="centerCrop"/>
+            <TextView
+                android:id="@+id/tv_heure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:textColor="@color/black"
+                formattedTime="@{seance.date}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_date"
+                tools:text="15h30" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="15h30"
-                    android:id="@+id/tv_heure"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:layout_centerInParent="true"/>
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="80"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_margin="8dp">
+                app:layout_constraintGuide_begin="85dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{seance.titre + ` : ` + seance.maxParticipants + ` places disponibles`}"
-                    tools:text="Full Body - 3 places disponibles"
-                    android:id="@+id/tv_titre"
-                    android:textStyle="bold"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="8dp"/>
-                
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp">
+            <TextView
+                android:id="@+id/tv_titre"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                title="@{seance.titre}"
+                placesAvailable="@{seance.maxParticipants - seance.participants.size()}"
+                app:layout_constraintBottom_toTopOf="@+id/tv_durée"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="Full Body - 3 places disponibles" />
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/round_hourglass_empty_24"/>
+            <ImageView
+                android:id="@+id/imageView9"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/round_hourglass_empty_24"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_durée"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toTopOf="@+id/tv_durée" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:text="2h"
-                        android:text="@{seance.duree}"
-                        android:id="@+id/tv_durée" />
-                </LinearLayout>
+            <TextView
+                android:id="@+id/tv_durée"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:text="@{seance.duree}"
+                app:layout_constraintBottom_toTopOf="@+id/tv_lieu"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/imageView9"
+                app:layout_constraintTop_toBottomOf="@+id/tv_titre"
+                tools:text="2h" />
 
+            <ImageView
+                android:id="@+id/imageView10"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/outline_place_24"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_lieu"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toTopOf="@+id/tv_lieu" />
 
+            <TextView
+                android:id="@+id/tv_lieu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{seance.lieu}"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toTopOf="@+id/tv_créateur"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/imageView10"
+                app:layout_constraintTop_toBottomOf="@+id/tv_durée"
+                tools:text="Ceci est une très long addresse qui prend trop de place pour être affichée entièrement" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp">
+            <TextView
+                android:id="@+id/tv_créateur"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:text="@{seance.nomAuteur}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/author_profile_picture"
+                app:layout_constraintTop_toBottomOf="@+id/tv_lieu"
+                tools:text="john.doe@gmail.com" />
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/author_profile_picture"
+                imgUrl="@{seance.photoAuteur}"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_créateur"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toTopOf="@+id/tv_créateur"
+                tools:src="@drawable/userphoto" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/outline_place_24"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tv_lieu"
-                        tools:text="Ceci est une très long addresse qui prend trop de place pour être affichée entièrement"
-                        android:text="@{seance.lieu}"
-                        android:textSize="14sp"
-                        android:maxLines="1"
-                        android:ellipsize="end"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tv_créateur"
-                        tools:text="john.doe@gmail.com"
-                        android:text="@{seance.nomAuteur}"
-                        android:layout_gravity="center_vertical" />
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:id="@+id/author_profile_picture"
-                        imgUrl="@{seance.photoAuteur}"
-                        android:layout_marginStart="8dp"
-                        tools:src="@drawable/userphoto"/>
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-        </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>
