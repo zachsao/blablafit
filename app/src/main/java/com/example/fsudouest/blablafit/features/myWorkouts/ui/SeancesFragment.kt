@@ -21,6 +21,7 @@ import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
+import kotlinx.android.synthetic.main.fragment_seances.*
 import org.jetbrains.anko.image
 import javax.inject.Inject
 
@@ -46,6 +47,11 @@ class SeancesFragment : Fragment(), Injectable {
 
         viewModel.getMyWorkouts()
         viewModel.getJoinedWorkouts()
+
+        binding.swiperefresh.setOnRefreshListener {
+            viewModel.getMyWorkouts()
+            viewModel.getJoinedWorkouts()
+        }
         return binding.root
     }
 
@@ -66,10 +72,12 @@ class SeancesFragment : Fragment(), Injectable {
         when (state){
             is MyWorkoutsState.Loading -> showProgress(true)
             is MyWorkoutsState.WorkoutsEmpty -> {
+                binding.swiperefresh.isRefreshing = false
                 showProgress(false)
                 showEmptyState(R.string.no_seance_available, R.drawable.ic_undraw_healthy_habit)
             }
             is MyWorkoutsState.WorkoutsLoaded -> {
+                binding.swiperefresh.isRefreshing = false
                 showProgress(false)
                 updateList(state)
                 hideEmptyState()
