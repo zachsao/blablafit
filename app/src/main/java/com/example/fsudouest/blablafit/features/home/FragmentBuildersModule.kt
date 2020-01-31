@@ -8,6 +8,7 @@ import com.example.fsudouest.blablafit.features.nearby.di.NearByModule
 import com.example.fsudouest.blablafit.features.nearby.ui.NearByFragment
 import com.example.fsudouest.blablafit.features.profile.MyProfileFragment
 import com.example.fsudouest.blablafit.features.profile.di.ProfileModule
+import com.example.fsudouest.blablafit.features.profile.personalnfo.PersonalInfoFragment
 import com.example.fsudouest.blablafit.features.workoutCreation.di.WorkoutCreationModule
 import com.example.fsudouest.blablafit.features.workoutCreation.ui.*
 import dagger.Module
@@ -41,4 +42,7 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector(modules = [WorkoutCreationModule::class])
     abstract fun contributeDescriptionFragment(): AddDescriptionFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributePersonalInfoFragment(): PersonalInfoFragment
 }

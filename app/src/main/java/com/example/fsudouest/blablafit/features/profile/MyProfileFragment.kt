@@ -18,35 +18,44 @@ import com.example.fsudouest.blablafit.databinding.FragmentMyProfileBinding
 import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.firebase.ui.auth.AuthUI
+import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.android.synthetic.main.fragment_my_profile.*
+import timber.log.Timber
+import java.lang.IllegalStateException
 import javax.inject.Inject
 
-class MyProfileFragment : Fragment(), Injectable {
+private const val RC_PHOTO_PICKER = 2
 
-    private lateinit var profile_pic: ImageView
+class MyProfileFragment : Fragment(), Injectable {
 
     @Inject
     lateinit var factory: ViewModelFactory<ProfileViewModel>
 
     private lateinit var viewModel: ProfileViewModel
 
+    private lateinit var binding: FragmentMyProfileBinding
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val binding: FragmentMyProfileBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_my_profile, container, false)
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_my_profile, container, false)
         viewModel = ViewModelProviders.of(this, factory).get(ProfileViewModel::class.java)
-        profile_pic = binding.profilePicImageView
+        setHasOptionsMenu(true)
 
+        binding.pager.adapter = ProfilePagerAdapter(requireActivity())
+        TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
+            tab.text = when (position) {
+                0 -> "Personal Info"
+                1 -> "Workout buddies"
+                else -> throw IllegalStateException()
+            }
+        }.attach()
 
         viewModel.user().observe(this, Observer {
             binding.user = it
-            if (it.photoUrl.isNotEmpty()) {
-                Glide.with(activity!!)
-                        .load(it.photoUrl)
-                        .into(profile_pic)
-            }
         })
 
-        profile_pic.setOnClickListener { createPhotoUpdateDialog() }
+        binding.profilePicture.setOnClickListener { createPhotoUpdateDialog() }
         return binding.root
     }
 
@@ -61,10 +70,10 @@ class MyProfileFragment : Fragment(), Injectable {
         val builder = AlertDialog.Builder(activity!!)
         builder.setTitle(getString(R.string.update_profile_dialog_title))
         builder.setMessage(getString(R.string.update_photo_dialog_message))
-        builder.setPositiveButton("OK") { dialog, id ->
+        builder.setPositiveButton("OK") { _, _ ->
             chooseImageFromGallery()
         }
-        builder.setNegativeButton(getString(R.string.cancel)) { dialogInterface, i -> }
+        builder.setNegativeButton(getString(R.string.cancel)) { _, _ -> }
         // Create the AlertDialog
         val dialog = builder.create()
         dialog.show()
@@ -76,7 +85,11 @@ class MyProfileFragment : Fragment(), Injectable {
             val selectedImageUri = data?.data
             Glide.with(activity!!)
                     .load(selectedImageUri.toString())
-                    .into(profile_pic)
+                    .into(binding.profilePicture)
+
+            Glide.with(activity!!)
+                    .load(selectedImageUri.toString())
+                    .into(binding.profilePicBackground)
 
             selectedImageUri?.let {
                 viewModel.uploadProfilePictureToStorage(it)
@@ -88,32 +101,19 @@ class MyProfileFragment : Fragment(), Injectable {
         AuthUI.getInstance().signOut(activity!!)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.sign_out,menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.action_signout -> {
-                Log.i("My Profile Fragment", " Signing out !")
                 signOut()
-                return true
+                true
             }
-            else ->
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    companion object {
-        private val RC_PHOTO_PICKER = 2
     }
 
 }

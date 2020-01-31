@@ -129,6 +129,12 @@
     <string name="accept">Accept</string>
     <string name="decline">Decline</string>
     <string name="no_requests">Requests will appear on this screen when people want join this workout.</string>
+    <string name="userRating">Rating /5</string>
+    <string name="completed_workouts">Completed workouts</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="sign_out">Sign out</string>
 
 
 </resources>

@@ -10,170 +10,104 @@
             type="com.example.fsudouest.blablafit.model.User"/>
     </data>
 
-    <RelativeLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <View
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="210dp"
-            android:background="@color/colorPrimary"/>
+            android:layout_height="match_parent">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/profilePicBackground"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:alpha="0.3"
+                android:scaleType="centerCrop"
+                imgUrl="@{user.photoUrl}"
+                app:layout_constraintBottom_toTopOf="@+id/guideline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@drawable/userphoto" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/black"
+                android:alpha="0.7"
+                app:layout_constraintBottom_toTopOf="@+id/guideline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profilePicture"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                imgUrl="@{user.photoUrl}"
+                app:layout_constraintBottom_toTopOf="@+id/guideline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/userphoto" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.40"/>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:text="@{user.nomComplet}"
+                app:layout_constraintBottom_toBottomOf="@+id/guideline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profilePicture"
+                tools:text="John Doe" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profilePicBackground">
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp">
+                    tools:text="Profile info" />
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="110dp"
-                        android:layout_height="110dp"
-                        android:id="@+id/profile_pic_image_view"
-                        android:src="@drawable/userphoto"
-                        android:layout_centerHorizontal="true"
-                        android:elevation="1dp"/>
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Workout buddies" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+            </com.google.android.material.tabs.TabLayout>
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="55dp"
-                            app:contentPadding="15dp"
-                            app:cardCornerRadius="10dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    tools:text="Zach Sao"
-                                    android:id="@+id/pseudo"
-                                    android:textStyle="bold"
-                                    android:textSize="25sp"
-                                    android:text="@{user.nomComplet}"
-                                    android:layout_marginTop="60dp"
-                                    android:layout_gravity="center_horizontal"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Niveau: Intermédiaire"
-                                    android:layout_gravity="center_horizontal"
-                                    android:textSize="15sp"
-                                    android:layout_marginTop="10dp"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textAlignment="center"
-                                    android:layout_gravity="center_horizontal"
-                                    android:textSize="15sp"
-                                    android:textStyle="italic"
-                                    android:layout_marginTop="20sp"
-                                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent elementum purus sed efficitur iaculis."/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Paris, Fr"
-                                    android:textSize="18sp"
-                                    android:textStyle="bold"
-                                    android:layout_marginTop="10dp"
-                                    android:layout_gravity="center_horizontal"/>
-
-                            </LinearLayout>
-                        </androidx.cardview.widget.CardView>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="2"
-                            android:layout_marginTop="20dp">
-
-                            <LinearLayout
-                                android:layout_width="62dp"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_weight="1">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="35sp"
-                                    android:text="4.5"
-                                    android:textStyle="bold"
-                                    android:layout_gravity="center_horizontal"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Note /5"
-                                    android:layout_gravity="center_horizontal"
-                                    android:textSize="20sp"/>
-                            </LinearLayout>
-                            <LinearLayout
-                                android:layout_width="62dp"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_weight="1">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="35sp"
-                                    android:text="15"
-                                    android:textStyle="bold"
-                                    android:layout_gravity="center_horizontal"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Séances"
-                                    android:layout_gravity="center_horizontal"
-                                    android:textSize="20sp"/>
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Modifier le profil"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="30dp"
-                            android:layout_marginBottom="30dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_gravity="center_horizontal"
-                            android:textColor="@color/white"
-                            android:background="@drawable/element_outline"/>
-                    </LinearLayout>
-                </RelativeLayout>
+            <androidx.viewpager2.widget.ViewPager2
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:id="@+id/pager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
 
-            </LinearLayout>
-        </ScrollView>
-
-
-
-    </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+    
 
 </layout>
