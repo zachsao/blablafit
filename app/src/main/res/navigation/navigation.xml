@@ -8,12 +8,12 @@
     <fragment
         android:id="@+id/myProfileFragment"
         android:name="com.example.fsudouest.blablafit.features.profile.MyProfileFragment"
-        android:label="Mon profil"
+        android:label="@string/my_profile"
         tools:layout="@layout/fragment_my_profile" />
     <fragment
         android:id="@+id/trouverUneSeanceFragment"
         android:name="com.example.fsudouest.blablafit.features.nearby.ui.NearByFragment"
-        android:label="Trouver une séance"
+        android:label="@string/find_workout"
         tools:layout="@layout/fragment_seances" >
         <action
             android:id="@+id/action_trouverUneSeanceFragment_to_detailsSeanceActivity"
@@ -22,7 +22,7 @@
     <fragment
         android:id="@+id/seancesFragment"
         android:name="com.example.fsudouest.blablafit.features.myWorkouts.ui.SeancesFragment"
-        android:label="Mes séances"
+        android:label="@string/my_workouts"
         tools:layout="@layout/fragment_seances" >
         <action
             android:id="@+id/action_seancesFragment_to_detailsSeanceActivity"
@@ -31,12 +31,12 @@
     <fragment
         android:id="@+id/messagesFragment"
         android:name="com.example.fsudouest.blablafit.features.messages.ui.MessagesFragment"
-        android:label="Messages"
+        android:label="@string/messages"
         tools:layout="@layout/fragment_messages" />
     <fragment
         android:id="@+id/indoorChoiceFragment"
         android:name="com.example.fsudouest.blablafit.features.workoutCreation.ui.IndoorChoiceFragment"
-        android:label="Nouvelle séance"
+        android:label="@string/new_workout"
         tools:layout="@layout/fragment_indoor_choice" >
         <action
             android:id="@+id/action_indoorChoiceFragment_to_typeSeanceFragment"
@@ -49,7 +49,7 @@
     <fragment
         android:id="@+id/typeSeanceFragment"
         android:name="com.example.fsudouest.blablafit.features.workoutCreation.ui.TypeSeanceFragment"
-        android:label="Nouvelle séance"
+        android:label="@string/new_workout"
         tools:layout="@layout/fragment_type_seance">
         <action
             android:id="@+id/action_typeSeanceFragment_to_addDescriptionFragment"
@@ -66,7 +66,7 @@
     <fragment
         android:id="@+id/addDescriptionFragment"
         android:name="com.example.fsudouest.blablafit.features.workoutCreation.ui.AddDescriptionFragment"
-        android:label="Nouvelle séance"
+        android:label="@string/new_workout"
         tools:layout="@layout/fragment_add_description" >
         <action
             android:id="@+id/action_addDescriptionFragment_to_addDateDurationFragment"
@@ -83,7 +83,7 @@
     <fragment
         android:id="@+id/addDateDurationFragment"
         android:name="com.example.fsudouest.blablafit.features.workoutCreation.ui.AddDateDurationFragment"
-        android:label="Nouvelle séance"
+        android:label="@string/new_workout"
         tools:layout="@layout/fragment_add_date_duration" >
         <action
             android:id="@+id/action_addDateDurationFragment_to_searchLocationFragment"
@@ -100,7 +100,7 @@
     <fragment
         android:id="@+id/searchLocationFragment"
         android:name="com.example.fsudouest.blablafit.features.workoutCreation.ui.SearchLocationFragment"
-        android:label="Nouvelle séance"
+        android:label="@string/new_workout"
         tools:layout="@layout/fragment_search_location" >
         <action
             android:id="@+id/action_searchLocationFragment_to_seancesFragment"

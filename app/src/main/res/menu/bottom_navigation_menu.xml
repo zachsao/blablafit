@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/seancesFragment"
         android:icon="@drawable/ic_home"
-        android:title="Accueil" />
+        android:title="@string/home" />
     <item
         android:id="@+id/trouverUneSeanceFragment"
         android:icon="@drawable/ic_menu_search"
-        android:title="Rechercher" />
+        android:title="@string/near_by" />
 
     <item
         android:id="@+id/indoorChoiceFragment"
         android:icon="@drawable/round_add_box_24"
-        android:title="Créer"/>
+        android:title="@string/add"/>
     
     <item
         android:id="@+id/messagesFragment"
         android:icon="@drawable/ic_messages"
-        android:title="Messages" />
+        android:title="@string/messages" />
     <item
         android:id="@+id/myProfileFragment"
         android:icon="@drawable/ic_profile"
-        android:title="Mon profil" />
+        android:title="@string/my_profile" />
 
 
 </menu>
