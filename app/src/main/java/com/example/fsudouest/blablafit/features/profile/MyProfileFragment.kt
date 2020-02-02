@@ -45,13 +45,13 @@ class MyProfileFragment : Fragment(), Injectable {
         binding.pager.adapter = ProfilePagerAdapter(requireActivity())
         TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
             tab.text = when (position) {
-                0 -> "Personal Info"
-                1 -> "Workout buddies"
+                0 -> getString(R.string.personal_info)
+                1 -> getString(R.string.workout_buddies)
                 else -> throw IllegalStateException()
             }
         }.attach()
 
-        viewModel.user().observe(this, Observer {
+        viewModel.user().observe(viewLifecycleOwner, Observer {
             binding.user = it
         })
 

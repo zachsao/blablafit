@@ -135,6 +135,9 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="sign_out">Sign out</string>
+    <string name="empty_buddies">Your workout buddies will appear here once you will have completed a workout with them.</string>
+    <string name="personal_info">Personal Info</string>
+    <string name="workout_buddies">Workout buddies</string>
 
 
 </resources>
