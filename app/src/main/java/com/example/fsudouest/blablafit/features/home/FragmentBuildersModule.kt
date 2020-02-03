@@ -6,10 +6,11 @@ import com.example.fsudouest.blablafit.features.myWorkouts.di.MyWorkoutsModule
 import com.example.fsudouest.blablafit.features.myWorkouts.ui.SeancesFragment
 import com.example.fsudouest.blablafit.features.nearby.di.NearByModule
 import com.example.fsudouest.blablafit.features.nearby.ui.NearByFragment
-import com.example.fsudouest.blablafit.features.profile.MyProfileFragment
-import com.example.fsudouest.blablafit.features.profile.buddies.WorkoutBuddiesFragment
+import com.example.fsudouest.blablafit.features.profile.myProfile.MyProfileFragment
+import com.example.fsudouest.blablafit.features.profile.myProfile.buddies.WorkoutBuddiesFragment
 import com.example.fsudouest.blablafit.features.profile.di.ProfileModule
-import com.example.fsudouest.blablafit.features.profile.personalnfo.PersonalInfoFragment
+import com.example.fsudouest.blablafit.features.profile.myProfile.personalnfo.PersonalInfoFragment
+import com.example.fsudouest.blablafit.features.profile.userProfile.UserProfileFragment
 import com.example.fsudouest.blablafit.features.workoutCreation.di.WorkoutCreationModule
 import com.example.fsudouest.blablafit.features.workoutCreation.ui.*
 import dagger.Module
@@ -49,4 +50,7 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeWorkoutBuddiesFragment(): WorkoutBuddiesFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeUserProfileFragment(): UserProfileFragment
 }

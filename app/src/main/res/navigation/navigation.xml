@@ -7,9 +7,17 @@
 
     <fragment
         android:id="@+id/myProfileFragment"
-        android:name="com.example.fsudouest.blablafit.features.profile.MyProfileFragment"
+        android:name="com.example.fsudouest.blablafit.features.profile.myProfile.MyProfileFragment"
         android:label="@string/my_profile"
-        tools:layout="@layout/fragment_my_profile" />
+        tools:layout="@layout/fragment_my_profile" >
+        <action
+            android:id="@+id/action_myProfileFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment"
+            app:enterAnim="@anim/fui_slide_in_right"
+            app:exitAnim="@anim/fui_slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
     <fragment
         android:id="@+id/trouverUneSeanceFragment"
         android:name="com.example.fsudouest.blablafit.features.nearby.ui.NearByFragment"
@@ -122,4 +130,12 @@
             android:name="id"
             app:argType="string" />
     </activity>
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="com.example.fsudouest.blablafit.features.profile.userProfile.UserProfileFragment"
+        tools:layout="@layout/fragment_user_profile" >
+        <argument
+            android:name="userId"
+            app:argType="string" />
+    </fragment>
 </navigation>

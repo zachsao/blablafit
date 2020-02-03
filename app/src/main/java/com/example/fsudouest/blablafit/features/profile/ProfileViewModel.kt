@@ -5,15 +5,15 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.fsudouest.blablafit.features.profile.buddies.BuddyViewItem
+import com.example.fsudouest.blablafit.features.profile.myProfile.ProfileData
+import com.example.fsudouest.blablafit.features.profile.myProfile.ProfileState
+import com.example.fsudouest.blablafit.features.profile.myProfile.buddies.BuddyViewItem
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.model.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.google.type.Date
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -22,17 +22,11 @@ class ProfileViewModel @Inject constructor(firebaseStorage: FirebaseStorage, fir
 
     private var profilePhotosStorageReference = firebaseStorage.reference.child("profile_pictures")
     private var firebaseUser = firebaseAuth.currentUser
-    private val profileLiveData = MutableLiveData<User>()
     private val stateLiveData = MutableLiveData<ProfileState>()
 
-    init {
-        getUser()
-        getBuddies()
-    }
 
     fun stateLiveData(): LiveData<ProfileState> = stateLiveData
 
-    fun user() = profileLiveData
 
     fun uploadProfilePictureToStorage(selectedImageUri: Uri){
         val photoRef = profilePhotosStorageReference.child(selectedImageUri.lastPathSegment!!)
@@ -55,7 +49,7 @@ class ProfileViewModel @Inject constructor(firebaseStorage: FirebaseStorage, fir
         }
     }
 
-    private fun getBuddies() {
+    fun getBuddies() {
         firestore.collection("workouts")
                 .whereEqualTo("idAuteur", firebaseUser?.uid ?: "")
                 .whereLessThan("date", Calendar.getInstance().time)
@@ -77,7 +71,7 @@ class ProfileViewModel @Inject constructor(firebaseStorage: FirebaseStorage, fir
                 .addOnSuccessListener { querySnapshot ->
                     val users = querySnapshot.documents
                             .mapNotNull { it.toObject(User::class.java) }
-                            .map { BuddyViewItem(it.nomComplet, it.photoUrl) }
+                            .map { BuddyViewItem(it.uid, it.nomComplet, it.photoUrl) }
 
                     stateLiveData.value = if (users.isNotEmpty()) ProfileState.BuddiesLoaded(previousData().copy(buddies = users))
                     else ProfileState.EmptyBuddies(previousData())
@@ -85,13 +79,13 @@ class ProfileViewModel @Inject constructor(firebaseStorage: FirebaseStorage, fir
                 .addOnFailureListener { Timber.e(it) }
     }
 
-    private fun getUser(){
-        firestore.collection("users").document(firebaseUser?.uid ?: "")
+    fun getUser(id: String = firebaseUser?.uid ?: ""){
+        firestore.collection("users").document(id)
                 .get()
                 .addOnSuccessListener {
                     val user = it.toObject(User::class.java)
-                    profileLiveData.value = user
-                    stateLiveData.value = ProfileState.UserLoaded(previousData().copy(user = user))
+                    stateLiveData.value = if (id == firebaseUser?.uid) ProfileState.UserLoaded(previousData().copy(currentUser = user))
+                    else ProfileState.UserLoaded(previousData().copy(user = user))
                 }
                 .addOnFailureListener {
                     Timber.e(it)

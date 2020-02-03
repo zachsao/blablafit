@@ -6,7 +6,7 @@
     <data>
         <variable
             name="buddy"
-            type="com.example.fsudouest.blablafit.features.profile.buddies.BuddyViewItem" />
+            type="com.example.fsudouest.blablafit.features.profile.myProfile.buddies.BuddyViewItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

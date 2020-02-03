@@ -1,6 +1,6 @@
-package com.example.fsudouest.blablafit.features.profile
+package com.example.fsudouest.blablafit.features.profile.myProfile
 
-import com.example.fsudouest.blablafit.features.profile.buddies.BuddyViewItem
+import com.example.fsudouest.blablafit.features.profile.myProfile.buddies.BuddyViewItem
 import com.example.fsudouest.blablafit.model.User
 
 sealed class ProfileState {
@@ -13,6 +13,7 @@ sealed class ProfileState {
 }
 
 data class ProfileData(
-        val user: User? = null,
-        val buddies: List<BuddyViewItem> = emptyList()
+        val currentUser: User? = null,
+        val buddies: List<BuddyViewItem> = emptyList(),
+        val user: User? = null
 )

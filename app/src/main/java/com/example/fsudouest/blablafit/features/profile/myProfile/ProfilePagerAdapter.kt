@@ -1,10 +1,10 @@
-package com.example.fsudouest.blablafit.features.profile
+package com.example.fsudouest.blablafit.features.profile.myProfile
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.fsudouest.blablafit.features.profile.buddies.WorkoutBuddiesFragment
-import com.example.fsudouest.blablafit.features.profile.personalnfo.PersonalInfoFragment
+import com.example.fsudouest.blablafit.features.profile.myProfile.buddies.WorkoutBuddiesFragment
+import com.example.fsudouest.blablafit.features.profile.myProfile.personalnfo.PersonalInfoFragment
 
 const val NUM_PAGES = 2
 
