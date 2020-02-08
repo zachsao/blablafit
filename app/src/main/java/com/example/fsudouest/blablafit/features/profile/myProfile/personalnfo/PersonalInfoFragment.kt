@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit.features.profile.personalnfo
+package com.example.fsudouest.blablafit.features.profile.myProfile.personalnfo
 
 
 import android.os.Bundle
@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 
-import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentPersonalInfoBinding
 import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.profile.ProfileViewModel
@@ -28,9 +27,10 @@ class PersonalInfoFragment : Fragment(), Injectable {
         // Inflate the layout for this fragment
         val binding = FragmentPersonalInfoBinding.inflate(inflater, container, false)
 
-        viewModel.user().observe(this, Observer {
-            binding.user = it
+        viewModel.stateLiveData().observe(viewLifecycleOwner, Observer {
+            binding.user = it.data.currentUser
         })
+        viewModel.getUser()
 
         return binding.root
     }

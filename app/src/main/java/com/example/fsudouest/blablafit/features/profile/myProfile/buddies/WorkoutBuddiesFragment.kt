@@ -1,4 +1,4 @@
-package com.example.fsudouest.blablafit.features.profile.buddies
+package com.example.fsudouest.blablafit.features.profile.myProfile.buddies
 
 
 import android.os.Bundle
@@ -8,10 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.example.fsudouest.blablafit.databinding.FragmentWorkoutBuddiesBinding
 import com.example.fsudouest.blablafit.di.Injectable
-import com.example.fsudouest.blablafit.features.profile.ProfileState
+import com.example.fsudouest.blablafit.features.profile.myProfile.ProfileState
 import com.example.fsudouest.blablafit.features.profile.ProfileViewModel
+import com.example.fsudouest.blablafit.features.profile.myProfile.MyProfileFragmentDirections
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
@@ -37,6 +39,7 @@ class WorkoutBuddiesFragment : Fragment(), Injectable {
         viewModel.stateLiveData().observe(viewLifecycleOwner, Observer {
             render(it)
         })
+        viewModel.getBuddies()
 
         return binding.root
     }
@@ -69,7 +72,13 @@ class WorkoutBuddiesFragment : Fragment(), Injectable {
 
     private fun initRecyclerView() {
         binding.recyclerView.apply {
-            adapter = GroupAdapter<GroupieViewHolder>().apply { add(section) }
+            adapter = GroupAdapter<GroupieViewHolder>().apply {
+                add(section)
+                setOnItemClickListener { item, view ->
+                    item as BuddyViewItem
+                    findNavController().navigate(MyProfileFragmentDirections.actionMyProfileFragmentToUserProfileFragment(item.id))
+                }
+            }
         }
     }
 
