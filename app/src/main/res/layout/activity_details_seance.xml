@@ -257,7 +257,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/authorInfoCard">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
@@ -270,16 +270,44 @@
                         android:layout_weight="2"
                         android:text="@{seance.lieu}"
                         android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/openMapsButton"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         tools:text="Pro Gym, 4500 Rue Hochelaga, Montréal, QC H1V 3N8, Canada" />
 
                     <ImageView
-                        android:id="@+id/imageView7"
-                        android:layout_width="0dp"
+                        android:id="@+id/openMapsButton"
+                        android:layout_width="45dp"
                         android:layout_height="45dp"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
                         android:layout_weight="1"
+                        android:tint="@color/mapbox_blue"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/workout_lieu_textview"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/round_near_me_24" />
-                </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/textView14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="Maps"
+                        android:textAllCaps="true"
+                        android:textColor="@color/mapbox_blue"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/openMapsButton"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="@+id/openMapsButton"
+                        app:layout_constraintTop_toBottomOf="@+id/openMapsButton" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -303,12 +331,13 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="32dp"
-                android:text="@string/no_description"
+                android:text="@{seance.description}"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/descriptionTitle" />
+                app:layout_constraintTop_toBottomOf="@id/descriptionTitle"
+                tools:text="@string/no_description"/>
 
             <TextView
                 android:id="@+id/workout_participants_textview"
