@@ -13,6 +13,7 @@ import com.example.fsudouest.blablafit.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Source
 import com.google.firebase.storage.FirebaseStorage
 import timber.log.Timber
 import java.util.*
@@ -81,7 +82,7 @@ class ProfileViewModel @Inject constructor(firebaseStorage: FirebaseStorage, fir
 
     fun getUser(id: String = firebaseUser?.uid ?: ""){
         firestore.collection("users").document(id)
-                .get()
+                .get(Source.CACHE)
                 .addOnSuccessListener {
                     val user = it.toObject(User::class.java)
                     stateLiveData.value = if (id == firebaseUser?.uid) ProfileState.UserLoaded(previousData().copy(currentUser = user))

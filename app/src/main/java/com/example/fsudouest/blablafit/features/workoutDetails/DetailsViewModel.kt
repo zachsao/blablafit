@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.Source
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -27,7 +28,7 @@ class DetailsViewModel @Inject constructor(mDatabase: FirebaseFirestore, auth: F
     fun getWorkoutDetails(id: String){
         workoutsRef
                 .document(id)
-                .get()
+                .get(Source.CACHE)
                 .addOnSuccessListener {
                     val workout = it.toObject(Seance::class.java)!!
                     detailsLiveData.value = workout

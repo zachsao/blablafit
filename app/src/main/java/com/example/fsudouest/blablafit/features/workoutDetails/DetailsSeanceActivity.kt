@@ -64,10 +64,10 @@ class DetailsSeanceActivity : AppCompatActivity() {
             binding.contactButton.setOnClickListener {
                 startActivity<ConversationActivity>("contactName" to workout.nomAuteur, "userId" to workout.idAuteur)
             }
+            binding.openMapsButton.setOnClickListener {
+                openMaps()
+            }
         })
-        binding.openMapsButton.setOnClickListener {
-            openMaps()
-        }
     }
 
     private fun openMaps() {
