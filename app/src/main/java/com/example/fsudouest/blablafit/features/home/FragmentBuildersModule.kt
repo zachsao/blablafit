@@ -31,19 +31,10 @@ abstract class FragmentBuildersModule {
     abstract fun contributeTrouverUneSeanceFragment(): NearByFragment
 
     @ContributesAndroidInjector(modules = [WorkoutCreationModule::class])
-    abstract fun contributeIndoorChoiceFragment(): IndoorChoiceFragment
-
-    @ContributesAndroidInjector(modules = [WorkoutCreationModule::class])
-    abstract fun contributeSearchLocationFragment(): SearchLocationFragment
-
-    @ContributesAndroidInjector(modules = [WorkoutCreationModule::class])
     abstract fun contributeAddDateDurationFragment(): AddDateDurationFragment
 
     @ContributesAndroidInjector(modules = [WorkoutCreationModule::class])
     abstract fun contributeTypeSeanceFragment(): TypeSeanceFragment
-
-    @ContributesAndroidInjector(modules = [WorkoutCreationModule::class])
-    abstract fun contributeDescriptionFragment(): AddDescriptionFragment
 
     @ContributesAndroidInjector
     abstract fun contributePersonalInfoFragment(): PersonalInfoFragment

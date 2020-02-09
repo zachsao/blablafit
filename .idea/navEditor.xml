@@ -91,34 +91,13 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-374" />
-                            <option name="y" value="-613" />
+                            <option name="x" value="-832" />
+                            <option name="y" value="-829" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_addDateDurationFragment_to_searchLocationFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="addDescriptionFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="-597" />
-                            <option name="y" value="-607" />
-                          </Point>
-                        </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_addDescriptionFragment_to_addDateDurationFragment">
+                            <entry key="action_addDateDurationFragment_to_seancesFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -140,34 +119,13 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="indoorChoiceFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="-1091" />
-                            <option name="y" value="-426" />
-                          </Point>
-                        </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_indoorChoiceFragment_to_typeSeanceFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
                   <entry key="messagesFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-1060" />
-                            <option name="y" value="55" />
+                            <option name="x" value="-1066" />
+                            <option name="y" value="134" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -178,8 +136,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-851" />
-                            <option name="y" value="25" />
+                            <option name="x" value="-1076" />
+                            <option name="y" value="456" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -199,8 +157,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-594" />
-                            <option name="y" value="26" />
+                            <option name="x" value="-696" />
+                            <option name="y" value="-488" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -215,34 +173,13 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="searchLocationFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="-148" />
-                            <option name="y" value="-613" />
-                          </Point>
-                        </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_searchLocationFragment_to_seancesFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
                   <entry key="trouverUneSeanceFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-350" />
-                            <option name="y" value="66" />
+                            <option name="x" value="-679" />
+                            <option name="y" value="-180" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -262,13 +199,13 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-802" />
-                            <option name="y" value="-598" />
+                            <option name="x" value="-1059" />
+                            <option name="y" value="-820" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_typeSeanceFragment_to_addDescriptionFragment">
+                            <entry key="action_typeSeanceFragment_to_addDateDurationFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -283,8 +220,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-847" />
-                            <option name="y" value="375" />
+                            <option name="x" value="-852" />
+                            <option name="y" value="434" />
                           </Point>
                         </option>
                       </LayoutPositions>

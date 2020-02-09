@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         setupWithNavController(navigation, navController)
 
         val appBarConfiguration = AppBarConfiguration(setOf(R.id.trouverUneSeanceFragment, R.id.seancesFragment,
-                R.id.messagesFragment, R.id.myProfileFragment, R.id.indoorChoiceFragment))
+                R.id.messagesFragment, R.id.myProfileFragment, R.id.typeSeanceFragment))
 
         NavigationUI.setupActionBarWithNavController(this,navController,appBarConfiguration)
     }

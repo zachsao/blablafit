@@ -42,51 +42,17 @@
         android:label="@string/messages"
         tools:layout="@layout/fragment_messages" />
     <fragment
-        android:id="@+id/indoorChoiceFragment"
-        android:name="com.example.fsudouest.blablafit.features.workoutCreation.ui.IndoorChoiceFragment"
-        android:label="@string/new_workout"
-        tools:layout="@layout/fragment_indoor_choice" >
-        <action
-            android:id="@+id/action_indoorChoiceFragment_to_typeSeanceFragment"
-            app:destination="@id/typeSeanceFragment"
-            app:enterAnim="@anim/fui_slide_in_right"
-            app:exitAnim="@anim/fui_slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-    </fragment>
-    <fragment
         android:id="@+id/typeSeanceFragment"
         android:name="com.example.fsudouest.blablafit.features.workoutCreation.ui.TypeSeanceFragment"
         android:label="@string/new_workout"
         tools:layout="@layout/fragment_type_seance">
         <action
-            android:id="@+id/action_typeSeanceFragment_to_addDescriptionFragment"
-            app:destination="@id/addDescriptionFragment"
-            app:enterAnim="@anim/fui_slide_in_right"
-            app:exitAnim="@anim/fui_slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-        <argument
-            android:name="choice"
-            app:argType="integer"
-            android:defaultValue="0" />
-    </fragment>
-    <fragment
-        android:id="@+id/addDescriptionFragment"
-        android:name="com.example.fsudouest.blablafit.features.workoutCreation.ui.AddDescriptionFragment"
-        android:label="@string/new_workout"
-        tools:layout="@layout/fragment_add_description" >
-        <action
-            android:id="@+id/action_addDescriptionFragment_to_addDateDurationFragment"
+            android:id="@+id/action_typeSeanceFragment_to_addDateDurationFragment"
             app:destination="@id/addDateDurationFragment"
             app:enterAnim="@anim/fui_slide_in_right"
             app:exitAnim="@anim/fui_slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
-        <argument
-            android:name="choice"
-            app:argType="integer"
-            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/addDateDurationFragment"
@@ -94,32 +60,8 @@
         android:label="@string/new_workout"
         tools:layout="@layout/fragment_add_date_duration" >
         <action
-            android:id="@+id/action_addDateDurationFragment_to_searchLocationFragment"
-            app:destination="@id/searchLocationFragment"
-            app:enterAnim="@anim/fui_slide_in_right"
-            app:exitAnim="@anim/fui_slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-        <argument
-            android:name="choice"
-            app:argType="integer"
-            android:defaultValue="0" />
-    </fragment>
-    <fragment
-        android:id="@+id/searchLocationFragment"
-        android:name="com.example.fsudouest.blablafit.features.workoutCreation.ui.SearchLocationFragment"
-        android:label="@string/new_workout"
-        tools:layout="@layout/fragment_search_location" >
-        <action
-            android:id="@+id/action_searchLocationFragment_to_seancesFragment"
-            app:destination="@id/seancesFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popUpTo="@+id/seancesFragment" />
-        <argument
-            android:name="choice"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:id="@+id/action_addDateDurationFragment_to_seancesFragment"
+            app:destination="@id/seancesFragment" />
     </fragment>
     <activity
         android:id="@+id/detailsSeanceActivity"

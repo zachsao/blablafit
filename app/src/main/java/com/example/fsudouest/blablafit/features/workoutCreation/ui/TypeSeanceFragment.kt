@@ -8,11 +8,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentTypeSeanceBinding
 import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.nearby.ui.CategoryViewItem
@@ -27,7 +25,6 @@ class TypeSeanceFragment : Fragment(), Injectable {
 
     private lateinit var mAdapter: WorkoutTypeAdapter
     private lateinit var categories: List<CategoryViewItem>
-    private lateinit var list: RecyclerView
 
     private lateinit var viewModel: WorkoutCreationViewModel
     @Inject
@@ -36,31 +33,22 @@ class TypeSeanceFragment : Fragment(), Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = activity?.run {
-            ViewModelProviders.of(this, factory).get(WorkoutCreationViewModel::class.java)
+            ViewModelProvider(this, factory).get(WorkoutCreationViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         val binding = FragmentTypeSeanceBinding.inflate(inflater, container, false)
 
-        list = binding.gridRecyclerView
+        mAdapter = WorkoutTypeAdapter(CategoryViewItems.getCategoryViewItems())
 
-        categories = CategoryViewItems.getCategoryViewItems()
-        mAdapter = WorkoutTypeAdapter(categories)
+        binding.gridRecyclerView.adapter = mAdapter
 
-        list.apply {
-            layoutManager = GridLayoutManager(activity!!, 3)
-            adapter = mAdapter
-        }
-
-        val args: TypeSeanceFragmentArgs by navArgs()
-
-        binding.nextStepButton.setOnClickListener {
+        binding.nextButton.setOnClickListener {
             val selection = mAdapter.mData.filter { it.isSelected }
             if (selection.isEmpty()) {
-                Toast.makeText(activity, "Veuillez séléctionner au moins un élément", LENGTH_SHORT).show()
+                Toast.makeText(activity, getString(R.string.empty_selection_warning), LENGTH_SHORT).show()
             } else {
                 val workoutTitle = selection.joinToString(separator = " - ") { category ->
                     getString(category.name)
@@ -68,8 +56,7 @@ class TypeSeanceFragment : Fragment(), Injectable {
                 val workout = Seance(workoutTitle)
                 viewModel.addWorkout(workout)
                 Navigation.findNavController(it)
-                        .navigate(TypeSeanceFragmentDirections.
-                                actionTypeSeanceFragmentToAddDescriptionFragment(args.choice))
+                        .navigate(TypeSeanceFragmentDirections.actionTypeSeanceFragmentToAddDateDurationFragment())
             }
 
         }

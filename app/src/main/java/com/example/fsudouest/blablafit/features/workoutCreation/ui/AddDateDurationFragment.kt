@@ -4,94 +4,136 @@ package com.example.fsudouest.blablafit.features.workoutCreation.ui
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
-import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.navArgs
+import com.example.fsudouest.blablafit.BuildConfig
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentAddDateDurationBinding
 import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.workoutCreation.viewModel.WorkoutCreationViewModel
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
-import java.text.SimpleDateFormat
+import com.google.android.gms.common.api.Status
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.TypeFilter
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import kotlinx.android.synthetic.main.fragment_add_date_duration.*
+import org.jetbrains.anko.support.v4.toast
+import timber.log.Timber
+import java.text.DateFormat
 import java.util.*
 import javax.inject.Inject
+import android.text.format.DateFormat as AndroidDateFormat
 
 
 class AddDateDurationFragment : Fragment(), Injectable {
 
-    private lateinit var date_button: Button
-    private lateinit var hour_button: Button
-    private lateinit var duration_button: Button
-    private lateinit var participantsCount: TextView
+    private val apiKey = BuildConfig.GOOGLE_PLACES_KEY
+
     private var count = 1
     private lateinit var c: Calendar
     private lateinit var datePickerDialog: DatePickerDialog
     private lateinit var timePickerDialog: TimePickerDialog
     private lateinit var durationPickerDialog: TimePickerDialog
-    private val dateFormat = SimpleDateFormat("EEE dd MMM", Locale.FRENCH)
-    private val hourFormat = SimpleDateFormat("HH:mm", Locale.FRENCH)
+    private val dateFormat = DateFormat.getDateInstance(DateFormat.SHORT)
+    private val hourFormat = DateFormat.getTimeInstance(DateFormat.SHORT)
 
     private lateinit var viewModel: WorkoutCreationViewModel
     @Inject
     lateinit var factory: ViewModelFactory<WorkoutCreationViewModel>
 
+    private lateinit var binding: FragmentAddDateDurationBinding
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        val binding: FragmentAddDateDurationBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_date_duration, container, false)
-        val args: AddDateDurationFragmentArgs by navArgs()
+        binding = FragmentAddDateDurationBinding.inflate(inflater, container, false)
 
         viewModel = activity?.run {
-            ViewModelProviders.of(this, factory).get(WorkoutCreationViewModel::class.java)
+            ViewModelProvider(this, factory).get(WorkoutCreationViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
-        //CHOIX DE LA DATE
-        date_button = binding.dateSelectionButton
+        binding.workout = viewModel.workoutLiveData.value
 
+        initPlaces()
+
+        //CHOIX DE LA DATE
         selectDate()
-        date_button.setOnClickListener {
+        binding.dateSelectionButton.setOnClickListener {
             datePickerDialog.show()
         }
 
         //CHOIX DE L'HEURE
-        hour_button = binding.hourSelectionButton
-
         selectHour()
-        hour_button.setOnClickListener {
+        binding.hourSelectionButton.setOnClickListener {
             timePickerDialog.show()
         }
 
-        //Choix de la durée
-        duration_button = binding.durationSelectionButton
-
+        //Choix de la duree
         setDuration()
-        duration_button.setOnClickListener {
+        binding.durationSelectionButton.setOnClickListener {
             durationPickerDialog.show()
         }
 
-        //Choix du nombre de participants
-        participantsCount = binding.participantsSelectionButton
+        //Choix du nombre de participant
         binding.increment.setOnClickListener { increment() }
         binding.decrement.setOnClickListener { if (count > 1) decrement() }
 
-        binding.nextStepButton.setOnClickListener {
-            viewModel.workoutLiveData.value?.duree = duration_button.text.toString()
-            viewModel.workoutLiveData.value?.maxParticipants = count
-            Navigation.findNavController(it)
-                    .navigate(AddDateDurationFragmentDirections
-                            .actionAddDateDurationFragmentToSearchLocationFragment(args.choice))
+        binding.createButton.setOnClickListener {
+            viewModel.workoutLiveData.apply {
+                value?.duree = binding.durationSelectionButton.text.toString()
+                value?.maxParticipants = count
+                value?.description = descriptionEdit.text.toString()
+            }
+
+
+            if (viewModel.workoutLiveData.value?.lieu.isNullOrEmpty()) {
+                toast(getString(R.string.empty_address_toast_message))
+            } else {
+                viewModel.addAuthor {
+                    viewModel.saveWorkout(
+                            {
+                                Navigation.findNavController(it)
+                                        .navigate(AddDateDurationFragmentDirections.actionAddDateDurationFragmentToSeancesFragment())
+                            },
+                            { toast("Une erreur s'est produite") }
+                    )
+                }
+            }
         }
 
         return binding.root
+    }
+
+    private fun initPlaces() {
+        Places.initialize(requireContext(), apiKey)
+
+        val autocompleteFragment = childFragmentManager.findFragmentById(R.id.place_autocomplete_fragment) as AutocompleteSupportFragment
+        // Specify the types of place data to return.
+        autocompleteFragment.setPlaceFields(listOf(Place.Field.NAME, Place.Field.ADDRESS))
+        autocompleteFragment.setHint(getString(R.string.searchViewHint))
+        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+            override fun onPlaceSelected(place: Place) {
+                val location = "${place.name}, ${place.address}"
+                viewModel.workoutLiveData.value?.lieu = location
+            }
+
+            override fun onError(status: Status) {
+                Timber.e("An error occurred: $status")
+            }
+        })
+        binding.chipGroup.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                indoorChip.id -> autocompleteFragment.setTypeFilter(TypeFilter.ESTABLISHMENT)
+                outdoorChip.id -> autocompleteFragment.setTypeFilter(TypeFilter.ADDRESS)
+            }
+        }
+
     }
 
     private fun selectDate() {
@@ -100,12 +142,12 @@ class AddDateDurationFragment : Fragment(), Injectable {
         val day = c.get(Calendar.DAY_OF_MONTH)
         val month = c.get(Calendar.MONTH)
         val year = c.get(Calendar.YEAR)
-        date_button.text = dateFormat.format(c.time)
+        binding.dateSelectionButton.text = dateFormat.format(c.time)
 
-        datePickerDialog = DatePickerDialog(activity!!, DatePickerDialog.OnDateSetListener { _, year, month, day_of_month ->
+        datePickerDialog = DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, day_of_month ->
             c.set(year, month, day_of_month)
             viewModel.workoutLiveData.value?.date = c.time
-            date_button.text = dateFormat.format(c.time)
+            binding.dateSelectionButton.text = dateFormat.format(c.time)
         }, year, month, day)
 
         val todayDate = c.timeInMillis
@@ -116,20 +158,22 @@ class AddDateDurationFragment : Fragment(), Injectable {
         val hour = c.get(Calendar.HOUR_OF_DAY)
         val minute = c.get(Calendar.MINUTE)
 
-        hour_button.text = hourFormat.format(c.time)
+        binding.hourSelectionButton.text = hourFormat.format(c.time)
 
         timePickerDialog = TimePickerDialog(activity, TimePickerDialog.OnTimeSetListener { _, hourOfDay, minutes ->
             c.set(Calendar.HOUR_OF_DAY, hourOfDay)
             c.set(Calendar.MINUTE, minutes)
             viewModel.workoutLiveData.value?.date = c.time
-            hour_button.text = hourFormat.format(c.time)
-        }, hour, minute, DateFormat.is24HourFormat(activity))
+            binding.hourSelectionButton.text = hourFormat.format(c.time)
+        }, hour, minute, AndroidDateFormat.is24HourFormat(activity))
     }
 
     private fun setDuration() {
         durationPickerDialog = TimePickerDialog(activity, TimePickerDialog.OnTimeSetListener { _, hourOfDay, minutes ->
-            duration_button.text = when (hourOfDay) {
-                0 -> "$minutes min"
+            binding.durationSelectionButton.text = when {
+                hourOfDay == 0 && minutes != 0 -> "$minutes min"
+                hourOfDay != 0 && minutes == 0 -> "$hourOfDay h"
+                hourOfDay == 0 && minutes == 0 -> "15 min"
                 else -> "$hourOfDay h $minutes min"
             }
         }, 0, 30, true)
@@ -137,11 +181,11 @@ class AddDateDurationFragment : Fragment(), Injectable {
 
     private fun increment() {
         count++
-        participantsCount.text = "$count"
+        binding.participantsSelectionButton.text = "$count"
     }
 
     private fun decrement() {
         count--
-        participantsCount.text = "$count"
+        binding.participantsSelectionButton.text = "$count"
     }
 }

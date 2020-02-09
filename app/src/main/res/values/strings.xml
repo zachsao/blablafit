@@ -47,7 +47,7 @@
     <string name="participate">je participe</string>
     <string name="workout_title">Type de séance:</string>
     <string name="workout_duration">Durée :</string>
-    <string name="workout_location">Lieu:</string>
+    <string name="workout_location">Location</string>
     <string name="workout_date">Date :</string>
     <string name="workout_description">Description :</string>
     <string name="workout_participants">Places restantes:</string>
@@ -59,10 +59,10 @@
     <string name="workout_type_choice">Choisis ton type de séance</string>
     <string name="next_step_tv">étape suivante</string>
     <string name="add_description_tv">Ajoute un descriptif de ta séance (optionnel)</string>
-    <string name="description_edittext_hint">Entre ta description ici</string>
+    <string name="description_edittext_hint">(Optional) Workout description</string>
     <string name="date_and_duration_fragment_title_tv">Elabore la séance parfaite</string>
     <string name="find_gym_textview">Trouve ta salle</string>
-    <string name="validate_tv">Valider</string>
+    <string name="create">Create workout</string>
     <string name="searchViewHint">Rechercher</string>
     <string name="find_your_workout_location">Choisis ton lieu d\'entraînement</string>
     <string name="firstName">Prénom</string>
@@ -147,6 +147,16 @@
     <string name="near_by">Near by</string>
     <string name="add">Add</string>
     <string name="send_message">Send message</string>
+    <string name="workout_details">Workout details: </string>
+    <string name="title">Title:</string>
+    <string name="time">Time:</string>
+    <string name="date">Date:</string>
+    <string name="duration">Duration:</string>
+    <string name="max_participants">Maximum participants:</string>
+    <string name="indoor">Gym</string>
+    <string name="outdoor">Outdoors</string>
+    <string name="location_details">Location details:</string>
+    <string name="empty_selection_warning">Choose at least one type</string>
 
 
 </resources>
