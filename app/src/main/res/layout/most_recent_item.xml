@@ -16,9 +16,11 @@
         android:layout_marginEnd="8dp">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="120dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             app:cardCornerRadius="15dp"
+            android:elevation="2dp"
+            android:layout_margin="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -89,18 +91,21 @@
 
                 <TextView
                     android:id="@+id/title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="8dp"
-                    android:text="@{workout.title}"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
                     android:fontFamily="@font/roboto_condensed_bold"
+                    android:gravity="center"
+                    android:text="@{workout.title}"
+                    android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="16sp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    app:layout_constraintBottom_toTopOf="@id/address"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Full body" />
+                    tools:text="Pecs -epaules -triceps" />
 
                 <TextView
                     android:id="@+id/address"

@@ -66,7 +66,6 @@
     <activity
         android:id="@+id/detailsSeanceActivity"
         android:name="com.example.fsudouest.blablafit.features.workoutDetails.DetailsSeanceActivity"
-        android:label="activity_details_seance"
         tools:layout="@layout/activity_details_seance" >
         <argument
             android:name="id"

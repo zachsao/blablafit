@@ -46,13 +46,14 @@
 
                     <TextView
                         android:id="@+id/workout_title_textview"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="32dp"
                         android:layout_marginEnd="8dp"
                         android:fontFamily="@font/roboto"
                         android:text="@{seance.titre}"
+                        android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="30sp"
                         android:textStyle="bold"
@@ -219,7 +220,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            app:srcCompat="@drawable/round_star_rate_18" />
+                            android:visibility="gone"
+                            app:srcCompat="@drawable/round_star_rate_18"
+                            tools:visibility="visible" />
 
                         <TextView
                             android:id="@+id/textView10"
@@ -228,7 +231,9 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/roboto"
                             android:text="4.5 / 5 - 10 reviews"
-                            android:textSize="9sp" />
+                            android:textSize="9sp"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
                     </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

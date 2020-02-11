@@ -47,7 +47,7 @@ class DetailsSeanceActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_details_seance)
         user = firebaseAuth.currentUser
 
-        actionBar?.title = getString(R.string.request_activity_title)
+        supportActionBar?.title = getString(R.string.workout_details)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         Glide.with(this).load(R.drawable.weights).into(binding.imageView)
