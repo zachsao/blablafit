@@ -60,7 +60,8 @@ class ProfileViewModel @Inject constructor(firebaseStorage: FirebaseStorage, fir
                             .mapNotNull { it.toObject(Seance::class.java) }
                             .flatMap { it.participants.keys }
 
-                    fetchUsers(buddiesIds)
+                    if (buddiesIds.isNotEmpty()) fetchUsers(buddiesIds)
+                    else stateLiveData.value = ProfileState.EmptyBuddies(previousData())
                 }
                 .addOnFailureListener { Timber.e(it) }
     }
