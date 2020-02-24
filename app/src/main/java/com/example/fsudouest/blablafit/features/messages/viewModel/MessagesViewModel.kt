@@ -1,41 +1,55 @@
 package com.example.fsudouest.blablafit.features.messages.viewModel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fsudouest.blablafit.features.messages.ui.UserViewItem
-import com.example.fsudouest.blablafit.model.Conversation
 import com.example.fsudouest.blablafit.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Source
+import timber.log.Timber
 import javax.inject.Inject
 
-class MessagesViewModel@Inject constructor(private val mDatabase: FirebaseFirestore, auth: FirebaseAuth): ViewModel() {
+class MessagesViewModel@Inject constructor(private val firestore: FirebaseFirestore, auth: FirebaseAuth): ViewModel() {
 
     private val usersLiveData = MutableLiveData<List<UserViewItem>>()
-    private val currentUserId = auth.currentUser?.uid
+    private val currentUserId = auth.currentUser?.uid ?: ""
     fun usersLiveData() = usersLiveData
 
-    fun getUsers(){
-        mDatabase.collection("users")
+    fun getUserConversations(){
+        firestore.collection("users").document(currentUserId).collection("engagedConversations")
             .get()
-            .addOnCompleteListener { task ->
-                when(task.isSuccessful){
-                    true -> {
-                        Log.d("Messages", "task is successful")
-                        task.result?.let { querySnapshot ->
-                            val users = mutableListOf<UserViewItem>()
-                            querySnapshot.documents.forEach { documentSnapshot ->
-                                val user = documentSnapshot.toObject(User::class.java)
-                                user?.let {
-                                    if (documentSnapshot.id != currentUserId) users.add(UserViewItem(it, documentSnapshot.id))
-                                }
-                            }
-                            usersLiveData.value = users
-                        }
-                    }
-                    false -> Log.e("Messages", task.exception.toString())
-                }
+            .addOnSuccessListener { querySnapshot ->
+                if (!querySnapshot.documents.isNullOrEmpty()) getConversations()
             }
+                .addOnFailureListener { Timber.e(it) }
+    }
+
+    private fun getConversations() {
+        firestore.collection("conversations")
+                .whereArrayContains("userIds", currentUserId)
+                .get()
+                .addOnSuccessListener {
+                    val userIds = it.documents
+                            .mapNotNull { documentSnapshot ->
+                                (documentSnapshot["userIds"] as List<String>).find { it != currentUserId }
+                            }
+                    if (userIds.isNotEmpty()) getUsers(userIds)
+                }
+                .addOnFailureListener { Timber.e(it) }
+    }
+
+    private fun getUsers(ids: List<String>) {
+        firestore.collection("users")
+                .whereIn("uid", ids)
+                .get()
+                .addOnSuccessListener {
+                    val users = it.documents
+                            .mapNotNull {
+                                it.toObject(User::class.java)
+                            }.map { UserViewItem(it) }
+
+                    usersLiveData.value = users
+                }
     }
 }

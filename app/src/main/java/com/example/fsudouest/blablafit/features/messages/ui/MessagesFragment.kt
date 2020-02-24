@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -44,15 +45,15 @@ class MessagesFragment : Fragment(), Injectable {
 
         initRecyclerView()
 
-        viewModel = ViewModelProviders.of(this, factory).get(MessagesViewModel::class.java).apply {
-            usersLiveData().observe(this@MessagesFragment, Observer {
+        viewModel = ViewModelProvider(this, factory).get(MessagesViewModel::class.java).apply {
+            usersLiveData().observe(viewLifecycleOwner, Observer {
                 if (it.isEmpty()) showEmptyState(true)
                 else showEmptyState(false)
                 submitList(it)
             })
         }
 
-        viewModel.getUsers()
+        viewModel.getUserConversations()
         return binding.root
     }
 
@@ -77,7 +78,7 @@ class MessagesFragment : Fragment(), Injectable {
 
 }
 
-class UserViewItem(val user: User, val userId: String) : Item<GroupieViewHolder>() {
+class UserViewItem(val user: User) : Item<GroupieViewHolder>() {
     override fun getLayout() = R.layout.latest_message_item
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
@@ -91,7 +92,7 @@ class UserViewItem(val user: User, val userId: String) : Item<GroupieViewHolder>
         viewHolder.itemView.setOnClickListener {
             it.context.startActivity<ConversationActivity>(
                     "contactName" to user.nomComplet,
-                    "userId" to userId
+                    "userId" to user.uid
             )
         }
     }
