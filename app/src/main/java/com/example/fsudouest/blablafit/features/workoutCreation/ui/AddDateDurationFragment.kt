@@ -115,12 +115,16 @@ class AddDateDurationFragment : Fragment(), Injectable {
 
         val autocompleteFragment = childFragmentManager.findFragmentById(R.id.place_autocomplete_fragment) as AutocompleteSupportFragment
         // Specify the types of place data to return.
-        autocompleteFragment.setPlaceFields(listOf(Place.Field.NAME, Place.Field.ADDRESS))
-        autocompleteFragment.setHint(getString(R.string.searchViewHint))
-        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+        autocompleteFragment.setPlaceFields(listOf(Place.Field.NAME, Place.Field.ADDRESS, Place.Field.TYPES))
+                .setHint(getString(R.string.searchViewHint))
+                .setTypeFilter(TypeFilter.ESTABLISHMENT)
+                .setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
-                val location = "${place.name}, ${place.address}"
-                viewModel.workoutLiveData.value?.lieu = location
+                if (!place.types!!.contains(Place.Type.GYM) || !place.types!!.contains(Place.Type.STREET_ADDRESS)) toast(getString(R.string.empty_address_toast_message))
+                else {
+                    val location = "${place.name}, ${place.address}"
+                    viewModel.workoutLiveData.value?.lieu = location
+                }
             }
 
             override fun onError(status: Status) {

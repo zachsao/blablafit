@@ -96,10 +96,10 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/date_selection_button"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
                 android:backgroundTint="@color/white"
                 android:elevation="1sp"
                 android:textAllCaps="false"
@@ -107,8 +107,7 @@
                 android:textStyle="bold|italic"
                 app:icon="@drawable/baseline_event_24"
                 app:iconTint="@color/black"
-                app:layout_constraintEnd_toStartOf="@+id/hour_selection_button"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintEnd_toStartOf="@+id/guideline2"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView17"
@@ -132,8 +131,7 @@
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
                 android:backgroundTint="@color/white"
                 android:elevation="1dp"
                 android:fontFamily="@font/roboto_condensed_bold"
@@ -142,32 +140,31 @@
                 android:textColor="@color/black"
                 android:textStyle="italic"
                 app:icon="@drawable/baseline_access_time_24"
+
                 app:iconTint="@color/black"
-                app:layout_constraintEnd_toStartOf="@+id/duration_selection_button"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/date_selection_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
             <TextView
                 android:id="@+id/textView19"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/roboto_condensed_bold"
                 android:text="@string/duration"
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp"
                 android:textStyle="italic"
                 app:layout_constraintStart_toStartOf="@+id/duration_selection_button"
-                app:layout_constraintTop_toBottomOf="@+id/textView16" />
+                app:layout_constraintTop_toBottomOf="@+id/date_selection_button" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/duration_selection_button"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
                 android:backgroundTint="@color/white"
                 android:elevation="1sp"
                 android:text="1h"
@@ -176,9 +173,7 @@
                 android:textStyle="bold|italic"
                 app:icon="@drawable/round_hourglass_empty_24"
                 app:iconTint="@color/black"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/hour_selection_button"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
             <TextView
@@ -186,56 +181,61 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/roboto_condensed_bold"
                 android:text="@string/max_participants"
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp"
                 android:textStyle="italic"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/date_selection_button" />
+                app:layout_constraintTop_toBottomOf="@+id/duration_selection_button" />
 
             <Button
                 android:id="@+id/decrement"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:background="@drawable/selection_button_round"
                 android:backgroundTint="@color/white"
                 android:text="-"
                 android:textColor="@color/black"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/participants_selection_button"
+                app:layout_constraintEnd_toStartOf="@+id/participants_selection_button"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView20" />
 
             <TextView
                 android:id="@+id/participants_selection_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selection_button_round"
-                android:elevation="1sp"
-                android:minWidth="100dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="1"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="@color/black"
+                android:textSize="18sp"
                 android:textStyle="bold|italic"
-                app:layout_constraintEnd_toStartOf="@+id/decrement"
-                app:layout_constraintStart_toEndOf="@+id/increment"
-                app:layout_constraintTop_toBottomOf="@+id/textView20" />
+                app:layout_constraintBottom_toBottomOf="@+id/decrement"
+                app:layout_constraintEnd_toStartOf="@+id/increment"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/decrement"
+                app:layout_constraintTop_toBottomOf="@+id/textView20"
+                app:layout_constraintVertical_bias="0.375" />
 
             <Button
                 android:id="@+id/increment"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:background="@drawable/selection_button_round"
                 android:backgroundTint="@color/white"
                 android:text="+"
                 android:textColor="@color/black"
-                app:layout_constraintEnd_toStartOf="@+id/participants_selection_button"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/participants_selection_button"
                 app:layout_constraintTop_toBottomOf="@+id/textView20" />
 
             <androidx.constraintlayout.widget.Guideline
@@ -358,10 +358,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textView9"
-                />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView9" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
