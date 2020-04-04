@@ -3,22 +3,23 @@ package com.example.fsudouest.blablafit.features.nearby.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.fsudouest.blablafit.features.nearby.ui.WorkoutViewItem
 import com.example.fsudouest.blablafit.features.nearby.NearByData
 import com.example.fsudouest.blablafit.features.nearby.NearByState
 import com.example.fsudouest.blablafit.features.nearby.ui.CategoryViewItems
 import com.example.fsudouest.blablafit.features.nearby.ui.LatestWorkoutViewItem
+import com.example.fsudouest.blablafit.features.nearby.ui.WorkoutViewItem
 import com.example.fsudouest.blablafit.model.Seance
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import timber.log.Timber
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
 private const val MOST_RECENT_LIMIT = 10L
-class NearByViewModel @Inject constructor(private val mDatabase: FirebaseFirestore, private val auth: FirebaseAuth) : ViewModel() {
+class NearByViewModel @Inject constructor(private val firestore: FirebaseFirestore, private val auth: FirebaseAuth) : ViewModel() {
     private val stateLiveData = MutableLiveData<NearByState>()
 
     fun stateLiveData(): LiveData<NearByState> = stateLiveData
@@ -29,7 +30,7 @@ class NearByViewModel @Inject constructor(private val mDatabase: FirebaseFiresto
     }
 
     private fun getLatestWorkouts() {
-        mDatabase.collection("workouts")
+        firestore.collection("workouts")
                 .orderBy("date", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener { snapshot ->
@@ -52,6 +53,7 @@ class NearByViewModel @Inject constructor(private val mDatabase: FirebaseFiresto
 
     private fun modelToLatestWorkoutViewItem(workout: Seance): LatestWorkoutViewItem {
         val timeFormat = SimpleDateFormat("hh:mm a", Locale.CANADA)
+        val dateFormat = DateFormat.getDateInstance(DateFormat.SHORT)
         return LatestWorkoutViewItem(
                 id = workout.id,
                 title = workout.titre,
@@ -59,7 +61,8 @@ class NearByViewModel @Inject constructor(private val mDatabase: FirebaseFiresto
                 placesAvailable = workout.maxParticipants - workout.participants.size,
                 authorName = workout.nomAuteur,
                 authorPhotoUrl = workout.photoAuteur,
-                time = timeFormat.format(workout.date)
+                time = timeFormat.format(workout.date),
+                date = dateFormat.format(workout.date)
         )
     }
 

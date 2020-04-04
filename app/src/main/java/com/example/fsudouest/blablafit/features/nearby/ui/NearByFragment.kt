@@ -6,6 +6,7 @@ import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -44,8 +45,8 @@ class NearByFragment : Fragment(), Injectable {
 
         initLatestWorkouts()
         initCategories()
-        viewModel = ViewModelProviders.of(this, factory).get(NearByViewModel::class.java).apply {
-            stateLiveData().observe(this@NearByFragment, Observer {
+        viewModel = ViewModelProvider(this, factory).get(NearByViewModel::class.java).apply {
+            stateLiveData().observe(viewLifecycleOwner, Observer {
                 render(it)
             })
         }
@@ -80,12 +81,10 @@ class NearByFragment : Fragment(), Injectable {
             }
             is NearByState.Loading -> {
                 categoriesRecyclerView.visibility = View.GONE
-                // categorySectionTitle.visibility = View.GONE
                 progressBar.visibility = View.VISIBLE
             }
             is NearByState.ResultsLoaded -> {
                 categoriesRecyclerView.visibility = View.VISIBLE
-                // categorySectionTitle.visibility = View.VISIBLE
                 progressBar.visibility = View.GONE
                 categoriesSection.update(state.data.searchResults)
             }
@@ -97,7 +96,7 @@ class NearByFragment : Fragment(), Injectable {
         categoriesSection.update(categories)
     }
 
-    fun navigateToDetails(seanceId: String) {
+    private fun navigateToDetails(seanceId: String) {
         findNavController().navigate(NearByFragmentDirections.actionTrouverUneSeanceFragmentToDetailsSeanceActivity(seanceId))
     }
 
@@ -111,7 +110,7 @@ class NearByFragment : Fragment(), Injectable {
         mostRecentWorkoutsAdapter.add(mostRecentSection)
         mostRecentRecyclerView.apply {
             adapter = mostRecentWorkoutsAdapter.apply {
-                setOnItemClickListener { item, view ->
+                setOnItemClickListener { item, _ ->
                     navigateToDetails((item as LatestWorkoutViewItem).id)
                 }
             }

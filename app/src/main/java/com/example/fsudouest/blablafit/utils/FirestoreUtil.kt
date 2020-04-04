@@ -9,7 +9,7 @@ import timber.log.Timber
 object FirestoreUtil {
 
     private val firestoreInstance: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
-    private val authInstance: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
+    private val authInstance: FirebaseAuth = FirebaseAuth.getInstance()
     private val currentUserId = authInstance.currentUser?.uid ?: ""
     private val currentUserDocRef = firestoreInstance.collection("users")
             .document(currentUserId)

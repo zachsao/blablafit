@@ -11,7 +11,8 @@ data class LatestWorkoutViewItem(
         val placesAvailable: Int = 0,
         val authorName: String = "",
         val authorPhotoUrl: String? = null,
-        val time: String = ""
+        val time: String = "",
+        val date: String = ""
 ): BindableItem<MostRecentItemBinding>() {
     override fun bind(viewBinding: MostRecentItemBinding, position: Int) {
         viewBinding.workout = this
