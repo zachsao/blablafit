@@ -157,6 +157,11 @@
     <string name="outdoor">Outdoors</string>
     <string name="location_details">Location details</string>
     <string name="empty_selection_warning">Choose at least one type</string>
+    <string name="location_rationale_title">Location required</string>
+    <string name="location_rationale_message">In order to display nearby workouts, the app needs to access your device\'s location.</string>
+    <string name="error_dismiss">Dismiss</string>
+    <string name="location_permission_denied">Permission to access the device\'s location is denied.</string>
+    <string name="allow">Allow</string>
 
 
 </resources>
