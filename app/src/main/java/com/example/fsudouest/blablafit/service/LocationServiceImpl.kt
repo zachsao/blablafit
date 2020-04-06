@@ -7,17 +7,17 @@ import com.google.android.gms.location.LocationServices
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class LocationServiceImpl @Inject constructor(private val application: Application) : LocationService {
 
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(application)
 
-    override fun getLastKnownLocation(onLocationRetrieved: (city: String?) -> Unit) {
+    override fun getCityFromLastLocation(onLocationRetrieved: (city: String?) -> Unit) {
         fusedLocationClient.lastLocation
                 .addOnSuccessListener { location: Location? ->
-                    // Got last known location. In some rare situations this can be null.
-
-                    onLocationRetrieved(getCityFromLocation(location))
+                    onLocationRetrieved(extractCityFromLocation(location))
                 }
                 .addOnFailureListener {
                     // TODO("not implemented: display dialog")
@@ -25,8 +25,24 @@ class LocationServiceImpl @Inject constructor(private val application: Applicati
                 }
     }
 
-    private fun getCityFromLocation(location: Location?): String? {
+    override fun getCountryFromLastLocation(onLocationRetrieved: (country: String?) -> Unit) {
+        fusedLocationClient.lastLocation
+                .addOnSuccessListener { location: Location? ->
+                    onLocationRetrieved(extractCountryFromLocation(location))
+                }
+                .addOnFailureListener {
+                    // TODO("not implemented: handle failure")
+                    Timber.e(it)
+                }
+    }
+
+    private fun extractCityFromLocation(location: Location?): String? {
         val gcd = Geocoder(application, Locale.getDefault())
         return location?.let { gcd.getFromLocation(it.latitude, it.longitude, 1).single().locality }
+    }
+
+    private fun extractCountryFromLocation(location: Location?): String? {
+        val gcd = Geocoder(application, Locale.getDefault())
+        return location?.let { gcd.getFromLocation(it.latitude, it.longitude, 1).single().countryCode }
     }
 }

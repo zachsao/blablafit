@@ -4,14 +4,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.model.User
+import com.example.fsudouest.blablafit.service.LocationService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import timber.log.Timber
 import javax.inject.Inject
 
 class WorkoutCreationViewModel @Inject constructor(
-        private val auth: FirebaseAuth,
-        private val firestore: FirebaseFirestore
+        auth: FirebaseAuth,
+        private val firestore: FirebaseFirestore,
+        private val locationService: LocationService
 ) : ViewModel() {
 
     val workoutLiveData = MutableLiveData<Seance>()
@@ -46,5 +48,9 @@ class WorkoutCreationViewModel @Inject constructor(
 
     fun addWorkout(workout: Seance){
         workoutLiveData.value = workout
+    }
+
+    fun getCountry(onCountryRetrieved: (country: String?) -> Unit) {
+        locationService.getCountryFromLastLocation { onCountryRetrieved(it) }
     }
 }

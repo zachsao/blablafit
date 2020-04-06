@@ -35,7 +35,7 @@ class NearByViewModel @Inject constructor(
 
     fun getLatestWorkouts() {
         stateLiveData.value = NearByState.Loading(previousStateData())
-        locationService.getLastKnownLocation { city ->
+        locationService.getCityFromLastLocation { city ->
             firestore.collection("workouts")
                     .orderBy("date", Query.Direction.DESCENDING)
                     .get()
