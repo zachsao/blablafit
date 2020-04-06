@@ -106,7 +106,9 @@
     <string name="search_workout_hint">Search for a workout or a gym</string>
     <string name="most_recent">Latest workouts in %1$s</string>
     <string name="categories_section_title">Search by categories</string>
-    <string name="empty_address_toast_message">Location must be a gym or an address</string>
+    <string name="invalid_place_gym_toast_message">Location must be a gym</string>
+    <string name="invalid_place_address_toast_message">Location must be an address</string>
+    <string name="empty_address_toast_message">Invalid location</string>
     <string name="full_body">Full body</string>
     <string name="upper_body">Upper body</string>
     <string name="legs">Legs</string>

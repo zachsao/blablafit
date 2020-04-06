@@ -120,10 +120,13 @@ class AddDateDurationFragment : Fragment(), Injectable {
                 .setTypeFilter(TypeFilter.ESTABLISHMENT)
                 .setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
-                if (!place.types!!.contains(Place.Type.GYM) || !place.types!!.contains(Place.Type.STREET_ADDRESS)) toast(getString(R.string.empty_address_toast_message))
-                else {
-                    val location = "${place.name}, ${place.address}"
-                    viewModel.workoutLiveData.value?.lieu = location
+                when {
+                    indoorChip.isChecked && !place.types!!.contains(Place.Type.GYM) -> toast(getString(R.string.invalid_place_gym_toast_message))
+                    outdoorChip.isChecked && !place.types!!.contains(Place.Type.STREET_ADDRESS) -> toast(getString(R.string.invalid_place_address_toast_message))
+                    else -> {
+                        val location = "${place.name}, ${place.address}"
+                        viewModel.workoutLiveData.value?.lieu = location
+                    }
                 }
             }
 
