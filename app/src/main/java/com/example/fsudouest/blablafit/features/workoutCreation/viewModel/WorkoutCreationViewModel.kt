@@ -2,9 +2,11 @@ package com.example.fsudouest.blablafit.features.workoutCreation.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.fsudouest.blablafit.model.Location
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.model.User
 import com.example.fsudouest.blablafit.service.LocationService
+import com.google.android.libraries.places.api.model.AddressComponent
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import timber.log.Timber
@@ -52,5 +54,17 @@ class WorkoutCreationViewModel @Inject constructor(
 
     fun getCountry(onCountryRetrieved: (country: String?) -> Unit) {
         locationService.getCountryFromLastLocation { onCountryRetrieved(it) }
+    }
+
+    fun setLocation(placeName: String?, addressComponents: List<AddressComponent>?) {
+        val location = Location(
+                name = placeName,
+                address = addressComponents?.filter { it.types.contains("street_number") || it.types.contains("route") }?.map { it.name }?.joinToString(),
+                city = addressComponents?.find { it.types.containsAll(listOf("locality", "political")) }?.name,
+                state = addressComponents?.find { it.types.contains("administrative_area_level_1") }?.name,
+                country = addressComponents?.find { it.types.containsAll(listOf("country", "political")) }?.name,
+                zipCode = addressComponents?.find { it.types.contains("postal_code") }?.name
+        )
+        workoutLiveData.value?.location = location
     }
 }

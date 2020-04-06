@@ -61,10 +61,11 @@ class NearByViewModel @Inject constructor(
     private fun modelToLatestWorkoutViewItem(workout: Seance): LatestWorkoutViewItem {
         val timeFormat = SimpleDateFormat("hh:mm a", Locale.CANADA)
         val dateFormat = DateFormat.getDateInstance(DateFormat.SHORT)
+        val address = "${workout.location.name}, ${workout.location.address}, ${workout.location.zipCode}, ${workout.location.city}"
         return LatestWorkoutViewItem(
                 id = workout.id,
                 title = workout.titre,
-                address = workout.lieu,
+                address = address,
                 placesAvailable = workout.maxParticipants - workout.participants.size,
                 authorName = workout.nomAuteur,
                 authorPhotoUrl = workout.photoAuteur,

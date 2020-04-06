@@ -113,7 +113,7 @@
                 android:layout_marginTop="16dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{seance.lieu}"
+                android:text="@{seance.location.name+`, `+seance.location.address+`, `+seance.location.zipCode+`, `+seance.location.city}"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toTopOf="@+id/tv_créateur"
                 app:layout_constraintEnd_toEndOf="parent"

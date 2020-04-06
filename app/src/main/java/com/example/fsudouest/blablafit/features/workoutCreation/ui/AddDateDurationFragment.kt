@@ -92,7 +92,7 @@ class AddDateDurationFragment : Fragment(), Injectable {
             }
 
 
-            if (viewModel.workoutLiveData.value?.lieu.isNullOrEmpty()) {
+            if (viewModel.workoutLiveData.value?.location?.name.isNullOrEmpty()) {
                 toast(getString(R.string.empty_address_toast_message))
             } else {
                 viewModel.addAuthor {
@@ -125,8 +125,7 @@ class AddDateDurationFragment : Fragment(), Injectable {
                             indoorChip.isChecked && !place.types!!.contains(Place.Type.GYM) -> toast(getString(R.string.invalid_place_gym_toast_message))
                             outdoorChip.isChecked && !place.types!!.contains(Place.Type.STREET_ADDRESS) -> toast(getString(R.string.invalid_place_address_toast_message))
                             else -> {
-                                val location = "${place.name}, ${place.address}"
-                                viewModel.workoutLiveData.value?.lieu = location
+                                viewModel.setLocation(place.name, place.addressComponents?.asList())
                             }
                         }
                     }

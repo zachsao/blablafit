@@ -93,7 +93,6 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             SETTINGS_REQUEST_CODE -> {
-                Timber.d("ZACH - resultCode: $resultCode")
                 checkLocationPermissions()
             }
         }
