@@ -11,6 +11,7 @@ sealed class NearByState {
     data class Loading(override val data: NearByData): NearByState()
     data class LatestWorkoutsLoaded(override val data: NearByData): NearByState()
     data class ResultsLoaded(override val data: NearByData): NearByState()
+    data class EmptyWorkouts(override val data: NearByData): NearByState()
 }
 
 data class NearByData(

@@ -20,7 +20,7 @@ import java.util.*
 import javax.inject.Inject
 
 
-private const val MOST_RECENT_LIMIT = 10L
+private const val MOST_RECENT_LIMIT = 10
 
 class NearByViewModel @Inject constructor(
         private val firestore: FirebaseFirestore, private val auth: FirebaseAuth, private val locationService: LocationServiceImpl
@@ -38,6 +38,7 @@ class NearByViewModel @Inject constructor(
         locationService.getCityFromLastLocation { city ->
             firestore.collection("workouts")
                     .orderBy("date", Query.Direction.DESCENDING)
+                    .whereEqualTo("location.city", city)
                     .get()
                     .addOnSuccessListener { snapshot ->
                         val results = snapshot.documents.mapNotNull { it.toObject(Seance::class.java) }
@@ -45,12 +46,15 @@ class NearByViewModel @Inject constructor(
 
                         val latestWorkouts = results
                                 .map { seance -> modelToLatestWorkoutViewItem(seance) }
-                                .filterIndexed { index, _ -> index < MOST_RECENT_LIMIT }
+                                .take(MOST_RECENT_LIMIT)
 
                         val allWorkouts = results
                                 .map { seance -> WorkoutViewItem(seance) }
 
-                        stateLiveData.value = NearByState.LatestWorkoutsLoaded(previousStateData().copy(latestWorkouts = latestWorkouts, allWorkouts = allWorkouts, city = city))
+                        stateLiveData.value = if (allWorkouts.isNotEmpty())
+                             NearByState.LatestWorkoutsLoaded(previousStateData().copy(latestWorkouts = latestWorkouts, allWorkouts = allWorkouts, city = city))
+                        else
+                            NearByState.EmptyWorkouts(previousStateData().copy(city = city))
                     }
                     .addOnFailureListener { Timber.e(it) }
         }

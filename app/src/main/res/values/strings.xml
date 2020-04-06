@@ -164,6 +164,7 @@
     <string name="error_dismiss">Dismiss</string>
     <string name="location_permission_denied">Permission to access the device\'s location is denied.</string>
     <string name="allow">Allow</string>
+    <string name="nearby_workouts_empty">Currently no workouts in %s</string>
 
 
 </resources>

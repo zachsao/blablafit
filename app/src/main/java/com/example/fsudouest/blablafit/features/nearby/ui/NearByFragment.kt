@@ -122,6 +122,7 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
             is NearByState.LatestWorkoutsLoaded -> {
                 hideMainLayout(false)
                 progressBar.visibility = View.GONE
+                emptyStateTextView.visibility = View.GONE
                 mostRecentSectionTitle.text = getString(R.string.most_recent, state.data.city ?: "your city")
                 displayCategories(state.data.categories)
                 displayMostRecentWorkouts(state.data.latestWorkouts)
@@ -134,6 +135,12 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
                 categoriesRecyclerView.visibility = View.VISIBLE
                 progressBar.visibility = View.GONE
                 categoriesSection.update(state.data.searchResults)
+            }
+            is NearByState.EmptyWorkouts -> {
+                hideMainLayout(true)
+                progressBar.visibility = View.GONE
+                emptyStateTextView.visibility = View.VISIBLE
+                emptyStateTextView.text = getString(R.string.nearby_workouts_empty, state.data.city ?: "your city")
             }
         }
     }
@@ -189,6 +196,7 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
     }
 
     private fun showMissingPermission(show: Boolean) {
+        if (show) emptyStateTextView.text = getString(R.string.location_permission_denied)
         emptyStateTextView.visibility = if (show) View.VISIBLE else View.GONE
         buttonAllow.visibility = if (show) View.VISIBLE else View.GONE
     }
