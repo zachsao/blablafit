@@ -123,6 +123,7 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
             is NearByState.LatestWorkoutsLoaded -> {
                 hideMainLayout(false)
                 progressBar.visibility = View.GONE
+                mostRecentSectionTitle.text = getString(R.string.most_recent, state.data.city ?: "your city")
                 displayCategories(state.data.categories)
                 displayMostRecentWorkouts(state.data.latestWorkouts)
             }

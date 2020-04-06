@@ -104,7 +104,7 @@
     <string name="advanced_description">I workout 4 times a week or more.</string>
     <string name="step_three">Step 3/3</string>
     <string name="search_workout_hint">Search for a workout or a gym</string>
-    <string name="most_recent">Most recent in your city</string>
+    <string name="most_recent">Latest workouts in %1$s</string>
     <string name="categories_section_title">Search by categories</string>
     <string name="empty_address_toast_message">Location must be a gym or an address</string>
     <string name="full_body">Full body</string>

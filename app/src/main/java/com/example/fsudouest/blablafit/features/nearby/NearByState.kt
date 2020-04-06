@@ -17,5 +17,6 @@ data class NearByData(
         val latestWorkouts: List<LatestWorkoutViewItem?> = emptyList(),
         val categories: List<CategoryViewItem> = emptyList(),
         val searchResults: List<WorkoutViewItem> = emptyList(),
-        val allWorkouts: List<WorkoutViewItem> = emptyList()
+        val allWorkouts: List<WorkoutViewItem> = emptyList(),
+        val city: String? = null
 )

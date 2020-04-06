@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
+
 private const val MOST_RECENT_LIMIT = 10L
 
 class NearByViewModel @Inject constructor(
@@ -34,8 +35,7 @@ class NearByViewModel @Inject constructor(
 
     fun getLatestWorkouts() {
         stateLiveData.value = NearByState.Loading(previousStateData())
-        locationService.getLastKnownLocation { location ->
-            Timber.d("$location")
+        locationService.getLastKnownLocation { city ->
             firestore.collection("workouts")
                     .orderBy("date", Query.Direction.DESCENDING)
                     .get()
@@ -50,7 +50,7 @@ class NearByViewModel @Inject constructor(
                         val allWorkouts = results
                                 .map { seance -> WorkoutViewItem(seance) }
 
-                        stateLiveData.value = NearByState.LatestWorkoutsLoaded(previousStateData().copy(latestWorkouts = latestWorkouts, allWorkouts = allWorkouts))
+                        stateLiveData.value = NearByState.LatestWorkoutsLoaded(previousStateData().copy(latestWorkouts = latestWorkouts, allWorkouts = allWorkouts, city = city))
                     }
                     .addOnFailureListener { Timber.e(it) }
         }
