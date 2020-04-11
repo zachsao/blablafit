@@ -60,7 +60,7 @@ class AddDateDurationFragment : Fragment(), Injectable {
 
         binding.workout = viewModel.workoutLiveData.value
 
-        initPlaces()
+        viewModel.getCountry { country -> initPlaces(country) }
 
         //CHOIX DE LA DATE
         selectDate()
@@ -92,7 +92,7 @@ class AddDateDurationFragment : Fragment(), Injectable {
             }
 
 
-            if (viewModel.workoutLiveData.value?.lieu.isNullOrEmpty()) {
+            if (viewModel.workoutLiveData.value?.location?.name.isNullOrEmpty()) {
                 toast(getString(R.string.empty_address_toast_message))
             } else {
                 viewModel.addAuthor {
@@ -110,26 +110,29 @@ class AddDateDurationFragment : Fragment(), Injectable {
         return binding.root
     }
 
-    private fun initPlaces() {
+    private fun initPlaces(country: String?) {
         Places.initialize(requireContext(), apiKey)
 
         val autocompleteFragment = childFragmentManager.findFragmentById(R.id.place_autocomplete_fragment) as AutocompleteSupportFragment
         // Specify the types of place data to return.
-        autocompleteFragment.setPlaceFields(listOf(Place.Field.NAME, Place.Field.ADDRESS, Place.Field.TYPES))
+        autocompleteFragment.setPlaceFields(listOf(Place.Field.NAME, Place.Field.ADDRESS, Place.Field.TYPES, Place.Field.ADDRESS_COMPONENTS))
                 .setHint(getString(R.string.searchViewHint))
                 .setTypeFilter(TypeFilter.ESTABLISHMENT)
+                .setCountry(country)
                 .setOnPlaceSelectedListener(object : PlaceSelectionListener {
-            override fun onPlaceSelected(place: Place) {
-                if (!place.types!!.contains(Place.Type.GYM) || !place.types!!.contains(Place.Type.STREET_ADDRESS)) toast(getString(R.string.empty_address_toast_message))
-                else {
-                    val location = "${place.name}, ${place.address}"
-                    viewModel.workoutLiveData.value?.lieu = location
-                }
-            }
+                    override fun onPlaceSelected(place: Place) {
+                        when {
+                            indoorChip.isChecked && !place.types!!.contains(Place.Type.GYM) -> toast(getString(R.string.invalid_place_gym_toast_message))
+                            outdoorChip.isChecked && !place.types!!.contains(Place.Type.STREET_ADDRESS) -> toast(getString(R.string.invalid_place_address_toast_message))
+                            else -> {
+                                viewModel.setLocation(place.name, place.addressComponents?.asList())
+                            }
+                        }
+                    }
 
-            override fun onError(status: Status) {
-                Timber.e("An error occurred: $status")
-            }
+                    override fun onError(status: Status) {
+                        Timber.e("An error occurred: $status")
+                    }
         })
         binding.chipGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {

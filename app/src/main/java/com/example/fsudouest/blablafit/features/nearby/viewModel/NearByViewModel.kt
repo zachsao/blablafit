@@ -9,6 +9,7 @@ import com.example.fsudouest.blablafit.features.nearby.ui.CategoryViewItems
 import com.example.fsudouest.blablafit.features.nearby.ui.LatestWorkoutViewItem
 import com.example.fsudouest.blablafit.features.nearby.ui.WorkoutViewItem
 import com.example.fsudouest.blablafit.model.Seance
+import com.example.fsudouest.blablafit.service.LocationServiceImpl
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -18,35 +19,45 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-private const val MOST_RECENT_LIMIT = 10L
-class NearByViewModel @Inject constructor(private val firestore: FirebaseFirestore, private val auth: FirebaseAuth) : ViewModel() {
+
+private const val MOST_RECENT_LIMIT = 10
+
+class NearByViewModel @Inject constructor(
+        private val firestore: FirebaseFirestore, private val auth: FirebaseAuth, private val locationService: LocationServiceImpl
+) : ViewModel() {
     private val stateLiveData = MutableLiveData<NearByState>()
 
     fun stateLiveData(): LiveData<NearByState> = stateLiveData
 
     init {
         stateLiveData.value = NearByState.Idle(NearByData(categories = CategoryViewItems.getCategoryViewItems()))
-        getLatestWorkouts()
     }
 
-    private fun getLatestWorkouts() {
-        firestore.collection("workouts")
-                .orderBy("date", Query.Direction.DESCENDING)
-                .get()
-                .addOnSuccessListener { snapshot ->
-                    val results = snapshot.documents.mapNotNull { it.toObject(Seance::class.java) }
-                            .filter { it.idAuteur != auth.currentUser?.uid }
+    fun getLatestWorkouts() {
+        stateLiveData.value = NearByState.Loading(previousStateData())
+        locationService.getCityFromLastLocation { city ->
+            firestore.collection("workouts")
+                    .orderBy("date", Query.Direction.DESCENDING)
+                    .whereEqualTo("location.city", city)
+                    .get()
+                    .addOnSuccessListener { snapshot ->
+                        val results = snapshot.documents.mapNotNull { it.toObject(Seance::class.java) }
+                                .filter { it.idAuteur != auth.currentUser?.uid }
 
-                    val latestWorkouts = results
-                            .map { seance -> modelToLatestWorkoutViewItem(seance) }
-                            .filterIndexed { index, _ -> index < MOST_RECENT_LIMIT }
+                        val latestWorkouts = results
+                                .map { seance -> modelToLatestWorkoutViewItem(seance) }
+                                .take(MOST_RECENT_LIMIT)
 
-                    val allWorkouts = results
-                            .map { seance -> WorkoutViewItem(seance) }
+                        val allWorkouts = results
+                                .map { seance -> WorkoutViewItem(seance) }
 
-                    stateLiveData.value = NearByState.LatestWorkoutsLoaded(previousStateData().copy(latestWorkouts = latestWorkouts, allWorkouts = allWorkouts))
-                }
-                .addOnFailureListener { Timber.e(it) }
+                        stateLiveData.value = if (allWorkouts.isNotEmpty())
+                             NearByState.LatestWorkoutsLoaded(previousStateData().copy(latestWorkouts = latestWorkouts, allWorkouts = allWorkouts, city = city))
+                        else
+                            NearByState.EmptyWorkouts(previousStateData().copy(city = city))
+                    }
+                    .addOnFailureListener { Timber.e(it) }
+        }
     }
 
     private fun previousStateData() = stateLiveData.value?.data ?: NearByData()
@@ -54,10 +65,11 @@ class NearByViewModel @Inject constructor(private val firestore: FirebaseFiresto
     private fun modelToLatestWorkoutViewItem(workout: Seance): LatestWorkoutViewItem {
         val timeFormat = SimpleDateFormat("hh:mm a", Locale.CANADA)
         val dateFormat = DateFormat.getDateInstance(DateFormat.SHORT)
+        val address = "${workout.location.name}, ${workout.location.address}, ${workout.location.zipCode}, ${workout.location.city}"
         return LatestWorkoutViewItem(
                 id = workout.id,
                 title = workout.titre,
-                address = workout.lieu,
+                address = address,
                 placesAvailable = workout.maxParticipants - workout.participants.size,
                 authorName = workout.nomAuteur,
                 authorPhotoUrl = workout.photoAuteur,

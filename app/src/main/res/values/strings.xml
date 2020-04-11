@@ -104,9 +104,11 @@
     <string name="advanced_description">I workout 4 times a week or more.</string>
     <string name="step_three">Step 3/3</string>
     <string name="search_workout_hint">Search for a workout or a gym</string>
-    <string name="most_recent">Most recent in your city</string>
+    <string name="most_recent">Latest workouts in %1$s</string>
     <string name="categories_section_title">Search by categories</string>
-    <string name="empty_address_toast_message">Location must be a gym or an address</string>
+    <string name="invalid_place_gym_toast_message">Location must be a gym</string>
+    <string name="invalid_place_address_toast_message">Location must be an address</string>
+    <string name="empty_address_toast_message">Invalid location</string>
     <string name="full_body">Full body</string>
     <string name="upper_body">Upper body</string>
     <string name="legs">Legs</string>
@@ -157,6 +159,12 @@
     <string name="outdoor">Outdoors</string>
     <string name="location_details">Location details</string>
     <string name="empty_selection_warning">Choose at least one type</string>
+    <string name="location_rationale_title">Location required</string>
+    <string name="location_rationale_message">In order to display nearby workouts, the app needs to access your device\'s location.</string>
+    <string name="error_dismiss">Dismiss</string>
+    <string name="location_permission_denied">Permission to access the device\'s location is denied.</string>
+    <string name="allow">Allow</string>
+    <string name="nearby_workouts_empty">Currently no workouts in %s</string>
 
 
 </resources>

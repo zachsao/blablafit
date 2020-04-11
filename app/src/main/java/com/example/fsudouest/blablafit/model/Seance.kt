@@ -5,7 +5,7 @@ import java.util.Date
 
 data class Seance(
         var titre: String = "",
-        var lieu: String = "",
+        var location: Location = Location(),
         var description: String = "",
         var date: Date = Date(),
         var maxParticipants: Int = 0,
@@ -18,3 +18,12 @@ data class Seance(
 ) : Serializable
 
 enum class RequestStatus { PENDING, GRANTED, DENIED }
+
+data class Location(
+        val name: String? = null,
+        val address: String? = null,
+        val city: String? = null,
+        val state: String? = null,
+        val country: String? = null,
+        val zipCode: String? = null
+)

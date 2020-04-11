@@ -11,11 +11,13 @@ sealed class NearByState {
     data class Loading(override val data: NearByData): NearByState()
     data class LatestWorkoutsLoaded(override val data: NearByData): NearByState()
     data class ResultsLoaded(override val data: NearByData): NearByState()
+    data class EmptyWorkouts(override val data: NearByData): NearByState()
 }
 
 data class NearByData(
         val latestWorkouts: List<LatestWorkoutViewItem?> = emptyList(),
         val categories: List<CategoryViewItem> = emptyList(),
         val searchResults: List<WorkoutViewItem> = emptyList(),
-        val allWorkouts: List<WorkoutViewItem> = emptyList()
+        val allWorkouts: List<WorkoutViewItem> = emptyList(),
+        val city: String? = null
 )
