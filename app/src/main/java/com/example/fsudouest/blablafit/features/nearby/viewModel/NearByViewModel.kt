@@ -83,6 +83,6 @@ class NearByViewModel @Inject constructor(
             stateLiveData.value =
                     NearByState.ResultsLoaded(previousStateData().copy(
                             searchResults = previousStateData().allWorkouts.filter { it.seance.titre.contains(search, true) }))
-        } else stateLiveData.value = NearByState.Idle(previousStateData())
+        } else stateLiveData.value = if (previousStateData().allWorkouts.isNotEmpty()) NearByState.Idle(previousStateData()) else NearByState.EmptyWorkouts(previousStateData())
     }
 }
