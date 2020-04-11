@@ -9,23 +9,18 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentMessagesBinding
 import com.example.fsudouest.blablafit.di.Injectable
-import com.example.fsudouest.blablafit.features.conversation.ConversationActivity
+import com.example.fsudouest.blablafit.features.messages.MessagesState
 import com.example.fsudouest.blablafit.features.messages.viewModel.MessagesViewModel
-import com.example.fsudouest.blablafit.model.User
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.Item
 import com.xwray.groupie.GroupieViewHolder
+import com.xwray.groupie.Section
 import kotlinx.android.synthetic.main.fragment_messages.*
-import kotlinx.android.synthetic.main.latest_message_item.view.*
-import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 
 class MessagesFragment : Fragment(), Injectable {
@@ -33,68 +28,56 @@ class MessagesFragment : Fragment(), Injectable {
     @Inject
     lateinit var factory: ViewModelFactory<MessagesViewModel>
 
-    private lateinit var viewModel: MessagesViewModel
+    private val viewModel by lazy { ViewModelProvider(this, factory).get(MessagesViewModel::class.java) }
 
-    private val adapter = GroupAdapter<GroupieViewHolder>()
+    private lateinit var section: Section
 
     lateinit var binding: FragmentMessagesBinding
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_messages, container, false)
 
         initRecyclerView()
 
-        viewModel = ViewModelProvider(this, factory).get(MessagesViewModel::class.java).apply {
-            usersLiveData().observe(viewLifecycleOwner, Observer {
-                if (it.isEmpty()) showEmptyState(true)
-                else showEmptyState(false)
-                submitList(it)
-            })
-        }
-
-        viewModel.getUserConversations()
+        viewModel.stateLiveData().observe(viewLifecycleOwner, Observer { render(it) })
         return binding.root
     }
 
+    private fun render(state: MessagesState) {
+        when (state) {
+            is MessagesState.Loading -> showProgressBar(true)
+            is MessagesState.ConversationsLoaded -> {
+                showEmptyState(false)
+                showProgressBar(false)
+                submitList(state.data.conversations)
+            }
+            is MessagesState.ConversationsEmpty -> {
+                showProgressBar(false)
+                showEmptyState(true)
+            }
+        }
+    }
+
     private fun submitList(list: List<UserViewItem>) {
-        adapter.clear()
-        list.forEach { adapter.add(it) }
-        binding.messagesRecyclerView.adapter = adapter
+        section.update(list)
     }
 
     private fun initRecyclerView() {
+        section = Section()
         binding.messagesRecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
-            this.adapter = adapter
+            this.adapter = GroupAdapter<GroupieViewHolder>().apply { add(section) }
             addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
         }
     }
 
+    private fun showProgressBar(show: Boolean) {
+        progressBar.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
     private fun showEmptyState(show: Boolean) {
-        messagesRecyclerView.visibility = if (show) View.GONE else View.VISIBLE
         emptyMessagesLayout.visibility = if (show) View.VISIBLE else View.GONE
     }
 
 }
 
-class UserViewItem(val user: User) : Item<GroupieViewHolder>() {
-    override fun getLayout() = R.layout.latest_message_item
-
-    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        viewHolder.itemView.username_textView.text = user.nomComplet
-        Glide.with(viewHolder.root.context)
-                .load(user.photoUrl)
-                .placeholder(R.drawable.ic_user_dark)
-                .error(R.drawable.ic_user_dark)
-                .into(viewHolder.itemView.latest_message_photo_imageView)
-
-        viewHolder.itemView.setOnClickListener {
-            it.context.startActivity<ConversationActivity>(
-                    "contactName" to user.nomComplet,
-                    "userId" to user.uid
-            )
-        }
-    }
-
-}
