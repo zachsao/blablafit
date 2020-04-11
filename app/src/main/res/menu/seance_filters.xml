@@ -9,5 +9,11 @@
         app:showAsAction="always"
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
+    <item
+        android:id="@+id/filters"
+        android:icon="@drawable/ic_levels"
+        android:title="Filter"
+        app:showAsAction="ifRoom"/>
+
 
 </menu>
