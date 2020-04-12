@@ -10,7 +10,7 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
     <item
-        android:id="@+id/filters"
+        android:id="@+id/action_filter"
         android:icon="@drawable/ic_levels"
         android:title="Filter"
         app:showAsAction="ifRoom"/>

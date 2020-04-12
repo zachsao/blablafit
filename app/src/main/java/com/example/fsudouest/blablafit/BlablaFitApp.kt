@@ -2,6 +2,7 @@ package com.example.fsudouest.blablafit
 
 import android.app.Application
 import com.example.fsudouest.blablafit.di.AppInjector
+import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import timber.log.Timber
@@ -17,6 +18,7 @@ class BlablaFitApp : Application(), HasAndroidInjector {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
+        AndroidThreeTen.init(this)
     }
 
     override fun androidInjector() = dispatchingAndroidInjector

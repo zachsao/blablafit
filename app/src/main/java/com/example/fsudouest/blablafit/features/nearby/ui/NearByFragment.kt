@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.core.HasErrorDialog
 import com.example.fsudouest.blablafit.di.Injectable
+import com.example.fsudouest.blablafit.features.filters.FiltersActivity
 import com.example.fsudouest.blablafit.features.nearby.NearByState
 import com.example.fsudouest.blablafit.features.nearby.viewModel.NearByViewModel
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
@@ -28,11 +29,11 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import kotlinx.android.synthetic.main.fragment_nearby.*
-import timber.log.Timber
 import javax.inject.Inject
 
 private const val PERMISSION_REQUEST_CODE = 1002
 private const val SETTINGS_REQUEST_CODE = 1003
+private const val REQUEST_CODE_FILTERS = 1004
 
 class NearByFragment : Fragment(), Injectable, HasErrorDialog {
     override var dialog: AlertDialog? = null
@@ -99,7 +100,7 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.seance_filters, menu)
+        inflater.inflate(R.menu.nearby_menu, menu)
         val searchViewItem = menu.findItem(R.id.action_search)
         searchView = searchViewItem.actionView as SearchView
         searchView.queryHint = getString(R.string.searchViewHint)
@@ -114,6 +115,13 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
                 return false
             }
         })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_filter -> startActivityForResult(Intent(requireActivity(), FiltersActivity::class.java), REQUEST_CODE_FILTERS)
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun render(state: NearByState) {
