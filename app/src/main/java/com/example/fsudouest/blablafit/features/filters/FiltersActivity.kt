@@ -1,15 +1,17 @@
 package com.example.fsudouest.blablafit.features.filters
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
+import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView
 import com.example.fsudouest.blablafit.BuildConfig
 import com.example.fsudouest.blablafit.R
-import com.example.fsudouest.blablafit.features.nearby.ui.CategoryViewItem
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.Places
@@ -22,6 +24,8 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_filters.*
+import org.threeten.bp.Instant
+import org.threeten.bp.LocalDate
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -31,6 +35,7 @@ class FiltersActivity : AppCompatActivity() {
     lateinit var factory: ViewModelFactory<FiltersViewModel>
 
     private lateinit var section: Section
+    private lateinit var datePickerDialog: DatePickerDialog
 
     private val viewModel by lazy { ViewModelProvider(this, factory).get(FiltersViewModel::class.java) }
 
@@ -44,32 +49,20 @@ class FiltersActivity : AppCompatActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close_black_24dp)
 
         initCategories()
+        initDatePicker()
 
         viewModel.stateLiveData().observe(this, Observer {
             render(it)
         })
+
+        dateButton.setOnClickListener { datePickerDialog.show() }
     }
 
-    private fun render(state: FiltersState) {
-        when (state) {
-            is FiltersState.Initial -> {
-                initPlaces(state.country)
-                initDate(state.data.date)
-                section.update(state.data.categories)
-            }
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.action_save -> viewModel.saveFilters()
         }
-    }
-
-    private fun initCategories() {
-        section = Section()
-        recyclerView.apply {
-            adapter = GroupAdapter<GroupieViewHolder>().apply { add(section) }
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-        }
-    }
-
-    private fun initDate(date: String?) {
-        dateButton.text = date
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -78,8 +71,35 @@ class FiltersActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
+        setResult(Activity.RESULT_CANCELED)
         finish()
         return true
+    }
+
+    private fun render(state: FiltersState) {
+        when (state) {
+            is FiltersState.Initial -> {
+                initPlaces(state.country)
+                dateButton.text = state.data.date
+                section.update(state.data.categories)
+            }
+            is FiltersState.DateUpdated -> dateButton.text = state.data.date
+            is FiltersState.FiltersSaved -> {
+                val intent = Intent().putExtra("FILTERS", state.filter)
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+            }
+        }
+    }
+
+    private fun initCategories() {
+        section = Section()
+        recyclerView.apply {
+            adapter = GroupAdapter<GroupieViewHolder>().apply {
+                add(section)
+            }
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        }
     }
 
     private fun initPlaces(country: String?) {
@@ -92,12 +112,21 @@ class FiltersActivity : AppCompatActivity() {
                 .setCountry(country)
                 .setOnPlaceSelectedListener(object : PlaceSelectionListener {
                     override fun onPlaceSelected(place: Place) {
-                        // set city filter
+                        place.name?.let { viewModel.updateCity(it) }
                     }
                     override fun onError(status: Status) {
                         Timber.e("An error occurred: $status")
                     }
                 })
 
+    }
+
+    private fun initDatePicker() {
+        val today = LocalDate.now()
+        datePickerDialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { _, year, month, day_of_month ->
+            viewModel.updateDate(year, month.inc(), day_of_month)
+        }, today.year, today.monthValue.dec(), today.dayOfMonth)
+
+        datePickerDialog.datePicker.minDate = Instant.now().toEpochMilli()
     }
 }
