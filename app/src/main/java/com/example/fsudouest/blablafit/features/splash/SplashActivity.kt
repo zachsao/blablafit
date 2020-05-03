@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.fsudouest.blablafit.R
+import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.accountSetup.AccountSetupActivity
 import com.example.fsudouest.blablafit.features.home.MainActivity
 import com.example.fsudouest.blablafit.features.login.LoginActivity
@@ -14,7 +15,7 @@ import dagger.android.AndroidInjection
 import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : AppCompatActivity(), Injectable {
 
     @Inject
     lateinit var mFirebaseAuth: FirebaseAuth
@@ -26,7 +27,6 @@ class SplashActivity : AppCompatActivity() {
     private var mAuthStateListener: FirebaseAuth.AuthStateListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 

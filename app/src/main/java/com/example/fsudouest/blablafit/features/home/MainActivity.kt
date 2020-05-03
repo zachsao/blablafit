@@ -14,6 +14,7 @@ import com.example.fsudouest.blablafit.databinding.ActivityMainBinding
 import com.example.fsudouest.blablafit.features.login.LoginActivity
 import com.example.fsudouest.blablafit.utils.BottomNavigationViewHelper
 import com.google.firebase.auth.FirebaseAuth
+import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import javax.inject.Inject
@@ -73,6 +74,6 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         return navController.navigateUp()
     }
 
-    override fun androidInjector() = dispatchingAndroidInjector
+    override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector
 
 }

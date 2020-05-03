@@ -16,8 +16,6 @@ import dagger.android.support.AndroidSupportInjection
  */
 object AppInjector {
     fun init(blablaFitApp: BlablaFitApp) {
-        DaggerAppComponent.builder().application(blablaFitApp)
-                .build().inject(blablaFitApp)
         blablaFitApp
                 .registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
                     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
@@ -51,24 +49,20 @@ object AppInjector {
     }
 
     private fun handleActivity(activity: Activity) {
-        if (activity is HasAndroidInjector) {
+        if (activity is HasAndroidInjector || activity is Injectable) {
             AndroidInjection.inject(activity)
         }
         if (activity is FragmentActivity) {
             activity.supportFragmentManager
-                    .registerFragmentLifecycleCallbacks(
-                            object : FragmentManager.FragmentLifecycleCallbacks() {
-                                override fun onFragmentCreated(
-                                        fm: FragmentManager,
-                                        f: Fragment,
-                                        savedInstanceState: Bundle?
-                                ) {
-                                    if (f is Injectable) {
-                                        AndroidSupportInjection.inject(f)
-                                    }
-                                }
-                            }, true
-                    )
+                .registerFragmentLifecycleCallbacks(
+                    object : FragmentManager.FragmentLifecycleCallbacks() {
+                        override fun onFragmentCreated(fm: FragmentManager, f: Fragment, savedInstanceState: Bundle?) {
+                            if (f is Injectable) {
+                                AndroidSupportInjection.inject(f)
+                            }
+                        }
+                    }, true
+                )
         }
     }
 }

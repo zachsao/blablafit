@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fsudouest.blablafit.R
+import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.model.Chat
 import com.example.fsudouest.blablafit.model.User
 import com.example.fsudouest.blablafit.utils.FirestoreUtil
@@ -26,7 +27,7 @@ import kotlinx.android.synthetic.main.chat_to_item.view.*
 import java.text.SimpleDateFormat
 import javax.inject.Inject
 
-class ConversationActivity : AppCompatActivity() {
+class ConversationActivity : AppCompatActivity(), Injectable {
 
     @Inject
     lateinit var factory: ViewModelFactory<ConversationViewModel>
@@ -37,7 +38,6 @@ class ConversationActivity : AppCompatActivity() {
     private lateinit var currentUser: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_conversation)
 

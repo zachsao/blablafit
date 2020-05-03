@@ -30,6 +30,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class FiltersActivity : AppCompatActivity() {
+class FiltersActivity : AppCompatActivity(), Injectable {
 
     @Inject
     lateinit var factory: ViewModelFactory<FiltersViewModel>
@@ -40,7 +41,6 @@ class FiltersActivity : AppCompatActivity() {
     private val viewModel by lazy { ViewModelProvider(this, factory).get(FiltersViewModel::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_filters)
 

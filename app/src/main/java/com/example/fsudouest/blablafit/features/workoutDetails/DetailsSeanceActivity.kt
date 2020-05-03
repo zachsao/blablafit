@@ -13,6 +13,7 @@ import androidx.navigation.navArgs
 import com.bumptech.glide.Glide
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.ActivityDetailsSeanceBinding
+import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.conversation.ConversationActivity
 import com.example.fsudouest.blablafit.features.workoutDetails.workoutRequests.RequestsActivity
 import com.example.fsudouest.blablafit.model.RequestStatus
@@ -28,7 +29,7 @@ import java.util.*
 import javax.inject.Inject
 
 
-class DetailsSeanceActivity : AppCompatActivity() {
+class DetailsSeanceActivity : AppCompatActivity(), Injectable {
 
     @Inject
     lateinit var firebaseAuth: FirebaseAuth
@@ -42,7 +43,6 @@ class DetailsSeanceActivity : AppCompatActivity() {
     @Inject lateinit var factory: ViewModelFactory<DetailsViewModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_details_seance)
         user = firebaseAuth.currentUser

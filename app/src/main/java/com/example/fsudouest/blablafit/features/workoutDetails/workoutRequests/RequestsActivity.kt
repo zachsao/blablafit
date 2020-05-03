@@ -7,6 +7,7 @@ import android.view.WindowManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.fsudouest.blablafit.R
+import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.model.RequestStatus
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.xwray.groupie.GroupAdapter
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.item_workout_request.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class RequestsActivity : AppCompatActivity() {
+class RequestsActivity : AppCompatActivity(), Injectable {
 
     @Inject
     lateinit var factory: ViewModelFactory<RequestsViewModel>
@@ -28,7 +29,6 @@ class RequestsActivity : AppCompatActivity() {
     private lateinit var section: Section
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_requests)
 
