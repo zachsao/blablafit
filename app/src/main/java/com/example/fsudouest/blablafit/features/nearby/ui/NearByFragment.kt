@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.core.HasErrorDialog
 import com.example.fsudouest.blablafit.di.Injectable
@@ -40,16 +39,12 @@ private const val REQUEST_CODE_FILTERS = 1004
 class NearByFragment : Fragment(), Injectable, HasErrorDialog {
     override var dialog: AlertDialog? = null
 
-    private lateinit var mostRecentWorkoutsAdapter: GroupAdapter<GroupieViewHolder>
-    private lateinit var mostRecentSection: Section
-    private lateinit var categoriesAdapter: GroupAdapter<GroupieViewHolder>
-    private lateinit var categoriesSection: Section
     @Inject
     lateinit var factory: ViewModelFactory<NearByViewModel>
+    private lateinit var searchView: SearchView
 
     private val viewModel by lazy { ViewModelProvider(this, factory).get(NearByViewModel::class.java) }
-
-    private lateinit var searchView: SearchView
+    private val section = Section()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -60,7 +55,6 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
         super.onActivityCreated(savedInstanceState)
 
         checkLocationPermissions()
-        initLatestWorkouts()
         initCategories()
         viewModel.stateLiveData().observe(viewLifecycleOwner, Observer { render(it) })
         setHasOptionsMenu(true)
@@ -130,66 +124,30 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
 
     private fun render(state: NearByState) {
         when(state) {
-            is NearByState.LatestWorkoutsLoaded -> {
+            is NearByState.WorkoutsLoaded -> {
                 hideMainLayout(false)
-                progressBar.visibility = View.GONE
-                emptyStateTextView.visibility = View.GONE
-                mostRecentSectionTitle.text = getString(R.string.most_recent, state.data.city ?: "your city")
-                displayAllWorkouts(state.data.allWorkouts)
-                displayMostRecentWorkouts(state.data.latestWorkouts)
+                state.data.city?.let { sectionTitle.text = getString(R.string.all_workouts_section_title, it) } ?: run { sectionTitle.visibility = View.GONE }
+                section.update(state.data.allWorkouts)
             }
             is NearByState.Loading -> {
-                hideMainLayout(true)
                 progressBar.visibility = View.VISIBLE
             }
-            is NearByState.ResultsLoaded -> {
-                mostRecentSectionTitle.visibility = View.GONE
-                mostRecentRecyclerView.visibility = View.GONE
-                allWorkoutsRecyclerView.visibility = View.VISIBLE
-                progressBar.visibility = View.GONE
-                categoriesSection.update(state.data.searchResults)
-            }
+            is NearByState.ResultsLoaded -> section.update(state.data.searchResults)
             is NearByState.EmptyWorkouts -> {
                 hideMainLayout(true)
-                progressBar.visibility = View.GONE
-                emptyStateTextView.visibility = View.VISIBLE
                 emptyStateTextView.text = getString(R.string.nearby_workouts_empty, state.data.city ?: "your city")
             }
         }
-    }
-
-    private fun displayAllWorkouts(categories: List<WorkoutViewItem>) {
-        categoriesSection.clear()
-        categoriesSection.update(categories)
     }
 
     private fun navigateToDetails(seanceId: String) {
         findNavController().navigate(NearByFragmentDirections.actionTrouverUneSeanceFragmentToDetailsSeanceActivity(seanceId))
     }
 
-    private fun displayMostRecentWorkouts(workouts: List<LatestWorkoutViewItem?>) {
-        mostRecentSection.update(workouts)
-    }
-
-    private fun initLatestWorkouts(){
-        mostRecentWorkoutsAdapter = GroupAdapter()
-        mostRecentSection = Section()
-        mostRecentWorkoutsAdapter.add(mostRecentSection)
-        mostRecentRecyclerView.apply {
-            adapter = mostRecentWorkoutsAdapter.apply {
-                setOnItemClickListener { item, _ ->
-                    navigateToDetails((item as LatestWorkoutViewItem).id)
-                }
-            }
-        }
-    }
-
     private fun initCategories(){
-        categoriesAdapter = GroupAdapter()
-        categoriesSection = Section()
-        categoriesAdapter.add(categoriesSection)
         allWorkoutsRecyclerView.apply {
-            adapter = categoriesAdapter.apply {
+            adapter = GroupAdapter<GroupieViewHolder>().apply {
+                add(section)
                 setOnItemClickListener { item, _ ->
                     when (item) {
                         is CategoryViewItem -> {
@@ -214,10 +172,10 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
     }
 
     private fun hideMainLayout(hide: Boolean) {
-        mostRecentSectionTitle.visibility = if (hide) View.GONE else View.VISIBLE
-        mostRecentRecyclerView.visibility = if (hide) View.GONE else View.VISIBLE
-        categorySectionTitle.visibility = if (hide) View.GONE else View.VISIBLE
+        progressBar.visibility = View.GONE
+        sectionTitle.visibility = if (hide) View.GONE else View.VISIBLE
         allWorkoutsRecyclerView.visibility = if (hide) View.GONE else View.VISIBLE
+        emptyStateTextView.visibility = if (hide) View.VISIBLE else View.GONE
     }
 
     private fun checkLocationPermissions() {
@@ -233,8 +191,6 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
     private fun requirePermission() {
         requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSION_REQUEST_CODE)
     }
-
-
 
     private fun goToSettings() {
         startActivityForResult(

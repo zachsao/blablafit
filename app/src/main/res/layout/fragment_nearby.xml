@@ -12,36 +12,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/mostRecentSectionTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="@font/roboto_condensed_bold"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Latest workouts in Paris" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/mostRecentRecyclerView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mostRecentSectionTitle"
-            tools:listitem="@layout/most_recent_item" />
-
-        <TextView
-            android:id="@+id/categorySectionTitle"
+            android:id="@+id/sectionTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -49,13 +20,13 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:fontFamily="@font/roboto_condensed_bold"
-            android:text="@string/all_workouts_section_title"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@id/allWorkoutsRecyclerView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mostRecentRecyclerView" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Workouts in Paris"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/allWorkoutsRecyclerView"
@@ -65,7 +36,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/categorySectionTitle"
+            app:layout_constraintTop_toBottomOf="@+id/sectionTitle"
             tools:listitem="@layout/seance_item2" />
 
         <ProgressBar
