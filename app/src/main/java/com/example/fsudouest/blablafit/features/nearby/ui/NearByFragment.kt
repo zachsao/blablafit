@@ -130,13 +130,12 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
 
     private fun render(state: NearByState) {
         when(state) {
-            is NearByState.Idle -> displayCategories(state.data.categories)
             is NearByState.LatestWorkoutsLoaded -> {
                 hideMainLayout(false)
                 progressBar.visibility = View.GONE
                 emptyStateTextView.visibility = View.GONE
                 mostRecentSectionTitle.text = getString(R.string.most_recent, state.data.city ?: "your city")
-                displayCategories(state.data.categories)
+                displayAllWorkouts(state.data.allWorkouts)
                 displayMostRecentWorkouts(state.data.latestWorkouts)
             }
             is NearByState.Loading -> {
@@ -146,7 +145,7 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
             is NearByState.ResultsLoaded -> {
                 mostRecentSectionTitle.visibility = View.GONE
                 mostRecentRecyclerView.visibility = View.GONE
-                categoriesRecyclerView.visibility = View.VISIBLE
+                allWorkoutsRecyclerView.visibility = View.VISIBLE
                 progressBar.visibility = View.GONE
                 categoriesSection.update(state.data.searchResults)
             }
@@ -159,7 +158,7 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
         }
     }
 
-    private fun displayCategories(categories: List<CategoryViewItem>) {
+    private fun displayAllWorkouts(categories: List<WorkoutViewItem>) {
         categoriesSection.clear()
         categoriesSection.update(categories)
     }
@@ -189,7 +188,7 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
         categoriesAdapter = GroupAdapter()
         categoriesSection = Section()
         categoriesAdapter.add(categoriesSection)
-        categoriesRecyclerView.apply {
+        allWorkoutsRecyclerView.apply {
             adapter = categoriesAdapter.apply {
                 setOnItemClickListener { item, _ ->
                     when (item) {
@@ -201,7 +200,6 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
                     }
                 }
             }
-            addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
         }
     }
 
@@ -219,7 +217,7 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
         mostRecentSectionTitle.visibility = if (hide) View.GONE else View.VISIBLE
         mostRecentRecyclerView.visibility = if (hide) View.GONE else View.VISIBLE
         categorySectionTitle.visibility = if (hide) View.GONE else View.VISIBLE
-        categoriesRecyclerView.visibility = if (hide) View.GONE else View.VISIBLE
+        allWorkoutsRecyclerView.visibility = if (hide) View.GONE else View.VISIBLE
     }
 
     private fun checkLocationPermissions() {

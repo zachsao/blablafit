@@ -35,7 +35,7 @@ class NearByViewModel @Inject constructor(
     fun stateLiveData(): LiveData<NearByState> = stateLiveData
 
     init {
-        stateLiveData.value = NearByState.Idle(NearByData(categories = CategoryViewItems.getCategoryViewItems()))
+        stateLiveData.value = NearByState.Idle(NearByData())
     }
 
     fun getLatestWorkouts() {
@@ -50,7 +50,7 @@ class NearByViewModel @Inject constructor(
             stateLiveData.value =
                     NearByState.ResultsLoaded(previousStateData().copy(
                             searchResults = previousStateData().allWorkouts.filter { it.seance.titre.contains(search, true) }))
-        } else stateLiveData.value = if (previousStateData().allWorkouts.isNotEmpty()) NearByState.Idle(previousStateData()) else NearByState.EmptyWorkouts(previousStateData())
+        } else stateLiveData.value = if (previousStateData().allWorkouts.isNotEmpty()) NearByState.LatestWorkoutsLoaded(previousStateData()) else NearByState.EmptyWorkouts(previousStateData())
     }
 
     fun applyFilters(filters: WorkoutFilters) {
