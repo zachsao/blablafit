@@ -17,16 +17,18 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="8dp">
+            android:paddingTop="8dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="8dp">
 
             <TextView
                 android:id="@+id/tv_date"
+                formattedDate="@{seance.date}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:fontFamily="@font/roboto_condensed_bold"
                 android:textColor="@color/black"
-                formattedDate="@{seance.date}"
                 app:layout_constraintBottom_toTopOf="@+id/tv_heure"
                 app:layout_constraintEnd_toStartOf="@+id/guideline"
                 app:layout_constraintStart_toStartOf="parent"
@@ -36,12 +38,12 @@
 
             <TextView
                 android:id="@+id/tv_heure"
+                formattedTime="@{seance.date}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:fontFamily="@font/roboto_condensed_bold"
                 android:textColor="@color/black"
-                formattedTime="@{seance.date}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline"
                 app:layout_constraintStart_toStartOf="parent"
@@ -59,19 +61,29 @@
                 android:id="@+id/tv_titre"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:text="@{seance.titre}"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                title="@{seance.titre}"
-                placesAvailable="@{seance.maxParticipants - seance.participants.size()}"
-                app:layout_constraintBottom_toTopOf="@+id/tv_durée"
+                app:layout_constraintBottom_toTopOf="@id/availablePlaces"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/guideline"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
                 app:layout_constraintVertical_chainStyle="packed"
-                tools:text="Full Body - 3 places disponibles" />
+                tools:text="Full Body" />
+
+            <TextView
+                android:id="@+id/availablePlaces"
+                placesAvailable="@{seance.maxParticipants - seance.participants.size()}"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toTopOf="@id/tv_durée"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toBottomOf="@+id/tv_titre"
+                tools:text="2 places disponibles" />
 
             <ImageView
                 android:id="@+id/imageView9"
@@ -87,13 +99,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:text="@{seance.duree}"
                 app:layout_constraintBottom_toTopOf="@+id/tv_lieu"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/imageView9"
-                app:layout_constraintTop_toBottomOf="@+id/tv_titre"
+                app:layout_constraintTop_toBottomOf="@+id/availablePlaces"
                 tools:text="2h" />
 
             <ImageView
@@ -110,14 +122,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@{seance.location.name+`, `+seance.location.address+`, `+seance.location.zipCode+`, `+seance.location.city}"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toTopOf="@+id/tv_créateur"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imageView10"
                 app:layout_constraintTop_toBottomOf="@+id/tv_durée"
                 tools:text="Ceci est une très long addresse qui prend trop de place pour être affichée entièrement" />
@@ -132,7 +143,6 @@
                 android:text="@{seance.nomAuteur}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/author_profile_picture"
                 app:layout_constraintTop_toBottomOf="@+id/tv_lieu"
                 tools:text="john.doe@gmail.com" />

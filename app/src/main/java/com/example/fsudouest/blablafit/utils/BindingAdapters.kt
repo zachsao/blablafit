@@ -78,10 +78,3 @@ fun bindWorkoutTime(textView: TextView, date: Date){
     val dateString = DateFormat.getTimeInstance(DateFormat.SHORT).format(date)
     textView.text = dateString
 }
-
-@BindingAdapter("title", "placesAvailable")
-fun bindTitle(textView: TextView, title: String, available: Int){
-    textView.apply {
-        text = "$title - ${resources.getQuantityString(R.plurals.numberOfPlacesAvailable, available, available)}"
-    }
-}
