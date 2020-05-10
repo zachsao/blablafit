@@ -2,7 +2,6 @@ package com.example.fsudouest.blablafit.features.filters
 
 import android.app.Activity
 import android.app.DatePickerDialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -12,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.fsudouest.blablafit.BuildConfig
 import com.example.fsudouest.blablafit.R
+import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.Places
@@ -22,14 +22,14 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
-import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_filters.*
+import kotlinx.android.synthetic.main.category_filter_item.view.*
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDate
 import timber.log.Timber
 import javax.inject.Inject
 
-class FiltersActivity : AppCompatActivity() {
+const val FILTERS_KEY = "WORKOUT_FILTERS"
 class FiltersActivity : AppCompatActivity(), Injectable {
 
     @Inject
@@ -85,8 +85,7 @@ class FiltersActivity : AppCompatActivity(), Injectable {
             }
             is FiltersState.DateUpdated -> dateButton.text = state.data.date
             is FiltersState.FiltersSaved -> {
-                val intent = Intent().putExtra("FILTERS", state.filter)
-                setResult(Activity.RESULT_OK, intent)
+                setResult(Activity.RESULT_OK, state.intent)
                 finish()
             }
         }
@@ -97,6 +96,10 @@ class FiltersActivity : AppCompatActivity(), Injectable {
         recyclerView.apply {
             adapter = GroupAdapter<GroupieViewHolder>().apply {
                 add(section)
+                setOnItemClickListener { item, view ->
+                    view.checkbox.isChecked = !view.checkbox.isChecked
+                    (item as CategoryFilterViewItem).category.isSelected = view.checkbox.isChecked
+                }
             }
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }

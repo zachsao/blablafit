@@ -19,7 +19,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.core.HasErrorDialog
 import com.example.fsudouest.blablafit.di.Injectable
+import com.example.fsudouest.blablafit.features.filters.FILTERS_KEY
 import com.example.fsudouest.blablafit.features.filters.FiltersActivity
+import com.example.fsudouest.blablafit.features.filters.WorkoutFilters
 import com.example.fsudouest.blablafit.features.nearby.NearByState
 import com.example.fsudouest.blablafit.features.nearby.viewModel.NearByViewModel
 import com.example.fsudouest.blablafit.utils.ViewModelFactory
@@ -93,8 +95,10 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-            SETTINGS_REQUEST_CODE -> {
-                checkLocationPermissions()
+            SETTINGS_REQUEST_CODE -> checkLocationPermissions()
+            REQUEST_CODE_FILTERS -> data?.let {
+                val filters = it.getSerializableExtra(FILTERS_KEY) as WorkoutFilters
+                viewModel.applyFilters(filters)
             }
         }
     }
@@ -140,6 +144,8 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
                 progressBar.visibility = View.VISIBLE
             }
             is NearByState.ResultsLoaded -> {
+                mostRecentSectionTitle.visibility = View.GONE
+                mostRecentRecyclerView.visibility = View.GONE
                 categoriesRecyclerView.visibility = View.VISIBLE
                 progressBar.visibility = View.GONE
                 categoriesSection.update(state.data.searchResults)
@@ -163,7 +169,7 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
     }
 
     private fun displayMostRecentWorkouts(workouts: List<LatestWorkoutViewItem?>) {
-        mostRecentSection.addAll(workouts)
+        mostRecentSection.update(workouts)
     }
 
     private fun initLatestWorkouts(){
@@ -234,8 +240,7 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
 
     private fun goToSettings() {
         startActivityForResult(
-                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                        .setData(Uri.fromParts("package", requireActivity().packageName, null)),
+                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).setData(Uri.fromParts("package", requireActivity().packageName, null)),
                 SETTINGS_REQUEST_CODE)
     }
 }

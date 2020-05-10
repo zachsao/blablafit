@@ -1,7 +1,7 @@
 package com.example.fsudouest.blablafit.features.filters
 
+import android.content.Intent
 import androidx.annotation.StringRes
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,7 +10,6 @@ import com.example.fsudouest.blablafit.service.LocationService
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.format.FormatStyle
-import timber.log.Timber
 import java.io.Serializable
 import javax.inject.Inject
 
@@ -34,12 +33,13 @@ class FiltersViewModel @Inject constructor(private val locationService: Location
     }
 
     fun saveFilters() {
-        val workoutFilter = WorkoutFilter(
+        val workoutFilters = WorkoutFilters(
                 previousData().city,
                 previousData().date,
-                previousData().categories.map { it.category.name }
+                getSelectedCategories()
         )
-        stateLiveData.value = FiltersState.FiltersSaved(previousData(), workoutFilter)
+        val intent = Intent().putExtra(FILTERS_KEY, workoutFilters)
+        stateLiveData.value = FiltersState.FiltersSaved(previousData(), intent)
     }
 
     private fun getCountry() {
@@ -51,11 +51,15 @@ class FiltersViewModel @Inject constructor(private val locationService: Location
         }
     }
 
+    private fun getSelectedCategories(): List<Int> {
+        return previousData().categories.filter { it.category.isSelected }.map { it.category.name }
+    }
+
     private fun previousData() = stateLiveData.value?.data ?: FiltersData()
 
 }
 
-data class WorkoutFilter(
+data class WorkoutFilters(
         val city: String?,
         val date: String?,
         val categories: List<Int>
