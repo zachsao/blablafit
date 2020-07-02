@@ -169,6 +169,8 @@
     <string name="city_label_filter">By city:</string>
     <string name="filters_title">Filters</string>
     <string name="choose_date">select a date</string>
+    <string name="or">Or</string>
+    <string name="welcome_register">Welcome</string>
 
 
 </resources>
