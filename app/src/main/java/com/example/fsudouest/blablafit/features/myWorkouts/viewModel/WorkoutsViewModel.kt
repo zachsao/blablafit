@@ -8,6 +8,7 @@ import com.example.fsudouest.blablafit.features.myWorkouts.MyWorkoutsState
 import com.example.fsudouest.blablafit.features.nearby.ui.WorkoutViewItem
 import com.example.fsudouest.blablafit.model.RequestStatus
 import com.example.fsudouest.blablafit.model.Seance
+import com.example.fsudouest.blablafit.utils.toWorkoutViewItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import timber.log.Timber
@@ -27,8 +28,7 @@ class WorkoutsViewModel @Inject constructor(private val mDatabase: FirebaseFires
                 .whereEqualTo("idAuteur", currentUser?.uid)
                 .get()
                 .addOnSuccessListener { querySnapshot ->
-                    val workouts = querySnapshot.documents.mapNotNull { it.toObject(Seance::class.java) }.map { WorkoutViewItem(it) }
-                    Timber.d("My workouts: ${workouts.map { it.seance.titre }}")
+                    val workouts = querySnapshot.documents.mapNotNull { it.toObject(Seance::class.java) }.map { it.toWorkoutViewItem() }
                     stateLiveData.value = when {
                         workouts.isNotEmpty() -> MyWorkoutsState.WorkoutsLoaded(previousStateData().copy(myWorkouts = workouts))
                         workouts.isEmpty() && previousStateData().joinedWorkouts.isNotEmpty() -> MyWorkoutsState.Idle(previousStateData())
@@ -43,8 +43,7 @@ class WorkoutsViewModel @Inject constructor(private val mDatabase: FirebaseFires
                 .whereEqualTo("participants.${currentUser?.uid}", RequestStatus.GRANTED)
                 .get()
                 .addOnSuccessListener { querySnapshot ->
-                    val workouts = querySnapshot.documents.mapNotNull { it.toObject(Seance::class.java) }.map { WorkoutViewItem(it) }
-                    Timber.d("Joined workouts: ${workouts.map { it.seance.titre }}")
+                    val workouts = querySnapshot.documents.mapNotNull { it.toObject(Seance::class.java) }.map { it.toWorkoutViewItem() }
                     stateLiveData.value = when {
                         workouts.isNotEmpty() -> MyWorkoutsState.WorkoutsLoaded(previousStateData().copy(joinedWorkouts = workouts))
                         workouts.isEmpty() && previousStateData().myWorkouts.isNotEmpty() -> MyWorkoutsState.Idle(previousStateData())

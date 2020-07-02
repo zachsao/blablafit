@@ -10,6 +10,7 @@ import com.example.fsudouest.blablafit.features.nearby.ui.WorkoutViewItem
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.service.LocationService
 import com.example.fsudouest.blablafit.service.ResourceService
+import com.example.fsudouest.blablafit.utils.toWorkoutViewItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -31,7 +32,7 @@ class NearByViewModel @Inject constructor(
         stateLiveData.value = NearByState.Idle(NearByData())
     }
 
-    fun getLatestWorkouts() {
+    fun getWorkouts() {
         stateLiveData.value = NearByState.Loading(previousStateData())
         locationService.getCityFromLastLocation { city ->
             getWorkoutsInCity(city)
@@ -42,7 +43,7 @@ class NearByViewModel @Inject constructor(
         if (search.isNotBlank()) {
             stateLiveData.value =
                     NearByState.ResultsLoaded(previousStateData().copy(
-                            searchResults = previousStateData().allWorkouts.filter { it.seance.titre.contains(search, true) }))
+                            searchResults = previousStateData().allWorkouts.filter { it.title.contains(search) }))
         } else stateLiveData.value = if (previousStateData().allWorkouts.isNotEmpty()) NearByState.WorkoutsLoaded(previousStateData()) else NearByState.EmptyWorkouts(previousStateData())
     }
 
@@ -63,14 +64,12 @@ class NearByViewModel @Inject constructor(
                 .whereEqualTo("location.city", city)
                 .get()
                 .addOnSuccessListener { snapshot ->
-                    val results = snapshot.documents.mapNotNull { it.toObject(Seance::class.java) }
+                    val workouts = snapshot.documents.mapNotNull { it.toObject(Seance::class.java) }
                             .filter { it.idAuteur != auth.currentUser?.uid }
+                            .map { seance -> seance.toWorkoutViewItem() }
 
-                    val allWorkouts = results
-                            .map { seance -> WorkoutViewItem(seance) }
-
-                    stateLiveData.value = if (allWorkouts.isNotEmpty())
-                        NearByState.WorkoutsLoaded(previousStateData().copy(allWorkouts = allWorkouts, city = city))
+                    stateLiveData.value = if (workouts.isNotEmpty())
+                        NearByState.WorkoutsLoaded(previousStateData().copy(allWorkouts = workouts, city = city))
                     else
                         NearByState.EmptyWorkouts(previousStateData().copy(city = city))
                 }

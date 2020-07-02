@@ -46,14 +46,11 @@ class TypeSeanceFragment : Fragment(), Injectable {
         binding.gridRecyclerView.adapter = mAdapter
 
         binding.nextButton.setOnClickListener {
-            val selection = mAdapter.mData.filter { it.isSelected }
+            val selection = mAdapter.mData.filter { it.isSelected }.map { category -> getString(category.name) }
             if (selection.isEmpty()) {
                 Toast.makeText(activity, getString(R.string.empty_selection_warning), LENGTH_SHORT).show()
             } else {
-                val workoutTitle = selection.joinToString(separator = " - ") { category ->
-                    getString(category.name)
-                }
-                val workout = Seance(workoutTitle)
+                val workout = Seance(selection)
                 viewModel.addWorkout(workout)
                 Navigation.findNavController(it)
                         .navigate(TypeSeanceFragmentDirections.actionTypeSeanceFragmentToAddDateDurationFragment())

@@ -81,6 +81,7 @@ class DetailsSeanceActivity : AppCompatActivity(), Injectable {
 
     private fun renderWorkout(seance: Seance){
         binding.seance = seance
+        binding.workoutTitleTextview.text = seance.titre.joinToString(" - ") //FIXME : move to BindingAdapters
 
         val authorProfilePicture = seance.photoAuteur
         Glide.with(this).load(authorProfilePicture).placeholder(R.drawable.userphoto).into(binding.circleImageView)

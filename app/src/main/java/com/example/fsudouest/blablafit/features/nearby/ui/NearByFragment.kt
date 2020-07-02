@@ -72,7 +72,7 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     hideMainLayout(false)
                     showMissingPermission(false)
-                    viewModel.getLatestWorkouts()
+                    viewModel.getWorkouts()
                 } else {
                     if (shouldShowRationale()) {
                         showDialog(requireContext(), R.string.location_rationale_title, R.string.location_rationale_message, R.string.error_dismiss)
@@ -154,7 +154,7 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
                             searchView.isIconified = false
                             searchView.setQuery(getString(item.name), false)
                         }
-                        is WorkoutViewItem -> navigateToDetails(item.seance.id)
+                        is WorkoutViewItem -> navigateToDetails(item.id)
                     }
                 }
             }
@@ -184,7 +184,7 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
         } else {
             hideMainLayout(false)
             showMissingPermission(false)
-            viewModel.getLatestWorkouts()
+            viewModel.getWorkouts()
         }
     }
 

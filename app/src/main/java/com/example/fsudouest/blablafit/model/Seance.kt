@@ -4,7 +4,7 @@ import java.io.Serializable
 import java.util.Date
 
 data class Seance(
-        var titre: String = "",
+        var titre: List<String> = emptyList(),
         var location: Location = Location(),
         var description: String = "",
         var date: Date = Date(),

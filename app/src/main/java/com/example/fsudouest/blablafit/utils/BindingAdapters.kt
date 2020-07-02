@@ -1,37 +1,17 @@
 package com.example.fsudouest.blablafit.utils
 
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.fsudouest.blablafit.R
-import com.example.fsudouest.blablafit.features.accountSetup.fitnessLevel.FitnessLevel
-import com.example.fsudouest.blablafit.features.nearby.ui.WorkoutViewItem
-import com.xwray.groupie.GroupAdapter
 import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
 
-@BindingAdapter("listData")
-fun bindRecyclerView(recyclerView: RecyclerView, data: List<WorkoutViewItem>) {
-    if (data.isNotEmpty()) {
-        recyclerView.visibility = View.VISIBLE
-        val adapter = recyclerView.adapter as GroupAdapter
-        adapter.clear()
-        adapter.addAll(data)
-    } else recyclerView.visibility = View.GONE
-}
-
-@BindingAdapter("status")
-fun bindStatus(textView: TextView, text: String?){
-    if (!text.isNullOrBlank()) {
-        textView.visibility = View.VISIBLE
-    } else {
-        textView.visibility = View.GONE
-    }
+@BindingAdapter("title")
+fun bindWorkoutTitle(textView: TextView, categories: List<String>?){
+    textView.text = categories?.joinToString(" - ")
 }
 
 @BindingAdapter("resIcon")

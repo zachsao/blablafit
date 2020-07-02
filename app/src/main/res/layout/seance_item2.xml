@@ -6,7 +6,7 @@
     <data>
         <variable
             name="seance"
-            type="com.example.fsudouest.blablafit.model.Seance"/>
+            type="com.example.fsudouest.blablafit.features.nearby.ui.WorkoutViewItem"/>
     </data>
 
     <androidx.cardview.widget.CardView
@@ -62,7 +62,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:text="@{seance.titre}"
+                android:text="@{seance.title}"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -75,7 +75,7 @@
 
             <TextView
                 android:id="@+id/availablePlaces"
-                placesAvailable="@{seance.maxParticipants - seance.participants.size()}"
+                placesAvailable="@{seance.placesAvailable}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@{seance.duree}"
+                android:text="@{seance.duration}"
                 app:layout_constraintBottom_toTopOf="@+id/tv_lieu"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -125,7 +125,7 @@
                 android:layout_marginTop="8dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{seance.location.name+`, `+seance.location.address+`, `+seance.location.zipCode+`, `+seance.location.city}"
+                android:text="@{seance.location}"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toTopOf="@+id/tv_créateur"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -140,7 +140,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
-                android:text="@{seance.nomAuteur}"
+                android:text="@{seance.author}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/author_profile_picture"
@@ -149,7 +149,7 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/author_profile_picture"
-                imgUrl="@{seance.photoAuteur}"
+                imgUrl="@{seance.photoUrl}"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_créateur"

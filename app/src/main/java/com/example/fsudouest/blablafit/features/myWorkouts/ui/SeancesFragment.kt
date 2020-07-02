@@ -62,7 +62,7 @@ class SeancesFragment : Fragment(), Injectable {
                 // addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
                 setOnItemClickListener { item, view ->
                     item as WorkoutViewItem
-                    navigateToDetails(item.seance.id)
+                    navigateToDetails(item.id)
                 }
             }
         }
