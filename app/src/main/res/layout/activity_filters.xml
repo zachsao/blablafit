@@ -39,12 +39,12 @@
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/white"
         android:fontFamily="@font/roboto_condensed_bold"
+        android:text="@string/choose_date"
         android:textColor="@color/black"
         app:icon="@drawable/baseline_event_24"
         app:iconTint="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dateLabel"
-        tools:text="11/04/2020" />
+        app:layout_constraintTop_toBottomOf="@+id/dateLabel" />
 
     <TextView
         android:id="@+id/categoryLabel"

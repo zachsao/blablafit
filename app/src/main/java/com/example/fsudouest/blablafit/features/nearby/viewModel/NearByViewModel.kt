@@ -1,12 +1,12 @@
 package com.example.fsudouest.blablafit.features.nearby.viewModel
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fsudouest.blablafit.features.filters.WorkoutFilters
 import com.example.fsudouest.blablafit.features.nearby.NearByData
 import com.example.fsudouest.blablafit.features.nearby.NearByState
-import com.example.fsudouest.blablafit.features.nearby.ui.WorkoutViewItem
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.service.LocationService
 import com.example.fsudouest.blablafit.service.ResourceService
@@ -15,6 +15,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import timber.log.Timber
+import java.text.DateFormat
+import java.text.DateFormat.getDateInstance
 import javax.inject.Inject
 
 
@@ -35,7 +37,7 @@ class NearByViewModel @Inject constructor(
     fun getWorkouts() {
         stateLiveData.value = NearByState.Loading(previousStateData())
         locationService.getCityFromLastLocation { city ->
-            getWorkoutsInCity(city)
+            getWorkoutsInCity(city, null, emptyList())
         }
     }
 
@@ -48,8 +50,10 @@ class NearByViewModel @Inject constructor(
     }
 
     fun applyFilters(filters: WorkoutFilters) {
-        filters.city?.let { getWorkoutsInCity(it) } ?: run {
-            val filteredWorkouts = previousStateData().allWorkouts.filter { workoutViewItem -> filters.categories.map { resourceService.getString(it) }.intersect(workoutViewItem.seance.titre.split(" - ")).isNotEmpty() }
+        filters.city?.let { city -> getWorkoutsInCity(city, filters.date, getCategoriesNamesFromIds(filters.categories)) } ?:
+        run {
+            val filteredWorkouts = previousStateData().allWorkouts.filter { workoutViewItem -> getCategoriesNamesFromIds(filters.categories).intersect(workoutViewItem.title.split(" - ")).isNotEmpty() }
+            filters.date?.let { date -> filteredWorkouts.apply { filter { it.date == getDateInstance(DateFormat.LONG).parse(date) } } }
             stateLiveData.value = when {
                 filteredWorkouts.isNotEmpty() -> NearByState.ResultsLoaded(previousStateData().copy(searchResults = filteredWorkouts))
                 filters.categories.isNotEmpty() && filteredWorkouts.isEmpty() -> NearByState.EmptyWorkouts(previousStateData().copy(searchResults = filteredWorkouts))
@@ -58,11 +62,8 @@ class NearByViewModel @Inject constructor(
         }
     }
 
-    private fun getWorkoutsInCity(city: String?) {
-        firestore.collection("workouts")
-                .orderBy("date", Query.Direction.DESCENDING)
-                .whereEqualTo("location.city", city)
-                .get()
+    private fun getWorkoutsInCity(city: String?, date: String?, categories: List<String>) {
+        createQuery(city, date, categories).get()
                 .addOnSuccessListener { snapshot ->
                     val workouts = snapshot.documents.mapNotNull { it.toObject(Seance::class.java) }
                             .filter { it.idAuteur != auth.currentUser?.uid }
@@ -74,6 +75,21 @@ class NearByViewModel @Inject constructor(
                         NearByState.EmptyWorkouts(previousStateData().copy(city = city))
                 }
                 .addOnFailureListener { Timber.e(it) }
+    }
+
+    private fun getCategoriesNamesFromIds(@StringRes ids: List<Int>) = ids.map { resourceService.getString(it) }
+
+    private fun createQuery(city: String?, date: String?, categories: List<String>): Query {
+        var query = firestore.collection("workouts")
+                .whereEqualTo("location.city", city)
+
+        if (categories.isNotEmpty()) query = query.whereArrayContainsAny("titre", categories)
+        query = if (date.isNullOrBlank())
+            query.orderBy("date", Query.Direction.DESCENDING)
+        else
+            query.whereEqualTo("date", getDateInstance(DateFormat.LONG).parse(date))
+
+        return query
     }
 
     private fun previousStateData() = stateLiveData.value?.data ?: NearByData()

@@ -168,6 +168,7 @@
     <string name="category_label_filter">By category:</string>
     <string name="city_label_filter">By city:</string>
     <string name="filters_title">Filters</string>
+    <string name="choose_date">select a date</string>
 
 
 </resources>

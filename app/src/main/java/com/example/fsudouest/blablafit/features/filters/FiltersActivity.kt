@@ -80,7 +80,6 @@ class FiltersActivity : AppCompatActivity(), Injectable {
         when (state) {
             is FiltersState.Initial -> {
                 initPlaces(state.country)
-                dateButton.text = state.data.date
                 section.update(state.data.categories)
             }
             is FiltersState.DateUpdated -> dateButton.text = state.data.date

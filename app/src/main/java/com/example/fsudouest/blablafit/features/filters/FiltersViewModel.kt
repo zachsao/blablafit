@@ -44,9 +44,8 @@ class FiltersViewModel @Inject constructor(private val locationService: Location
 
     private fun getCountry() {
         locationService.getCountryFromLastLocation { country ->
-            val today = DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG).format(LocalDate.now())
             country?.let {
-                stateLiveData.value = FiltersState.Initial(previousData().copy(categories = CategoryViewItems.getCategoryViewItems().map { CategoryFilterViewItem(it) }, date = today), country)
+                stateLiveData.value = FiltersState.Initial(previousData().copy(categories = CategoryViewItems.getCategoryViewItems().map { CategoryFilterViewItem(it) }), country)
             }
         }
     }
