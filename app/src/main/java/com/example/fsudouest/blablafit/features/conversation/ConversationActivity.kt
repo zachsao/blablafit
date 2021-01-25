@@ -5,37 +5,33 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fsudouest.blablafit.R
-import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.model.Chat
 import com.example.fsudouest.blablafit.model.User
 import com.example.fsudouest.blablafit.utils.FirestoreUtil
-import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
-import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
-import dagger.android.AndroidInjection
+import com.xwray.groupie.kotlinandroidextensions.Item
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_conversation.*
 import kotlinx.android.synthetic.main.chat_from_item.view.*
 import kotlinx.android.synthetic.main.chat_to_item.view.*
 import java.text.SimpleDateFormat
-import javax.inject.Inject
 
-class ConversationActivity : AppCompatActivity(), Injectable {
+@AndroidEntryPoint
+class ConversationActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var factory: ViewModelFactory<ConversationViewModel>
-
-    private lateinit var viewModel: ConversationViewModel
     private var shouldInitRecyclerView = true
     private lateinit var messagesSection: Section
     private lateinit var currentUser: User
+
+    private val viewModel: ConversationViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,17 +46,15 @@ class ConversationActivity : AppCompatActivity(), Injectable {
             currentUser = it
         }
 
-        viewModel = ViewModelProviders.of(this, factory).get(ConversationViewModel::class.java).apply {
-            chatsLiveData().observe(this@ConversationActivity, Observer {
-                submitList(it)
-            })
-        }
+        viewModel.chatsLiveData().observe(this@ConversationActivity, Observer {
+            submitList(it)
+        })
         val otherUserId = intent.getStringExtra("userId")
         viewModel.getOrCreateConversation(otherUserId) { conversationId ->
             viewModel.listenToMessages(conversationId)
 
-            sendMessageButton.setOnClickListener{
-                if (chatEdit.text.isNotEmpty()){
+            sendMessageButton.setOnClickListener {
+                if (chatEdit.text.isNotEmpty()) {
                     viewModel.sendMessage(conversationId, chatEdit.text.toString(), otherUserId, currentUser.nomComplet)
                     closeKeyboard()
                     chatEdit.text.clear()

@@ -14,17 +14,11 @@ import com.example.fsudouest.blablafit.databinding.ActivityMainBinding
 import com.example.fsudouest.blablafit.features.login.LoginActivity
 import com.example.fsudouest.blablafit.utils.BottomNavigationViewHelper
 import com.google.firebase.auth.FirebaseAuth
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-
-class MainActivity : AppCompatActivity(), HasAndroidInjector {
-
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
-
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var mFirebaseAuth: FirebaseAuth
@@ -73,7 +67,4 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         val navController = findNavController(this, R.id.myNavHostFragment)
         return navController.navigateUp()
     }
-
-    override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector
-
 }

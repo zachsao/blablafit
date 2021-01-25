@@ -8,34 +8,23 @@ import android.view.ViewGroup
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentTypeSeanceBinding
-import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.nearby.ui.CategoryViewItem
 import com.example.fsudouest.blablafit.features.nearby.ui.CategoryViewItems
 import com.example.fsudouest.blablafit.features.workoutCreation.viewModel.WorkoutCreationViewModel
 import com.example.fsudouest.blablafit.model.Seance
-import com.example.fsudouest.blablafit.utils.ViewModelFactory
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
-
-class TypeSeanceFragment : Fragment(), Injectable {
+@AndroidEntryPoint
+class TypeSeanceFragment : Fragment() {
 
     private lateinit var mAdapter: WorkoutTypeAdapter
     private lateinit var categories: List<CategoryViewItem>
 
-    private lateinit var viewModel: WorkoutCreationViewModel
-    @Inject
-    lateinit var factory: ViewModelFactory<WorkoutCreationViewModel>
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = activity?.run {
-            ViewModelProvider(this, factory).get(WorkoutCreationViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
-    }
+    private val viewModel: WorkoutCreationViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

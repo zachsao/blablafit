@@ -2,31 +2,22 @@ package com.example.fsudouest.blablafit.features.profile.userProfile
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavArgs
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-
-import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentUserProfileBinding
-import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.conversation.ConversationActivity
 import com.example.fsudouest.blablafit.features.profile.ProfileViewModel
-import com.example.fsudouest.blablafit.utils.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import org.jetbrains.anko.startActivity
-import javax.inject.Inject
 
+@AndroidEntryPoint
+class UserProfileFragment : Fragment() {
 
-class UserProfileFragment : Fragment(), Injectable {
-
-    @Inject
-    lateinit var factory: ViewModelFactory<ProfileViewModel>
-
-    private val viewModel by lazy { ViewModelProvider(this, factory)[ProfileViewModel::class.java] }
+    private val viewModel: ProfileViewModel by viewModels()
 
     private lateinit var binding: FragmentUserProfileBinding
 
@@ -37,7 +28,7 @@ class UserProfileFragment : Fragment(), Injectable {
         val args: UserProfileFragmentArgs by navArgs()
         val userId = args.userId
 
-        viewModel.stateLiveData().observe(viewLifecycleOwner, Observer { profileState ->
+        viewModel.stateLiveData().observe(viewLifecycleOwner, { profileState ->
             binding.user = profileState.data.user
 
             binding.contactButton.setOnClickListener {

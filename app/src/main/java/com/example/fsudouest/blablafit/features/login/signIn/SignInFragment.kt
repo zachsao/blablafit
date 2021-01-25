@@ -11,22 +11,17 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.fsudouest.blablafit.R
-import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.home.MainActivity
-import com.example.fsudouest.blablafit.utils.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_signin_form.*
-import javax.inject.Inject
 
+@AndroidEntryPoint
+class SignInFragment : Fragment() {
 
-class SignInFragment : Fragment(), Injectable {
-
-    @Inject
-    lateinit var factory: ViewModelFactory<SignInViewModel>
-    private lateinit var viewModel: SignInViewModel
+    private val viewModel: SignInViewModel by viewModels()
 
     private lateinit var binding: com.example.fsudouest.blablafit.databinding.FragmentSigninFormBinding
 
@@ -35,11 +30,9 @@ class SignInFragment : Fragment(), Injectable {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_signin_form, container, false)
 
-        viewModel = ViewModelProviders.of(this, factory).get(SignInViewModel::class.java).apply {
-            stateLiveData().observe(this@SignInFragment, Observer {
-                render(it)
-            })
-        }
+        viewModel.stateLiveData().observe(viewLifecycleOwner, {
+            render(it)
+        })
 
         addEmailTextListener()
         addPasswordTextListener()

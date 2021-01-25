@@ -8,35 +8,28 @@ import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentMyProfileBinding
-import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.profile.ProfileViewModel
-import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.tabs.TabLayoutMediator
-import java.lang.IllegalStateException
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
 private const val RC_PHOTO_PICKER = 2
 
-class MyProfileFragment : Fragment(), Injectable {
+@AndroidEntryPoint
+class MyProfileFragment : Fragment() {
 
-    @Inject
-    lateinit var factory: ViewModelFactory<ProfileViewModel>
-
-    private lateinit var viewModel: ProfileViewModel
+    private val viewModel: ProfileViewModel by viewModels()
 
     private lateinit var binding: FragmentMyProfileBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_my_profile, container, false)
-        viewModel = ViewModelProviders.of(this, factory).get(ProfileViewModel::class.java)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_profile, container, false)
         setHasOptionsMenu(true)
 
         binding.pager.adapter = ProfilePagerAdapter(requireActivity())
@@ -48,7 +41,7 @@ class MyProfileFragment : Fragment(), Injectable {
             }
         }.attach()
 
-        viewModel.stateLiveData().observe(viewLifecycleOwner, Observer {
+        viewModel.stateLiveData().observe(viewLifecycleOwner, {
             binding.user = it.data.currentUser
         })
         viewModel.getUser()

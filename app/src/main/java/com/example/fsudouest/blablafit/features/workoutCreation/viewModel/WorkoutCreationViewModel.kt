@@ -1,5 +1,6 @@
 package com.example.fsudouest.blablafit.features.workoutCreation.viewModel
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fsudouest.blablafit.model.Location
@@ -10,9 +11,8 @@ import com.google.android.libraries.places.api.model.AddressComponent
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import timber.log.Timber
-import javax.inject.Inject
 
-class WorkoutCreationViewModel @Inject constructor(
+class WorkoutCreationViewModel @ViewModelInject constructor(
         auth: FirebaseAuth,
         private val firestore: FirebaseFirestore,
         private val locationService: LocationService
@@ -21,7 +21,7 @@ class WorkoutCreationViewModel @Inject constructor(
     val workoutLiveData = MutableLiveData<Seance>()
     private val firebaseUser = auth.currentUser
 
-    fun addAuthor(onComplete: () -> Unit){
+    fun addAuthor(onComplete: () -> Unit) {
         val uid = firebaseUser?.uid ?: ""
         firestore.collection("users").document(uid)
                 .get()

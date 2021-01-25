@@ -1,8 +1,8 @@
 package com.example.fsudouest.blablafit.service
 
+import android.content.Context
 import android.location.Geocoder
 import android.location.Location
-import com.example.fsudouest.blablafit.BlablaFitApp
 import com.google.android.gms.location.LocationServices
 import timber.log.Timber
 import java.util.*
@@ -10,9 +10,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LocationService @Inject constructor(private val application: BlablaFitApp) {
+class LocationService @Inject constructor(private val context: Context) {
 
-    private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(application)
+    private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
     fun getCityFromLastLocation(onLocationRetrieved: (city: String?) -> Unit) {
         fusedLocationClient.lastLocation
@@ -37,12 +37,12 @@ class LocationService @Inject constructor(private val application: BlablaFitApp)
     }
 
     private fun extractCityFromLocation(location: Location?): String? {
-        val gcd = Geocoder(application, Locale.getDefault())
+        val gcd = Geocoder(context, Locale.getDefault())
         return location?.let { gcd.getFromLocation(it.latitude, it.longitude, 1).single().locality }
     }
 
     private fun extractCountryFromLocation(location: Location?): String? {
-        val gcd = Geocoder(application, Locale.getDefault())
+        val gcd = Geocoder(context, Locale.getDefault())
         return location?.let { gcd.getFromLocation(it.latitude, it.longitude, 1).single().countryCode }
     }
 }

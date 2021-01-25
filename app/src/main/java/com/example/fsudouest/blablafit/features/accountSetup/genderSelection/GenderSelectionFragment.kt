@@ -6,22 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.fsudouest.blablafit.R
-import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.accountSetup.AccountSetupViewModel
-import com.example.fsudouest.blablafit.utils.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_gender_selection.*
 import org.jetbrains.anko.imageResource
-import javax.inject.Inject
 
-class GenderSelectionFragment : Fragment(), Injectable {
+@AndroidEntryPoint
+class GenderSelectionFragment : Fragment() {
 
-    @Inject
-    lateinit var factory: ViewModelFactory<AccountSetupViewModel>
-    private lateinit var viewModel: AccountSetupViewModel
+    private val viewModel: AccountSetupViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -30,17 +26,15 @@ class GenderSelectionFragment : Fragment(), Injectable {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = activity?.run {
-            ViewModelProviders.of(this, factory)[AccountSetupViewModel::class.java]
-        } ?: throw Exception("Invalid Activity")
-        viewModel.stateLiveData().observe(this, Observer{state ->
+
+        viewModel.stateLiveData().observe(viewLifecycleOwner, { state ->
             selectMale(state.data.gender)
             selectFemale(state.data.gender)
         })
         male.setOnClickListener { viewModel.updateGender(true) }
         female.setOnClickListener { viewModel.updateGender(false) }
         next.setOnClickListener { findNavController().navigate(R.id.action_genderSelectionFragment_to_levelFragment) }
-        back.setOnClickListener { findNavController().navigate(R.id.action_genderSelectionFragment_to_basicInformationFragment)}
+        back.setOnClickListener { findNavController().navigate(R.id.action_genderSelectionFragment_to_basicInformationFragment) }
     }
 
     private fun selectFemale(isMale: Boolean) {

@@ -9,50 +9,45 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentRegisterBinding
-import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.accountSetup.AccountSetupActivity
 import com.example.fsudouest.blablafit.service.MyFirebaseMessagingService
 import com.example.fsudouest.blablafit.utils.FirestoreUtil
-import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.google.android.material.textfield.TextInputEditText
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_register.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.newTask
 import org.jetbrains.anko.support.v4.intentFor
-import javax.inject.Inject
 
-class RegisterFragment : Fragment(), Injectable {
+@AndroidEntryPoint
+class RegisterFragment : Fragment() {
 
-    @Inject
-    lateinit var factory: ViewModelFactory<RegisterViewModel>
 
-    private lateinit var viewModel: RegisterViewModel
     private lateinit var binding: FragmentRegisterBinding
+    private val viewModel: RegisterViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false)
 
-        viewModel = ViewModelProviders.of(this, factory).get(RegisterViewModel::class.java).apply {
-            stateLiveData().observe(this@RegisterFragment, Observer { state ->
-                render(state)
-            })
-            registerStatusLiveData().observe(this@RegisterFragment, Observer { isRegistered ->
-                if (isRegistered) {
-                    FirestoreUtil.getRegistrationToken { newRegistrationToken ->
-                        MyFirebaseMessagingService.addTokenToFirestore(newRegistrationToken)
-                    }
-                    startActivity(intentFor<AccountSetupActivity>(
-                            "userName" to binding.nameEdit.text.toString()
-                    ).newTask().clearTask())
+        viewModel.stateLiveData().observe(viewLifecycleOwner, { state ->
+            render(state)
+        })
+        viewModel.registerStatusLiveData().observe(viewLifecycleOwner, { isRegistered ->
+            if (isRegistered) {
+                FirestoreUtil.getRegistrationToken { newRegistrationToken ->
+                    MyFirebaseMessagingService.addTokenToFirestore(newRegistrationToken)
                 }
-            })
-        }
+                startActivity(intentFor<AccountSetupActivity>(
+                        "userName" to binding.nameEdit.text.toString()
+                ).newTask().clearTask())
+            }
+        })
 
         binding.registerButton.setOnClickListener { viewModel.submitForm() }
         binding.nameEdit.setTextChangedListener()

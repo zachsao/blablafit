@@ -1,21 +1,19 @@
 package com.example.fsudouest.blablafit.features.myWorkouts.viewModel
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fsudouest.blablafit.features.myWorkouts.MyWorkoutsData
 import com.example.fsudouest.blablafit.features.myWorkouts.MyWorkoutsState
-import com.example.fsudouest.blablafit.features.nearby.ui.WorkoutViewItem
 import com.example.fsudouest.blablafit.model.RequestStatus
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.utils.toWorkoutViewItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import timber.log.Timber
-import java.lang.IllegalStateException
-import javax.inject.Inject
 
-class WorkoutsViewModel @Inject constructor(private val mDatabase: FirebaseFirestore, auth: FirebaseAuth) : ViewModel() {
+class WorkoutsViewModel @ViewModelInject constructor(private val mDatabase: FirebaseFirestore, auth: FirebaseAuth) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<MyWorkoutsState>()
     private val currentUser = auth.currentUser

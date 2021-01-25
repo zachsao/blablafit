@@ -1,24 +1,26 @@
 package com.example.fsudouest.blablafit.di
 
-import com.example.fsudouest.blablafit.BlablaFitApp
+import android.content.Context
 import com.example.fsudouest.blablafit.service.LocationService
 import com.example.fsudouest.blablafit.service.ResourceService
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 
 @Module
+@InstallIn(SingletonComponent::class)
 object ServiceModule {
 
-    @JvmStatic
     @Provides
-    fun provideLocationService(app: BlablaFitApp): LocationService {
-        return LocationService(app)
+    fun provideLocationService(@ApplicationContext context: Context): LocationService {
+        return LocationService(context)
     }
 
-    @JvmStatic
     @Provides
-    fun provideResourceService(app: BlablaFitApp): ResourceService {
-        return ResourceService(app.resources)
+    fun provideResourceService(@ApplicationContext context: Context): ResourceService {
+        return ResourceService(context.resources)
     }
 
 }

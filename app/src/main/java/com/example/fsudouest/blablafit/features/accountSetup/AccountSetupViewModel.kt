@@ -1,6 +1,7 @@
 package com.example.fsudouest.blablafit.features.accountSetup
 
 import android.net.Uri
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,7 +14,7 @@ import com.google.firebase.storage.FirebaseStorage
 import timber.log.Timber
 import javax.inject.Inject
 
-class AccountSetupViewModel @Inject constructor(
+class AccountSetupViewModel @ViewModelInject constructor(
         private val firestore: FirebaseFirestore,
         auth: FirebaseAuth,
         private val storage: FirebaseStorage

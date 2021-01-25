@@ -1,30 +1,22 @@
 package com.example.fsudouest.blablafit.features.workoutDetails.workoutRequests
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.example.fsudouest.blablafit.R
-import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.model.RequestStatus
-import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
-import dagger.android.AndroidInjection
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_requests.*
-import kotlinx.android.synthetic.main.item_workout_request.*
-import timber.log.Timber
-import javax.inject.Inject
 
-class RequestsActivity : AppCompatActivity(), Injectable {
+@AndroidEntryPoint
+class RequestsActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var factory: ViewModelFactory<RequestsViewModel>
-
-    private val viewModel by lazy { ViewModelProviders.of(this, factory)[RequestsViewModel::class.java] }
+    private val viewModel: RequestsViewModel by viewModels()
 
     private lateinit var section: Section
 
@@ -48,7 +40,7 @@ class RequestsActivity : AppCompatActivity(), Injectable {
         initRecyclerView()
 
         viewModel.init(participants, workoutId)
-        viewModel.stateLiveData().observe(this, Observer { state ->
+        viewModel.stateLiveData().observe(this, { state ->
             render(state)
         })
     }

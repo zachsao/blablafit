@@ -1,14 +1,13 @@
 package com.example.fsudouest.blablafit.features.splash
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fsudouest.blablafit.model.User
 import com.google.firebase.firestore.FirebaseFirestore
-import timber.log.Timber
-import javax.inject.Inject
 
-class SplashViewModel @Inject constructor(private val firestore: FirebaseFirestore) : ViewModel() {
+class SplashViewModel @ViewModelInject constructor(private val firestore: FirebaseFirestore) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<SplashState>()
 
@@ -18,7 +17,7 @@ class SplashViewModel @Inject constructor(private val firestore: FirebaseFiresto
 
     fun stateLiveData(): LiveData<SplashState> = stateLiveData
 
-    fun userIsSetup(uid: String){
+    fun userIsSetup(uid: String) {
         firestore.collection("users").document(uid)
                 .get()
                 .addOnSuccessListener {

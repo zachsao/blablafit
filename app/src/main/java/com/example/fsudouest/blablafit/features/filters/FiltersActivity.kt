@@ -5,14 +5,12 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.fsudouest.blablafit.BuildConfig
 import com.example.fsudouest.blablafit.R
-import com.example.fsudouest.blablafit.di.Injectable
-import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
@@ -22,23 +20,22 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_filters.*
 import kotlinx.android.synthetic.main.category_filter_item.view.*
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDate
 import timber.log.Timber
-import javax.inject.Inject
 
 const val FILTERS_KEY = "WORKOUT_FILTERS"
-class FiltersActivity : AppCompatActivity(), Injectable {
 
-    @Inject
-    lateinit var factory: ViewModelFactory<FiltersViewModel>
+@AndroidEntryPoint
+class FiltersActivity : AppCompatActivity() {
 
     private lateinit var section: Section
     private lateinit var datePickerDialog: DatePickerDialog
 
-    private val viewModel by lazy { ViewModelProvider(this, factory).get(FiltersViewModel::class.java) }
+    private val viewModel: FiltersViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

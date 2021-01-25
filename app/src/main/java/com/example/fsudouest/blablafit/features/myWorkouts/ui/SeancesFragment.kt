@@ -9,27 +9,22 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.fsudouest.blablafit.R
-import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.myWorkouts.MyWorkoutsState
 import com.example.fsudouest.blablafit.features.myWorkouts.viewModel.WorkoutsViewModel
 import com.example.fsudouest.blablafit.features.nearby.ui.WorkoutViewItem
-import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
-import kotlinx.android.synthetic.main.fragment_seances.*
+import dagger.hilt.android.AndroidEntryPoint
 import org.jetbrains.anko.image
-import javax.inject.Inject
 
-class SeancesFragment : Fragment(), Injectable {
+@AndroidEntryPoint
+class SeancesFragment : Fragment() {
 
-    @Inject
-    lateinit var factory: ViewModelFactory<WorkoutsViewModel>
-    private val viewModel by lazy { ViewModelProviders.of(this, factory)[WorkoutsViewModel::class.java] }
+    private val viewModel: WorkoutsViewModel by viewModels()
 
     private var section = Section()
 
@@ -43,7 +38,7 @@ class SeancesFragment : Fragment(), Injectable {
 
         initRecyclerView()
 
-        viewModel.stateLiveData().observe(this, Observer { state -> render(state) })
+        viewModel.stateLiveData().observe(viewLifecycleOwner, { state -> render(state) })
 
         viewModel.getMyWorkouts()
         viewModel.getJoinedWorkouts()

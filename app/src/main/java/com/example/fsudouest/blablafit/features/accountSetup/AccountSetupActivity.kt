@@ -3,21 +3,13 @@ package com.example.fsudouest.blablafit.features.accountSetup
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fsudouest.blablafit.R
-import dagger.android.AndroidInjection
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
-class AccountSetupActivity : AppCompatActivity(), HasAndroidInjector {
-
-    @Inject
-    lateinit var androidInjector: DispatchingAndroidInjector<Any>
+@AndroidEntryPoint
+class AccountSetupActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.account_setup_activity)
     }
-
-    override fun androidInjector() = androidInjector
-
 }

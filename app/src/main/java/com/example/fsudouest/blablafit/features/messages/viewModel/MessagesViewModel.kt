@@ -1,5 +1,6 @@
 package com.example.fsudouest.blablafit.features.messages.viewModel
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fsudouest.blablafit.features.messages.MessagesData
@@ -9,9 +10,8 @@ import com.example.fsudouest.blablafit.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import timber.log.Timber
-import javax.inject.Inject
 
-class MessagesViewModel@Inject constructor(private val firestore: FirebaseFirestore, auth: FirebaseAuth): ViewModel() {
+class MessagesViewModel @ViewModelInject constructor(private val firestore: FirebaseFirestore, auth: FirebaseAuth) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<MessagesState>()
     private val currentUserId = auth.currentUser?.uid ?: ""

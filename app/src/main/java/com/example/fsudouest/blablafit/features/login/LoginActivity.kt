@@ -11,11 +11,10 @@ import com.example.fsudouest.blablafit.databinding.ActivityLogin2Binding
 import com.example.fsudouest.blablafit.features.home.MainActivity
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
-/**
- * A login screen that offers login via email/password.
- */
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
 
     private val RC_SIGN_IN = 123

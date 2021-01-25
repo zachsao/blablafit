@@ -4,14 +4,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.example.fsudouest.blablafit.R
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
-class SignUpActivity : AppCompatActivity(), HasAndroidInjector {
-
-    @Inject
-    lateinit var androidInjector: DispatchingAndroidInjector<Any>
+@AndroidEntryPoint
+class SignUpActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +17,4 @@ class SignUpActivity : AppCompatActivity(), HasAndroidInjector {
             findNavController(R.id.signUpNavHostFragment).navigate(R.id.action_basicInformationFragment_to_registerFragment2)
         }
     }
-
-    override fun androidInjector() = androidInjector
 }

@@ -4,32 +4,29 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.navArgs
 import com.bumptech.glide.Glide
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.ActivityDetailsSeanceBinding
-import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.conversation.ConversationActivity
 import com.example.fsudouest.blablafit.features.workoutDetails.workoutRequests.RequestsActivity
 import com.example.fsudouest.blablafit.model.RequestStatus
 import com.example.fsudouest.blablafit.model.Seance
-import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import dagger.android.AndroidInjection
+import dagger.hilt.android.AndroidEntryPoint
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.startActivity
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
-
-class DetailsSeanceActivity : AppCompatActivity(), Injectable {
+@AndroidEntryPoint
+class DetailsSeanceActivity : AppCompatActivity() {
 
     @Inject
     lateinit var firebaseAuth: FirebaseAuth
@@ -38,9 +35,7 @@ class DetailsSeanceActivity : AppCompatActivity(), Injectable {
 
     lateinit var binding: ActivityDetailsSeanceBinding
 
-    private lateinit var viewModel: DetailsViewModel
-
-    @Inject lateinit var factory: ViewModelFactory<DetailsViewModel>
+    private val viewModel: DetailsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,11 +50,9 @@ class DetailsSeanceActivity : AppCompatActivity(), Injectable {
         val args : DetailsSeanceActivityArgs by navArgs()
         val workoutId = args.id
 
-        viewModel = ViewModelProvider(this, factory).get(DetailsViewModel::class.java).apply {
-            getWorkoutDetails(workoutId)
-        }
+        viewModel.getWorkoutDetails(workoutId)
 
-        viewModel.detailsLiveData().observe(this, Observer {workout ->
+        viewModel.detailsLiveData().observe(this, { workout ->
             renderWorkout(workout)
             binding.contactButton.setOnClickListener {
                 startActivity<ConversationActivity>("contactName" to workout.nomAuteur, "userId" to workout.idAuteur)

@@ -1,6 +1,7 @@
 package com.example.fsudouest.blablafit.features.login.register
 
 import android.util.Patterns
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,10 +10,9 @@ import com.example.fsudouest.blablafit.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import timber.log.Timber
-import javax.inject.Inject
 
 
-class RegisterViewModel @Inject constructor(private val mDatabase: FirebaseFirestore, private val auth: FirebaseAuth): ViewModel() {
+class RegisterViewModel @ViewModelInject constructor(private val mDatabase: FirebaseFirestore, private val auth: FirebaseAuth) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<RegisterState>()
     private val registerSuccessLiveData = MutableLiveData<Boolean>()

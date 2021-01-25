@@ -1,7 +1,7 @@
 package com.example.fsudouest.blablafit.features.filters
 
 import android.content.Intent
-import androidx.annotation.StringRes
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,9 +11,8 @@ import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.format.FormatStyle
 import java.io.Serializable
-import javax.inject.Inject
 
-class FiltersViewModel @Inject constructor(private val locationService: LocationService) : ViewModel() {
+class FiltersViewModel @ViewModelInject constructor(private val locationService: LocationService) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<FiltersState>()
 

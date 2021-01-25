@@ -1,6 +1,7 @@
 package com.example.fsudouest.blablafit.features.login.signIn
 
 import android.util.Patterns
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,11 +10,10 @@ import com.example.fsudouest.blablafit.service.MyFirebaseMessagingService
 import com.example.fsudouest.blablafit.utils.FirestoreUtil
 import com.google.firebase.auth.FirebaseAuth
 import timber.log.Timber
-import javax.inject.Inject
 
 private const val TAG = "SignInViewModel"
 
-class SignInViewModel @Inject constructor(private val firebaseAuth: FirebaseAuth): ViewModel() {
+class SignInViewModel @ViewModelInject constructor(private val firebaseAuth: FirebaseAuth) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<SignInState>()
 
@@ -23,7 +23,7 @@ class SignInViewModel @Inject constructor(private val firebaseAuth: FirebaseAuth
         stateLiveData.value = SignInState.Idle(SignInData())
     }
 
-    fun submitForm(){
+    fun submitForm() {
         stateLiveData.value?.data?.let {
             if (checkForm(it)){
                 firebaseAuth.signInWithEmailAndPassword(it.email, it.password)

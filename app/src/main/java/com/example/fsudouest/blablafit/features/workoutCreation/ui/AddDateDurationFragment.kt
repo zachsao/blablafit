@@ -8,20 +8,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.example.fsudouest.blablafit.BuildConfig
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentAddDateDurationBinding
-import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.workoutCreation.viewModel.WorkoutCreationViewModel
-import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_add_date_duration.*
 import org.jetbrains.anko.support.v4.toast
 import timber.log.Timber
@@ -30,8 +30,8 @@ import java.util.*
 import javax.inject.Inject
 import android.text.format.DateFormat as AndroidDateFormat
 
-
-class AddDateDurationFragment : Fragment(), Injectable {
+@AndroidEntryPoint
+class AddDateDurationFragment : Fragment() {
 
     private val apiKey = BuildConfig.GOOGLE_PLACES_KEY
 
@@ -43,20 +43,13 @@ class AddDateDurationFragment : Fragment(), Injectable {
     private val dateFormat = DateFormat.getDateInstance(DateFormat.SHORT)
     private val hourFormat = DateFormat.getTimeInstance(DateFormat.SHORT)
 
-    private lateinit var viewModel: WorkoutCreationViewModel
-    @Inject
-    lateinit var factory: ViewModelFactory<WorkoutCreationViewModel>
-
+    private val viewModel: WorkoutCreationViewModel by viewModels()
     private lateinit var binding: FragmentAddDateDurationBinding
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         binding = FragmentAddDateDurationBinding.inflate(inflater, container, false)
-
-        viewModel = activity?.run {
-            ViewModelProvider(this, factory).get(WorkoutCreationViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
 
         binding.workout = viewModel.workoutLiveData.value
 

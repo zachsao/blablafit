@@ -1,28 +1,26 @@
 package com.example.fsudouest.blablafit.features.splash
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.fsudouest.blablafit.R
-import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.accountSetup.AccountSetupActivity
 import com.example.fsudouest.blablafit.features.home.MainActivity
 import com.example.fsudouest.blablafit.features.login.LoginActivity
-import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
-import dagger.android.AndroidInjection
+import dagger.hilt.android.AndroidEntryPoint
 import org.jetbrains.anko.startActivity
 import javax.inject.Inject
 
-class SplashActivity : AppCompatActivity(), Injectable {
+@AndroidEntryPoint
+class SplashActivity : AppCompatActivity() {
 
     @Inject
     lateinit var mFirebaseAuth: FirebaseAuth
-    @Inject
-    lateinit var factory: ViewModelFactory<SplashViewModel>
 
-    private val viewModel by lazy { ViewModelProviders.of(this, factory)[SplashViewModel::class.java] }
+    private val viewModel: SplashViewModel by viewModels()
 
     private var mAuthStateListener: FirebaseAuth.AuthStateListener? = null
 
@@ -38,7 +36,7 @@ class SplashActivity : AppCompatActivity(), Injectable {
             }else {
                 val uid = user.uid
                 viewModel.userIsSetup(uid)
-                viewModel.stateLiveData().observe(this, Observer { state ->
+                viewModel.stateLiveData().observe(this, { state ->
                     when (state) {
                         is SplashState.UserLoaded -> redirect(state.isSetup)
                     }

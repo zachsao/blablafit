@@ -4,39 +4,38 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.net.Uri
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.fsudouest.blablafit.BuildConfig
 import com.example.fsudouest.blablafit.R
-import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.accountSetup.AccountSetupState
 import com.example.fsudouest.blablafit.features.accountSetup.AccountSetupViewModel
 import com.example.fsudouest.blablafit.features.login.LoginActivity
 import com.example.fsudouest.blablafit.utils.CanSelectPhotoFromGallery
 import com.example.fsudouest.blablafit.utils.RC_PHOTO_PICKER
-import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.basic_information_fragment.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.newTask
 import org.jetbrains.anko.support.v4.intentFor
 import java.util.*
-import javax.inject.Inject
-private const val REQUEST_CODE_AUTOCOMPLETE = 1001
-class BasicInformationFragment : Fragment(), Injectable, CanSelectPhotoFromGallery {
 
-    @Inject
-    lateinit var factory: ViewModelFactory<AccountSetupViewModel>
-    private lateinit var viewModel: AccountSetupViewModel
+private const val REQUEST_CODE_AUTOCOMPLETE = 1001
+
+@AndroidEntryPoint
+class BasicInformationFragment : Fragment(), CanSelectPhotoFromGallery {
+
     private lateinit var datePickerDialog: DatePickerDialog
+
+    private val viewModel: AccountSetupViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -45,15 +44,13 @@ class BasicInformationFragment : Fragment(), Injectable, CanSelectPhotoFromGalle
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = activity?.run {
-            ViewModelProviders.of(this, factory)[AccountSetupViewModel::class.java]
-        } ?: throw Exception("Invalid Activity")
-        viewModel.stateLiveData().observe(this, Observer {
+
+        viewModel.stateLiveData().observe(viewLifecycleOwner, {
             render(it)
         })
 
         initDatePicker()
-        profilePicture.setOnClickListener { createPhotoUpdateDialog(activity!!, this) }
+        profilePicture.setOnClickListener { createPhotoUpdateDialog(requireActivity(), this) }
         birthdayEdit.setOnClickListener { datePickerDialog.show() }
         cityEdit.setOnClickListener { launchPlacesSearchActivity() }
         next.setOnClickListener { viewModel.submitBasicInfoForm() }
@@ -123,7 +120,7 @@ class BasicInformationFragment : Fragment(), Injectable, CanSelectPhotoFromGalle
     }
 
     private fun displayPicture(uri: Uri?) {
-        Glide.with(activity!!)
+        Glide.with(requireActivity())
                 .load(uri)
                 .fallback(R.drawable.userphoto)
                 .into(profilePicture)

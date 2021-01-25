@@ -7,27 +7,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.fsudouest.blablafit.R
-import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.accountSetup.AccountSetupState
 import com.example.fsudouest.blablafit.features.accountSetup.AccountSetupViewModel
 import com.example.fsudouest.blablafit.features.home.MainActivity
-import com.example.fsudouest.blablafit.utils.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_level.*
 import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.newTask
 import org.jetbrains.anko.support.v4.intentFor
-import javax.inject.Inject
 
-class LevelFragment : Fragment(), Injectable {
+@AndroidEntryPoint
+class LevelFragment : Fragment() {
 
-    @Inject
-    lateinit var factory: ViewModelFactory<AccountSetupViewModel>
-
-    private lateinit var viewModel: AccountSetupViewModel
+    private val viewModel: AccountSetupViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -37,11 +32,8 @@ class LevelFragment : Fragment(), Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = activity?.run {
-            ViewModelProviders.of(this, factory)[AccountSetupViewModel::class.java]
-        } ?: throw Exception("Invalid Activity")
-        viewModel.stateLiveData().observe(this, Observer{ state ->
-            when (state){
+        viewModel.stateLiveData().observe(viewLifecycleOwner, { state ->
+            when (state) {
                 is AccountSetupState.LevelUpdated -> selectLevel(state.data.level)
                 is AccountSetupState.Success -> {
                     activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)

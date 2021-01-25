@@ -12,38 +12,34 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.core.HasErrorDialog
-import com.example.fsudouest.blablafit.di.Injectable
 import com.example.fsudouest.blablafit.features.filters.FILTERS_KEY
 import com.example.fsudouest.blablafit.features.filters.FiltersActivity
 import com.example.fsudouest.blablafit.features.filters.WorkoutFilters
 import com.example.fsudouest.blablafit.features.nearby.NearByState
 import com.example.fsudouest.blablafit.features.nearby.viewModel.NearByViewModel
-import com.example.fsudouest.blablafit.utils.ViewModelFactory
 import com.example.fsudouest.blablafit.utils.isMarshmallowOrNewer
 import com.example.fsudouest.blablafit.utils.isPermissionGranted
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_nearby.*
-import javax.inject.Inject
 
 private const val PERMISSION_REQUEST_CODE = 1002
 private const val SETTINGS_REQUEST_CODE = 1003
 private const val REQUEST_CODE_FILTERS = 1004
 
-class NearByFragment : Fragment(), Injectable, HasErrorDialog {
+@AndroidEntryPoint
+class NearByFragment : Fragment(), HasErrorDialog {
     override var dialog: AlertDialog? = null
 
-    @Inject
-    lateinit var factory: ViewModelFactory<NearByViewModel>
     private lateinit var searchView: SearchView
 
-    private val viewModel by lazy { ViewModelProvider(this, factory).get(NearByViewModel::class.java) }
+    private val viewModel: NearByViewModel by viewModels()
     private val section = Section()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -56,7 +52,7 @@ class NearByFragment : Fragment(), Injectable, HasErrorDialog {
 
         checkLocationPermissions()
         initCategories()
-        viewModel.stateLiveData().observe(viewLifecycleOwner, Observer { render(it) })
+        viewModel.stateLiveData().observe(viewLifecycleOwner, { render(it) })
         setHasOptionsMenu(true)
 
         buttonAllow.setOnClickListener {

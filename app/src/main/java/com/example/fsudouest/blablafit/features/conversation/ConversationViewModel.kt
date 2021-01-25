@@ -1,6 +1,7 @@
 package com.example.fsudouest.blablafit.features.conversation
 
 import android.util.Log
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fsudouest.blablafit.model.Chat
@@ -8,19 +9,18 @@ import com.example.fsudouest.blablafit.model.Conversation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import com.xwray.groupie.kotlinandroidextensions.Item
-import javax.inject.Inject
 
-class ConversationViewModel @Inject constructor(private val mDatabase: FirebaseFirestore, auth: FirebaseAuth): ViewModel() {
+class ConversationViewModel @ViewModelInject constructor(private val mDatabase: FirebaseFirestore, auth: FirebaseAuth) : ViewModel() {
 
     private val chatLiveData = MutableLiveData<List<Item>>()
     private val currentUserId = auth.currentUser?.uid ?: ""
 
     fun chatsLiveData() = chatLiveData
 
-    fun getOrCreateConversation(otherUserId: String, onComplete: (String) -> Unit){
+    fun getOrCreateConversation(otherUserId: String, onComplete: (String) -> Unit) {
         val currentUserDocRef = mDatabase.collection("users").document(currentUserId)
         currentUserDocRef.collection("engagedConversations")
-            .document(otherUserId)
+                .document(otherUserId)
                 .get()
                 .addOnSuccessListener {
                     if (it.exists()) {
