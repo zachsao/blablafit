@@ -8,8 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.example.fsudouest.blablafit.BuildConfig
 import com.example.fsudouest.blablafit.R
@@ -27,7 +26,6 @@ import org.jetbrains.anko.support.v4.toast
 import timber.log.Timber
 import java.text.DateFormat
 import java.util.*
-import javax.inject.Inject
 import android.text.format.DateFormat as AndroidDateFormat
 
 @AndroidEntryPoint
@@ -43,7 +41,7 @@ class AddDateDurationFragment : Fragment() {
     private val dateFormat = DateFormat.getDateInstance(DateFormat.SHORT)
     private val hourFormat = DateFormat.getTimeInstance(DateFormat.SHORT)
 
-    private val viewModel: WorkoutCreationViewModel by viewModels()
+    private val viewModel: WorkoutCreationViewModel by activityViewModels()
     private lateinit var binding: FragmentAddDateDurationBinding
 
 

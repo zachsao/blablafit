@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.features.accountSetup.AccountSetupState
@@ -22,7 +22,7 @@ import org.jetbrains.anko.support.v4.intentFor
 @AndroidEntryPoint
 class LevelFragment : Fragment() {
 
-    private val viewModel: AccountSetupViewModel by viewModels()
+    private val viewModel: AccountSetupViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

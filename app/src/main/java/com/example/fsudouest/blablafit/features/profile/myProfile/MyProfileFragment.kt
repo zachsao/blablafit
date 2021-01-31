@@ -8,7 +8,7 @@ import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.FragmentMyProfileBinding
@@ -22,7 +22,7 @@ private const val RC_PHOTO_PICKER = 2
 @AndroidEntryPoint
 class MyProfileFragment : Fragment() {
 
-    private val viewModel: ProfileViewModel by viewModels()
+    private val viewModel: ProfileViewModel by activityViewModels()
 
     private lateinit var binding: FragmentMyProfileBinding
 
@@ -58,7 +58,7 @@ class MyProfileFragment : Fragment() {
     }
 
     private fun createPhotoUpdateDialog() {
-        val builder = AlertDialog.Builder(activity!!)
+        val builder = AlertDialog.Builder(requireContext())
         builder.setTitle(getString(R.string.update_profile_dialog_title))
         builder.setMessage(getString(R.string.update_photo_dialog_message))
         builder.setPositiveButton("OK") { _, _ ->
@@ -74,11 +74,11 @@ class MyProfileFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
             val selectedImageUri = data?.data
-            Glide.with(activity!!)
+            Glide.with(this)
                     .load(selectedImageUri.toString())
                     .into(binding.profilePicture)
 
-            Glide.with(activity!!)
+            Glide.with(this)
                     .load(selectedImageUri.toString())
                     .into(binding.profilePicBackground)
 
@@ -89,7 +89,7 @@ class MyProfileFragment : Fragment() {
     }
 
     private fun signOut() {
-        AuthUI.getInstance().signOut(activity!!)
+        AuthUI.getInstance().signOut(requireActivity())
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
