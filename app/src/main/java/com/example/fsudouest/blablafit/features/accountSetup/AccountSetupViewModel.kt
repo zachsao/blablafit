@@ -10,9 +10,7 @@ import com.example.fsudouest.blablafit.features.accountSetup.fitnessLevel.Fitnes
 import com.example.fsudouest.blablafit.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 import timber.log.Timber
-import javax.inject.Inject
 
 class AccountSetupViewModel @ViewModelInject constructor(
         private val firestore: FirebaseFirestore,
@@ -27,14 +25,6 @@ class AccountSetupViewModel @ViewModelInject constructor(
 
     fun stateLiveData(): LiveData<AccountSetupState> = stateLiveData
 
-    fun dateChanged(date: String) {
-        stateLiveData.value = AccountSetupState.DateUpdated(previousStateData()
-                .copy(
-                        birthday = date,
-                        errors = previousStateData().errors.filter { it !is ValidationError.BirthDateEmpty }
-                )
-        )
-    }
     private fun previousStateData() = stateLiveData.value?.data ?: AccountSetupData()
     fun submitBasicInfoForm() {
         stateLiveData.value = checkForm(previousStateData())
@@ -42,7 +32,6 @@ class AccountSetupViewModel @ViewModelInject constructor(
 
     private fun checkForm(data: AccountSetupData): AccountSetupState {
         val errors = mutableListOf<ValidationError>()
-        if (data.birthday.isEmpty()) errors.add(ValidationError.BirthDateEmpty)
         if (data.city.isEmpty()) errors.add(ValidationError.CityEmpty)
 
         return if (errors.isEmpty()) AccountSetupState.BasicInfoValid(data)
