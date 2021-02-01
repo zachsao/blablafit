@@ -24,6 +24,16 @@ class SplashViewModel @ViewModelInject constructor(private val firestore: Fireba
                     val user = it.toObject(User::class.java)
                     stateLiveData.value = SplashState.UserLoaded(user?.setup ?: false)
                 }
-                .addOnFailureListener { stateLiveData.value = SplashState.UserLoaded(null) }
+                .addOnFailureListener { /* handle error */ }
+    }
+
+    fun saveUserToFirestore(uid: String, email: String, name: String, photoUri: String?) {
+        val user = User(nomComplet = name, email = email, photoUrl = photoUri ?: "")
+        firestore.collection("users").document(uid)
+                .set(user)
+                .addOnSuccessListener {
+                    stateLiveData.value = SplashState.UserLoaded(user.setup)
+                }
+                .addOnFailureListener { /* handle error */ }
     }
 }

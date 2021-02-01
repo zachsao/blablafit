@@ -17,7 +17,6 @@ import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.features.accountSetup.AccountSetupState
 import com.example.fsudouest.blablafit.features.accountSetup.AccountSetupViewModel
 import com.example.fsudouest.blablafit.features.login.LoginActivity
-import com.example.fsudouest.blablafit.utils.CanSelectPhotoFromGallery
 import com.example.fsudouest.blablafit.utils.RC_PHOTO_PICKER
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions
@@ -31,7 +30,7 @@ import java.util.*
 private const val REQUEST_CODE_AUTOCOMPLETE = 1001
 
 @AndroidEntryPoint
-class BasicInformationFragment : Fragment(), CanSelectPhotoFromGallery {
+class BasicInformationFragment : Fragment() {
 
     private lateinit var datePickerDialog: DatePickerDialog
 
@@ -50,7 +49,6 @@ class BasicInformationFragment : Fragment(), CanSelectPhotoFromGallery {
         })
 
         initDatePicker()
-        profilePicture.setOnClickListener { createPhotoUpdateDialog(requireActivity(), this) }
         birthdayEdit.setOnClickListener { datePickerDialog.show() }
         cityEdit.setOnClickListener { launchPlacesSearchActivity() }
         next.setOnClickListener { viewModel.submitBasicInfoForm() }
@@ -92,9 +90,9 @@ class BasicInformationFragment : Fragment(), CanSelectPhotoFromGallery {
                 cityEdit.setText(state.data.city)
                 displayPicture(state.data.profilePictureUri)
             }
-            is AccountSetupState.NameChanged -> nameEdit.setText(state.data.name)
-            is AccountSetupState.DateUpdated -> {
-                birthdayEdit.setText(state.data.birthday)
+            is AccountSetupState.NameAndPhotoLoaded -> {
+                nameEdit.setText(state.data.name)
+                displayPicture(state.data.profilePictureUri)
                 birthdayInput.error = null
             }
             is AccountSetupState.CityUpdated -> {

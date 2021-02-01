@@ -16,8 +16,7 @@ import javax.inject.Inject
 
 class AccountSetupViewModel @ViewModelInject constructor(
         private val firestore: FirebaseFirestore,
-        auth: FirebaseAuth,
-        private val storage: FirebaseStorage
+        auth: FirebaseAuth
 ): ViewModel() {
 
     private val stateLiveData = MutableLiveData<AccountSetupState>()
@@ -55,8 +54,8 @@ class AccountSetupViewModel @ViewModelInject constructor(
                 .get()
                 .addOnSuccessListener {
                     val user = it.toObject(User::class.java)
-                    val username = user?.let { it.nomComplet } ?: ""
-                    stateLiveData.value = AccountSetupState.NameChanged(previousStateData().copy(name = username))
+                    val username = user?.nomComplet ?: ""
+                    stateLiveData.value = AccountSetupState.NameAndPhotoLoaded(previousStateData().copy(name = username, profilePictureUri = Uri.parse(user?.photoUrl)))
                 }
     }
 
@@ -84,36 +83,17 @@ class AccountSetupViewModel @ViewModelInject constructor(
         stateLiveData.value = AccountSetupState.Idle(previousStateData())
     }
 
-    fun saveProfilePictureToStorage(user: User?){
-        val uri = previousStateData().profilePictureUri
-        val photoRef = storage.reference.child("profile_pictures").child(uri?.lastPathSegment!!)
-        photoRef.putFile(uri).continueWithTask { task ->
-            if (!task.isSuccessful) {
-                throw task.exception!!.fillInStackTrace()
-            }
-            photoRef.downloadUrl
-        }.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val downloadUri = task.result
-                user?.let { saveUserToFirestore(it.copy(photoUrl = downloadUri.toString())) }
-            } else {
-                Timber.e(task.exception)
-            }
-        }
-    }
-
     fun updateStatePictureUri(uri: Uri) {
         stateLiveData.value = AccountSetupState.PictureUpdated(previousStateData().copy(profilePictureUri = uri))
     }
 
     fun updateUser() {
         stateLiveData.value = AccountSetupState.Loading(previousStateData())
-        val data = previousStateData()
         firestore.collection("users").document(uid)
                 .get()
-                .addOnSuccessListener {
-                    val user = it.toObject(User::class.java)
-                    data.profilePictureUri?.let { saveProfilePictureToStorage(user) } ?: user?.let { saveUserToFirestore(it) }
+                .addOnSuccessListener { snapshot ->
+                    val user = snapshot.toObject(User::class.java)
+                    user?.let { saveUserToFirestore(it) }
                 }
                 .addOnFailureListener {
                     Timber.e(it)
