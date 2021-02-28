@@ -11,7 +11,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.ActivityMainBinding
-import com.example.fsudouest.blablafit.features.login.LoginActivity
+import com.example.fsudouest.blablafit.features.splash.SplashActivity
 import com.example.fsudouest.blablafit.utils.BottomNavigationViewHelper
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         mAuthStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
             val user = firebaseAuth.currentUser
             if (user == null) {
-                startActivity(Intent(this, LoginActivity::class.java))
+                startActivity(Intent(this, SplashActivity::class.java))
                 finish()
             }
         }

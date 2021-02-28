@@ -6,12 +6,9 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.features.accountSetup.AccountSetupActivity
 import com.example.fsudouest.blablafit.features.home.MainActivity
-import com.example.fsudouest.blablafit.features.login.LoginActivity
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth

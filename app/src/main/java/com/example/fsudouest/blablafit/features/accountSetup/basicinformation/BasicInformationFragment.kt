@@ -1,7 +1,6 @@
 package com.example.fsudouest.blablafit.features.accountSetup.basicinformation
 
 import android.app.Activity
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -16,7 +15,6 @@ import com.example.fsudouest.blablafit.BuildConfig
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.features.accountSetup.AccountSetupState
 import com.example.fsudouest.blablafit.features.accountSetup.AccountSetupViewModel
-import com.example.fsudouest.blablafit.features.login.LoginActivity
 import com.example.fsudouest.blablafit.utils.RC_PHOTO_PICKER
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.PlaceAutocomplete
 import com.mapbox.mapboxsdk.plugins.places.autocomplete.model.PlaceOptions
@@ -48,9 +46,6 @@ class BasicInformationFragment : Fragment() {
 
         cityEdit.setOnClickListener { launchPlacesSearchActivity() }
         next.setOnClickListener { viewModel.submitBasicInfoForm() }
-        cancel.setOnClickListener {
-            startActivity(intentFor<LoginActivity>().newTask().clearTask())
-        }
     }
 
     private fun launchPlacesSearchActivity() {
