@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fsudouest.blablafit.model.User
+import com.example.fsudouest.blablafit.service.MyFirebaseMessagingService
+import com.example.fsudouest.blablafit.utils.FirestoreUtil
 import com.google.firebase.firestore.FirebaseFirestore
 
 class SplashViewModel @ViewModelInject constructor(private val firestore: FirebaseFirestore) : ViewModel() {
@@ -32,6 +34,9 @@ class SplashViewModel @ViewModelInject constructor(private val firestore: Fireba
         firestore.collection("users").document(uid)
                 .set(user)
                 .addOnSuccessListener {
+                    FirestoreUtil.getRegistrationToken { newRegistrationToken ->
+                        MyFirebaseMessagingService.addTokenToFirestore(newRegistrationToken)
+                    }
                     stateLiveData.value = SplashState.UserLoaded(user.setup)
                 }
                 .addOnFailureListener { /* handle error */ }
