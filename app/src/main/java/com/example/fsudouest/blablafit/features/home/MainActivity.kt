@@ -4,6 +4,7 @@ package com.example.fsudouest.blablafit.features.home
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -39,10 +40,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         val navController = findNavController(this, R.id.myNavHostFragment)
+        
+        setupWithNavController(binding.bottomNavigation, navController)
 
-        val navigation = binding.bottomNavigation
-        // BottomNavigationViewHelper.removeShiftMode(navigation)
-        setupWithNavController(navigation, navController)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            binding.bottomNavigation.isVisible = destination.id != R.id.detailsSeanceFragment
+        }
 
         val appBarConfiguration = AppBarConfiguration(setOf(R.id.trouverUneSeanceFragment, R.id.seancesFragment,
                 R.id.messagesFragment, R.id.myProfileFragment, R.id.typeSeanceFragment))

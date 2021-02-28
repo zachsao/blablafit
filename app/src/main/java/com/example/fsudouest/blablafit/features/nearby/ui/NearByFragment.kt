@@ -137,7 +137,7 @@ class NearByFragment : Fragment(), HasErrorDialog {
     }
 
     private fun navigateToDetails(seanceId: String) {
-        findNavController().navigate(NearByFragmentDirections.actionTrouverUneSeanceFragmentToDetailsSeanceActivity(seanceId))
+        findNavController().navigate(NearByFragmentDirections.actionTrouverUneSeanceFragmentToDetailsSeanceFragment(seanceId))
     }
 
     private fun initCategories(){

@@ -3,15 +3,16 @@ package com.example.fsudouest.blablafit.features.workoutDetails
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
-import androidx.navigation.navArgs
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.fsudouest.blablafit.R
-import com.example.fsudouest.blablafit.databinding.ActivityDetailsSeanceBinding
+import com.example.fsudouest.blablafit.databinding.FragmentDetailsSeanceBinding
 import com.example.fsudouest.blablafit.features.conversation.ConversationActivity
 import com.example.fsudouest.blablafit.features.workoutDetails.workoutRequests.RequestsActivity
 import com.example.fsudouest.blablafit.model.RequestStatus
@@ -20,39 +21,41 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.AndroidEntryPoint
 import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.support.v4.startActivity
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class DetailsSeanceActivity : AppCompatActivity() {
+class DetailsSeanceFragment : Fragment() {
 
     @Inject
     lateinit var firebaseAuth: FirebaseAuth
 
     private var user: FirebaseUser? = null
 
-    lateinit var binding: ActivityDetailsSeanceBinding
+    lateinit var binding: FragmentDetailsSeanceBinding
 
     private val viewModel: DetailsViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_details_seance)
-        user = firebaseAuth.currentUser
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentDetailsSeanceBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        supportActionBar?.title = getString(R.string.workout_details)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        user = firebaseAuth.currentUser
 
         Glide.with(this).load(R.drawable.weights).into(binding.imageView)
 
-        val args : DetailsSeanceActivityArgs by navArgs()
+        val args: DetailsSeanceFragmentArgs by navArgs()
         val workoutId = args.id
 
         viewModel.getWorkoutDetails(workoutId)
 
-        viewModel.detailsLiveData().observe(this, { workout ->
+        viewModel.detailsLiveData().observe(viewLifecycleOwner, { workout ->
             renderWorkout(workout)
             binding.contactButton.setOnClickListener {
                 startActivity<ConversationActivity>("contactName" to workout.nomAuteur, "userId" to workout.idAuteur)
@@ -67,7 +70,7 @@ class DetailsSeanceActivity : AppCompatActivity() {
         val gmmIntentUri: Uri = Uri.parse("geo:0,0?q=${binding.workoutLieuTextview.text}")
         val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
         mapIntent.setPackage("com.google.android.apps.maps")
-        if (mapIntent.resolveActivity(packageManager) != null) {
+        if (mapIntent.resolveActivity(requireActivity().packageManager) != null) {
             startActivity(mapIntent)
         }
     }
@@ -95,9 +98,9 @@ class DetailsSeanceActivity : AppCompatActivity() {
             hasAlreadyJoined(seance) -> {
                 binding.buttonsLayout.visibility = View.VISIBLE
                 binding.participateButton.text = "Unjoin workout"
-                binding.participateButton.backgroundColor = ContextCompat.getColor(this, R.color.dark_red)
+                binding.participateButton.backgroundColor = ContextCompat.getColor(requireContext(), R.color.dark_red)
                 binding.participateButton.setOnClickListener {
-                    viewModel.unjoinWorkout(seance) { finish() }
+                    viewModel.unjoinWorkout(seance) { requireActivity().finish() }
                 }
             }
             currentUserIsWorkoutAuthor(seance) -> {
@@ -107,9 +110,9 @@ class DetailsSeanceActivity : AppCompatActivity() {
                 }
                 binding.participateButton.apply {
                     text = "Delete workout"
-                    backgroundColor = ContextCompat.getColor(this@DetailsSeanceActivity, R.color.dark_red)
+                    backgroundColor = ContextCompat.getColor(requireContext(), R.color.dark_red)
                     setOnClickListener {
-                        viewModel.deleteWorkout(seance, this@DetailsSeanceActivity)
+                        viewModel.deleteWorkout(seance, requireActivity())
                     }
                 }
             }
@@ -130,7 +133,7 @@ class DetailsSeanceActivity : AppCompatActivity() {
     }
 
     private fun goToRequests(workout: Seance) {
-        val intent = Intent(this, RequestsActivity::class.java).apply {
+        val intent = Intent(requireContext(), RequestsActivity::class.java).apply {
             putExtra("participants", workout.participants.toString())
             putExtra("workoutId", workout.id)
         }
@@ -147,10 +150,5 @@ class DetailsSeanceActivity : AppCompatActivity() {
 
     private fun requestSent(seance: Seance): Boolean {
         return seance.participants.containsKey(user?.uid) && seance.participants[user?.uid] == RequestStatus.PENDING
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        finish()
-        return true
     }
 }

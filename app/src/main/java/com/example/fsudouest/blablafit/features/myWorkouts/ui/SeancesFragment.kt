@@ -106,6 +106,6 @@ class SeancesFragment : Fragment() {
     }
 
     private fun navigateToDetails(seanceId: String) {
-        findNavController().navigate(SeancesFragmentDirections.actionSeancesFragmentToDetailsSeanceActivity(seanceId))
+        findNavController().navigate(SeancesFragmentDirections.actionSeancesFragmentToDetailsSeanceFragment(seanceId))
     }
 }

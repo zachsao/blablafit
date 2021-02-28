@@ -37,7 +37,7 @@
             android:name=".features.accountSetup.AccountSetupActivity"
             android:theme="@style/SignInTheme" />
         <activity
-            android:name=".features.workoutDetails.DetailsSeanceActivity"
+            android:name=".features.workoutDetails.DetailsSeanceFragment"
             android:label="Détails de la séance"
             android:parentActivityName=".features.home.MainActivity" />
         <activity
