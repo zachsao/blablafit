@@ -1,7 +1,6 @@
 package com.example.fsudouest.blablafit.features.accountSetup
 
 import android.net.Uri
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,15 +9,19 @@ import com.example.fsudouest.blablafit.features.accountSetup.fitnessLevel.Fitnes
 import com.example.fsudouest.blablafit.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
+import javax.inject.Inject
 
-class AccountSetupViewModel @ViewModelInject constructor(
+@HiltViewModel
+class AccountSetupViewModel @Inject constructor(
         private val firestore: FirebaseFirestore,
         auth: FirebaseAuth
-): ViewModel() {
+) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<AccountSetupState>()
     private val uid = auth.currentUser?.uid ?: ""
+
     init {
         stateLiveData.value = AccountSetupState.Idle(AccountSetupData())
     }

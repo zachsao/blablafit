@@ -26,15 +26,14 @@ class RequestsActivity : AppCompatActivity() {
 
         supportActionBar?.title = getString(R.string.requests)
 
-        val participants = intent.getStringExtra("participants").split(",","{","}", " ")
-                //.map { it.replace("{","").replace("}","") }
-                .filter { it.isNotBlank() }
-                .map { Pair(it.substringBefore('='), RequestStatus.valueOf(it.substringAfter("="))) }
-                .toMap()
+        val participants = intent.getStringExtra("participants")?.split(",","{","}", " ")
+                ?.filter { it.isNotBlank() }
+                ?.map { Pair(it.substringBefore('='), RequestStatus.valueOf(it.substringAfter("="))) }
+                ?.toMap() ?: error("participants are null")
 
 
 
-        val workoutId = intent.getStringExtra("workoutId")
+        val workoutId = intent.getStringExtra("workoutId") ?: error("workoutId is null")
 
 
         initRecyclerView()

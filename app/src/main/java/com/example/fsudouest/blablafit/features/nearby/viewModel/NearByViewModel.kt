@@ -1,7 +1,6 @@
 package com.example.fsudouest.blablafit.features.nearby.viewModel
 
 import androidx.annotation.StringRes
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,12 +14,14 @@ import com.example.fsudouest.blablafit.utils.toWorkoutViewItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
 import java.text.DateFormat
 import java.text.DateFormat.getDateInstance
+import javax.inject.Inject
 
-
-class NearByViewModel @ViewModelInject constructor(
+@HiltViewModel
+class NearByViewModel @Inject constructor(
         private val firestore: FirebaseFirestore,
         private val auth: FirebaseAuth,
         private val locationService: LocationService,

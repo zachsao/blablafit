@@ -1,6 +1,5 @@
 package com.example.fsudouest.blablafit.features.splash
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,8 +7,11 @@ import com.example.fsudouest.blablafit.model.User
 import com.example.fsudouest.blablafit.service.MyFirebaseMessagingService
 import com.example.fsudouest.blablafit.utils.FirestoreUtil
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SplashViewModel @ViewModelInject constructor(private val firestore: FirebaseFirestore) : ViewModel() {
+@HiltViewModel
+class SplashViewModel @Inject constructor(private val firestore: FirebaseFirestore) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<SplashState>()
 

@@ -1,18 +1,20 @@
 package com.example.fsudouest.blablafit.features.filters
 
 import android.content.Intent
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fsudouest.blablafit.features.nearby.ui.CategoryViewItems
 import com.example.fsudouest.blablafit.service.LocationService
+import dagger.hilt.android.lifecycle.HiltViewModel
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.format.FormatStyle
 import java.io.Serializable
+import javax.inject.Inject
 
-class FiltersViewModel @ViewModelInject constructor(private val locationService: LocationService) : ViewModel() {
+@HiltViewModel
+class FiltersViewModel @Inject constructor(private val locationService: LocationService) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<FiltersState>()
 

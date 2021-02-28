@@ -12,7 +12,6 @@ import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.example.fsudouest.blablafit.R
 import com.example.fsudouest.blablafit.databinding.ActivityMainBinding
 import com.example.fsudouest.blablafit.features.splash.SplashActivity
-import com.example.fsudouest.blablafit.utils.BottomNavigationViewHelper
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -42,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(this, R.id.myNavHostFragment)
 
         val navigation = binding.bottomNavigation
-        BottomNavigationViewHelper.removeShiftMode(navigation)
+        // BottomNavigationViewHelper.removeShiftMode(navigation)
         setupWithNavController(navigation, navController)
 
         val appBarConfiguration = AppBarConfiguration(setOf(R.id.trouverUneSeanceFragment, R.id.seancesFragment,

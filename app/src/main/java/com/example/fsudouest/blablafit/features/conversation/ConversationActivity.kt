@@ -34,7 +34,7 @@ class ConversationActivity : AppCompatActivity() {
         }
 
         viewModel.stateLiveData().observe(this, { render(it) })
-        val contactId = intent.getStringExtra("userId")
+        val contactId = intent.getStringExtra("userId") ?: error("Contact Id is null")
         viewModel.getOrCreateConversation(contactId)
 
         sendMessageButton.setOnClickListener {
@@ -59,7 +59,7 @@ class ConversationActivity : AppCompatActivity() {
 
     private fun closeKeyboard() {
         val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(currentFocus.windowToken, 0)
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
     private fun submitList(list: List<Item>) {

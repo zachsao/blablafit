@@ -1,6 +1,5 @@
 package com.example.fsudouest.blablafit.features.workoutCreation.viewModel
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fsudouest.blablafit.model.Location
@@ -10,9 +9,12 @@ import com.example.fsudouest.blablafit.service.LocationService
 import com.google.android.libraries.places.api.model.AddressComponent
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
+import javax.inject.Inject
 
-class WorkoutCreationViewModel @ViewModelInject constructor(
+@HiltViewModel
+class WorkoutCreationViewModel @Inject constructor(
         auth: FirebaseAuth,
         private val firestore: FirebaseFirestore,
         private val locationService: LocationService

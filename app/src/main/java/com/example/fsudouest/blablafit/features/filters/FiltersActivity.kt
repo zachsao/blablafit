@@ -55,11 +55,14 @@ class FiltersActivity : AppCompatActivity() {
         dateButton.setOnClickListener { datePickerDialog.show() }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            R.id.action_save -> viewModel.saveFilters()
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_save -> {
+                viewModel.saveFilters()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

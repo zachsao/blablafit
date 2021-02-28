@@ -1,8 +1,6 @@
 package com.example.fsudouest.blablafit.features.profile
 
 import android.net.Uri
-import android.util.Log
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,10 +14,13 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
 import com.google.firebase.storage.FirebaseStorage
+import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
 import java.util.*
+import javax.inject.Inject
 
-class ProfileViewModel @ViewModelInject constructor(firebaseStorage: FirebaseStorage, firebaseAuth: FirebaseAuth, val firestore: FirebaseFirestore) : ViewModel() {
+@HiltViewModel
+class ProfileViewModel @Inject constructor(firebaseStorage: FirebaseStorage, firebaseAuth: FirebaseAuth, val firestore: FirebaseFirestore) : ViewModel() {
 
     private var profilePhotosStorageReference = firebaseStorage.reference.child("profile_pictures")
     private var firebaseUser = firebaseAuth.currentUser
@@ -45,7 +46,7 @@ class ProfileViewModel @ViewModelInject constructor(firebaseStorage: FirebaseSto
                 updateUsersPhotoUrl(downloadUri)
                 firebaseUser?.updateProfile(photoUpdate)
             } else {
-                Log.e("ProfileViewModel", task.exception?.message)
+                Timber.e(task.exception)
             }
         }
     }

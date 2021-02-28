@@ -1,6 +1,5 @@
 package com.example.fsudouest.blablafit.features.myWorkouts.viewModel
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,9 +10,12 @@ import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.utils.toWorkoutViewItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
+import javax.inject.Inject
 
-class WorkoutsViewModel @ViewModelInject constructor(private val mDatabase: FirebaseFirestore, auth: FirebaseAuth) : ViewModel() {
+@HiltViewModel
+class WorkoutsViewModel @Inject constructor(private val mDatabase: FirebaseFirestore, auth: FirebaseAuth) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<MyWorkoutsState>()
     private val currentUser = auth.currentUser
