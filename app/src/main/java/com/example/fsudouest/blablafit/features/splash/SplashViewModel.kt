@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fsudouest.blablafit.model.User
+import com.example.fsudouest.blablafit.service.MyFirebaseMessagingService
+import com.example.fsudouest.blablafit.utils.FirestoreUtil
 import com.google.firebase.firestore.FirebaseFirestore
 
 class SplashViewModel @ViewModelInject constructor(private val firestore: FirebaseFirestore) : ViewModel() {
@@ -24,6 +26,19 @@ class SplashViewModel @ViewModelInject constructor(private val firestore: Fireba
                     val user = it.toObject(User::class.java)
                     stateLiveData.value = SplashState.UserLoaded(user?.setup ?: false)
                 }
-                .addOnFailureListener { stateLiveData.value = SplashState.UserLoaded(null) }
+                .addOnFailureListener { /* handle error */ }
+    }
+
+    fun saveUserToFirestore(uid: String, email: String, name: String, photoUri: String?) {
+        val user = User(nomComplet = name, email = email, photoUrl = photoUri ?: "")
+        firestore.collection("users").document(uid)
+                .set(user)
+                .addOnSuccessListener {
+                    FirestoreUtil.getRegistrationToken { newRegistrationToken ->
+                        MyFirebaseMessagingService.addTokenToFirestore(newRegistrationToken)
+                    }
+                    stateLiveData.value = SplashState.UserLoaded(user.setup)
+                }
+                .addOnFailureListener { /* handle error */ }
     }
 }
