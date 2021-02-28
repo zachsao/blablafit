@@ -1,44 +1,38 @@
 package com.example.fsudouest.blablafit.features.conversation
 
-import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fsudouest.blablafit.model.Chat
 import com.example.fsudouest.blablafit.model.Conversation
+import com.example.fsudouest.blablafit.utils.FirestoreUtil
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
-import com.xwray.groupie.kotlinandroidextensions.Item
+import timber.log.Timber
 
 class ConversationViewModel @ViewModelInject constructor(private val mDatabase: FirebaseFirestore, auth: FirebaseAuth) : ViewModel() {
 
-    private val chatLiveData = MutableLiveData<List<Item>>()
+    private val stateLiveData = MutableLiveData<ConversationState>()
     private val currentUserId = auth.currentUser?.uid ?: ""
 
-    fun chatsLiveData() = chatLiveData
+    init {
+        stateLiveData.value = ConversationState.Idle(ConversationData())
+    }
 
-    fun getOrCreateConversation(otherUserId: String, onComplete: (String) -> Unit) {
+    fun stateLiveData(): LiveData<ConversationState> = stateLiveData
+
+    fun getOrCreateConversation(contactId: String) {
         val currentUserDocRef = mDatabase.collection("users").document(currentUserId)
         currentUserDocRef.collection("engagedConversations")
-                .document(otherUserId)
+                .document(contactId)
                 .get()
                 .addOnSuccessListener {
                     if (it.exists()) {
-                        onComplete(it["conversationId"] as String)
+                        stateLiveData.value = ConversationState.ConversationLoaded(previousStateData().copy(conversationId = it["conversationId"] as String))
                         return@addOnSuccessListener
                     }
-                    val newConversation = mDatabase.collection("conversations").document()
-                    newConversation.set(Conversation(mutableListOf(currentUserId, otherUserId)))
-
-                    currentUserDocRef.collection("engagedConversations").document(otherUserId)
-                            .set(mapOf("conversationId" to newConversation.id))
-
-                    mDatabase.collection("users").document(otherUserId)
-                            .collection("engagedConversations")
-                            .document(currentUserId)
-                            .set(mapOf("conversationId" to newConversation.id))
-
-                    onComplete(newConversation.id)
+                    createConversation(contactId)
                 }
     }
 
@@ -47,29 +41,46 @@ class ConversationViewModel @ViewModelInject constructor(private val mDatabase: 
                 .document(conversationId)
                 .collection("messages")
                 .orderBy("timestamp")
-                .addSnapshotListener(MetadataChanges.INCLUDE){ snapshot, e ->
+                .addSnapshotListener(MetadataChanges.INCLUDE) { snapshot, e ->
                     if (e != null) {
-                        Log.e("ConversationViewModel", "listen:error", e)
+                        Timber.e(e)
                         return@addSnapshotListener
                     }
-                    Log.d("ConversationViewModel", "${snapshot?.documents}")
-                    val chatLog = mutableListOf<Item>()
-                    snapshot?.documents?.forEach {
-                        val chatMessage = it.toObject(Chat::class.java) ?: Chat()
-                        if (it["senderId"] == currentUserId) {
-                            chatLog.add(ChatToItem(chatMessage))
-                        } else chatLog.add(ChatFromItem(chatMessage))
-                    }
-                    chatLiveData.value = chatLog
+                    val chatLog = snapshot?.documents?.map {
+                        val chat = it.toObject(Chat::class.java) ?: Chat()
+                        if (it["senderId"] == currentUserId)
+                            ChatToItem(chat)
+                        else
+                            ChatFromItem(chat)
+                    } ?: emptyList()
+                    stateLiveData.value = ConversationState.ChatsUpdated(previousStateData().copy(chats = chatLog))
                 }
-
     }
 
-    fun sendMessage(convId: String, message: String, recipientId: String, senderName: String) {
-        val chat = Chat(currentUserId, message, recipientId, senderName, System.currentTimeMillis())
-          mDatabase.collection("conversations")
-                  .document(convId)
-                  .collection("messages")
-                  .add(chat)
+    fun sendMessage(message: String, recipientId: String) {
+        FirestoreUtil.getCurrentUser {
+            val chat = Chat(currentUserId, message, recipientId, it.nomComplet, System.currentTimeMillis())
+            val convId = previousStateData().conversationId ?: error("ConversationId is null")
+            mDatabase.collection("conversations")
+                    .document(convId)
+                    .collection("messages")
+                    .add(chat)
         }
+    }
+
+    private fun createConversation(contactId: String) {
+        val newConversation = mDatabase.collection("conversations").document()
+        newConversation.set(Conversation(mutableListOf(currentUserId, contactId)))
+
+        mDatabase.collection("users")
+                .document(currentUserId)
+                .collection("engagedConversations")
+                .document(contactId)
+                .set(mapOf("conversationId" to newConversation.id))
+
+        stateLiveData.value = ConversationState.ConversationCreated(previousStateData().copy(conversationId = newConversation.id))
+    }
+
+    private fun previousStateData(): ConversationData = stateLiveData().value?.data
+            ?: ConversationData()
 }
