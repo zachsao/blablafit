@@ -7,67 +7,100 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.fsudouest.blablafit.R
-import com.example.fsudouest.blablafit.databinding.FragmentDetailsSeanceBinding
 import com.example.fsudouest.blablafit.features.conversation.ConversationActivity
 import com.example.fsudouest.blablafit.features.workoutDetails.workoutRequests.RequestsActivity
-import com.example.fsudouest.blablafit.model.RequestStatus
-import com.example.fsudouest.blablafit.model.Seance
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_details_seance.*
 import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.support.v4.startActivity
-import java.text.SimpleDateFormat
-import java.util.*
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetailsSeanceFragment : Fragment() {
 
-    @Inject
-    lateinit var firebaseAuth: FirebaseAuth
-
-    private var user: FirebaseUser? = null
-
-    lateinit var binding: FragmentDetailsSeanceBinding
-
     private val viewModel: DetailsViewModel by viewModels()
+    private val args: DetailsSeanceFragmentArgs by navArgs()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentDetailsSeanceBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        return inflater.inflate(R.layout.fragment_details_seance, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        user = firebaseAuth.currentUser
+        viewModel.stateLiveData().observe(viewLifecycleOwner, { state -> render(state) })
+        viewModel.getWorkoutDetails(args.id)
 
-        Glide.with(this).load(R.drawable.weights).into(binding.imageView)
 
-        val args: DetailsSeanceFragmentArgs by navArgs()
-        val workoutId = args.id
+        contactButton.setOnClickListener {
+            viewModel.contactButtonClicked()
+        }
+        openMapsButton.setOnClickListener {
+            openMaps()
+        }
+        requestsButton.setOnClickListener { viewModel.goToRequests() }
+    }
 
-        viewModel.getWorkoutDetails(workoutId)
-
-        viewModel.detailsLiveData().observe(viewLifecycleOwner, { workout ->
-            renderWorkout(workout)
-            binding.contactButton.setOnClickListener {
-                startActivity<ConversationActivity>("contactName" to workout.nomAuteur, "userId" to workout.idAuteur)
+    private fun render(state: WorkoutDetailsState) {
+        when (state) {
+            is WorkoutDetailsState.Idle -> TODO()
+            is WorkoutDetailsState.JoinWorkoutSuccess -> TODO()
+            is WorkoutDetailsState.UnJoinWorkoutSuccess -> TODO()
+            is WorkoutDetailsState.DeleteWorkoutSuccess -> TODO()
+            is WorkoutDetailsState.WorkoutLoadedAsAuthor -> {
+                showWorkout(state.data)
+                requestsButton.isVisible = true
+                participate_button.apply {
+                    text = getString(R.string.delete_workout)
+                    backgroundColor = ContextCompat.getColor(requireContext(), R.color.dark_red)
+                    setOnClickListener {
+                        viewModel.deleteWorkout(args.id) { requireActivity().finish() }
+                    }
+                }
             }
-            binding.openMapsButton.setOnClickListener {
-                openMaps()
+            is WorkoutDetailsState.WorkoutLoadedAsJoined -> {
+                showWorkout(state.data)
+                buttonsLayout.visibility = View.VISIBLE
+                participate_button.text = getString(R.string.unjoin_workout)
+                participate_button.backgroundColor = ContextCompat.getColor(requireContext(), R.color.dark_red)
+                participate_button.setOnClickListener {
+                    viewModel.unjoinWorkout(args.id) { requireActivity().finish() }
+                }
             }
-        })
+            is WorkoutDetailsState.WorkoutLoadedAsWaitingForApproval -> {
+                showWorkout(state.data)
+                participate_button.apply {
+                    text = getString(R.string.request_sent)
+                    isEnabled = false
+                }
+            }
+            is WorkoutDetailsState.WorkoutLoaded -> {
+                showWorkout(state.data)
+                participate_button.setOnClickListener { viewModel.joinWorkout(args.id) }
+            }
+            is WorkoutDetailsState.RequestsNavigation -> {
+                val intent = Intent(requireContext(), RequestsActivity::class.java).apply {
+                    putExtra("participants", state.data.participants.toString())
+                    putExtra("workoutId", args.id)
+                }
+                startActivity(intent)
+            }
+            is WorkoutDetailsState.ConversationNavigation -> {
+                val intent = Intent(requireContext(), ConversationActivity::class.java).apply {
+                    putExtra("contactName", state.data.authorName)
+                    putExtra("userId", state.data.authorId)
+                }
+                startActivity(intent)
+            }
+        }
     }
 
     private fun openMaps() {
-        val gmmIntentUri: Uri = Uri.parse("geo:0,0?q=${binding.workoutLieuTextview.text}")
+        val gmmIntentUri: Uri = Uri.parse("geo:0,0?q=${workout_lieu_textview.text}")
         val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
         mapIntent.setPackage("com.google.android.apps.maps")
         if (mapIntent.resolveActivity(requireActivity().packageManager) != null) {
@@ -75,80 +108,24 @@ class DetailsSeanceFragment : Fragment() {
         }
     }
 
-    private fun renderWorkout(seance: Seance){
-        binding.seance = seance
-        binding.workoutTitleTextview.text = seance.titre.joinToString(" - ") //FIXME : move to BindingAdapters
+    private fun showWorkout(data: WorkoutDetailsData) {
+        Glide.with(this)
+                .load(R.drawable.weights)
+                .into(imageView)
 
-        val authorProfilePicture = seance.photoAuteur
-        Glide.with(this).load(authorProfilePicture).placeholder(R.drawable.userphoto).into(binding.circleImageView)
+        workout_title_textview.text = data.title
+        workout_author_textView.text = getString(R.string.created_by, data.authorName)
 
-        val dateFormat = SimpleDateFormat("dd/MM/yy", Locale("fr", "FR"))
-        val dateChaine = dateFormat.format(seance.date)
+        Glide.with(this)
+                .load(data.authorPictureUrl)
+                .placeholder(R.drawable.userphoto)
+                .into(circleImageView)
 
-        val hourFormat = SimpleDateFormat("HH:mm", Locale("fr", "FR"))
-        val heureChaine = hourFormat.format(seance.date)
-
-        binding.workoutDateTextview.text = dateChaine
-        binding.workoutHourTextview.text = heureChaine
-
-        val isMaxedOut = seance.maxParticipants - seance.participants.size == 0
-
-        binding.buttonsLayout.visibility = View.GONE
-        when {
-            hasAlreadyJoined(seance) -> {
-                binding.buttonsLayout.visibility = View.VISIBLE
-                binding.participateButton.text = "Unjoin workout"
-                binding.participateButton.backgroundColor = ContextCompat.getColor(requireContext(), R.color.dark_red)
-                binding.participateButton.setOnClickListener {
-                    viewModel.unjoinWorkout(seance) { requireActivity().finish() }
-                }
-            }
-            currentUserIsWorkoutAuthor(seance) -> {
-                binding.requestsButton.apply {
-                    visibility = View.VISIBLE
-                    setOnClickListener { goToRequests(seance) }
-                }
-                binding.participateButton.apply {
-                    text = "Delete workout"
-                    backgroundColor = ContextCompat.getColor(requireContext(), R.color.dark_red)
-                    setOnClickListener {
-                        viewModel.deleteWorkout(seance, requireActivity())
-                    }
-                }
-            }
-            isMaxedOut -> {
-                binding.participateButton.apply {
-                    text = "Workout is full"
-                    isEnabled = false
-                }
-            }
-            requestSent(seance) -> {
-                binding.participateButton.apply {
-                    text = "Request sent"
-                    isEnabled = false
-                }
-            }
-            else -> binding.participateButton.setOnClickListener { viewModel.joinWorkout(seance) }
-        }
-    }
-
-    private fun goToRequests(workout: Seance) {
-        val intent = Intent(requireContext(), RequestsActivity::class.java).apply {
-            putExtra("participants", workout.participants.toString())
-            putExtra("workoutId", workout.id)
-        }
-        startActivity(intent)
-    }
-
-    private fun currentUserIsWorkoutAuthor(seance: Seance): Boolean {
-        return user?.uid == seance.idAuteur
-    }
-
-    private fun hasAlreadyJoined(seance: Seance): Boolean{
-        return seance.participants.containsKey(user?.uid) && seance.participants[user?.uid] == RequestStatus.GRANTED
-    }
-
-    private fun requestSent(seance: Seance): Boolean {
-        return seance.participants.containsKey(user?.uid) && seance.participants[user?.uid] == RequestStatus.PENDING
+        workout_date_textview.text = data.date
+        workout_hour_textview.text = data.time
+        workout_lieu_textview.text = data.location
+        workout_duration_textview.text = data.duration
+        workout_description_textview.text = data.description
+        workout_participants_textview.text = resources.getQuantityString(R.plurals.numberOfPlacesAvailable, data.placesAvailable, data.placesAvailable)
     }
 }

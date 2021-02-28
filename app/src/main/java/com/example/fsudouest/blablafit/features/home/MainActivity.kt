@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val navController = findNavController(this, R.id.myNavHostFragment)
-        
+
         setupWithNavController(binding.bottomNavigation, navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->

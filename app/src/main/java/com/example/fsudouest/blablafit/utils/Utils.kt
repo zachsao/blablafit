@@ -6,6 +6,11 @@ import android.os.Build
 import androidx.core.content.ContextCompat
 import com.example.fsudouest.blablafit.features.nearby.ui.WorkoutViewItem
 import com.example.fsudouest.blablafit.model.Seance
+import org.threeten.bp.Instant
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.LocalTime
+import org.threeten.bp.ZoneId
+import java.util.*
 
 fun isMarshmallowOrNewer() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
 
@@ -21,3 +26,5 @@ fun Seance.toWorkoutViewItem() = WorkoutViewItem(
         author = nomAuteur,
         photoUrl = photoAuteur
 )
+
+fun Date.toLocalDateTime() : LocalDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(time), ZoneId.systemDefault())

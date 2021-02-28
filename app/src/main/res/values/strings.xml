@@ -171,6 +171,10 @@
     <string name="choose_date">select a date</string>
     <string name="or">Or</string>
     <string name="welcome_register">Welcome</string>
+    <string name="delete_workout">Delete workout</string>
+    <string name="unjoin_workout">Unjoin workout</string>
+    <string name="request_sent">Request sent</string>
+    <string name="created_by">\"Created by %s\"</string>
 
 
 </resources>
