@@ -64,7 +64,7 @@ class DetailsSeanceFragment : Fragment() {
             }
             is WorkoutDetailsState.WorkoutLoadedAsJoined -> {
                 showWorkout(state.data)
-                buttonsLayout.visibility = View.VISIBLE
+                contactButton.visibility = View.VISIBLE
                 participate_button.text = getString(R.string.unjoin_workout)
                 participate_button.backgroundColor = ContextCompat.getColor(requireContext(), R.color.dark_red)
                 participate_button.setOnClickListener {
@@ -125,7 +125,7 @@ class DetailsSeanceFragment : Fragment() {
         workout_hour_textview.text = data.time
         workout_lieu_textview.text = data.location
         workout_duration_textview.text = data.duration
-        workout_description_textview.text = data.description
+        workout_description_textview.text = if (data.description.isBlank()) getString(R.string.empty_description) else data.description
         workout_participants_textview.text = resources.getQuantityString(R.plurals.numberOfPlacesAvailable, data.placesAvailable, data.placesAvailable)
     }
 }

@@ -174,7 +174,9 @@
     <string name="delete_workout">Delete workout</string>
     <string name="unjoin_workout">Unjoin workout</string>
     <string name="request_sent">Request sent</string>
-    <string name="created_by">\"Created by %s\"</string>
+    <string name="created_by">Created by %s</string>
+    <string name="maps">Maps</string>
+    <string name="empty_description">No description provided.</string>
 
 
 </resources>
