@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.fsudouest.blablafit.features.filters.WorkoutFilters
 import com.example.fsudouest.blablafit.features.nearby.NearByData
 import com.example.fsudouest.blablafit.features.nearby.NearByState
+import com.example.fsudouest.blablafit.features.nearby.ui.WorkoutViewItem
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.service.LocationService
 import com.example.fsudouest.blablafit.service.ResourceService

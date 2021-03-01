@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fsudouest.blablafit.features.myWorkouts.MyWorkoutsData
 import com.example.fsudouest.blablafit.features.myWorkouts.MyWorkoutsState
+import com.example.fsudouest.blablafit.features.nearby.ui.WorkoutViewItem
 import com.example.fsudouest.blablafit.model.RequestStatus
 import com.example.fsudouest.blablafit.model.Seance
 import com.example.fsudouest.blablafit.utils.toWorkoutViewItem
